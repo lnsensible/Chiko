@@ -1,0 +1,298 @@
+fileFormatVersion: 2
+guid: 7aea604977b87cb449fd9c21b78b2a80
+timeCreated: 1456124916
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: Body
+    100002: //RootNode
+    100004: ChikoDamageDealer1
+    100006: CTRL_forefoot_L
+    100008: CTRL_forefoot_R
+    100010: CTRL_foreleg_L
+    100012: CTRL_foreleg_R
+    100014: CTRL_hindankle_L
+    100016: CTRL_hindankle_R
+    100018: CTRL_hindfoot_L
+    100020: CTRL_hindfoot_R
+    100022: CTRL_hindleg_L
+    100024: CTRL_hindleg_R
+    100026: Ear_L
+    100028: Ear_R
+    100030: EarTip_L
+    100032: EarTip_R
+    100034: ForeBicep_L
+    100036: ForeBicep_R
+    100038: ForeElbow_L
+    100040: ForeElbow_R
+    100042: ForeHand_L
+    100044: ForeHand_R
+    100046: Head
+    100048: Head_CTRL
+    100050: HindFoot_L
+    100052: HindFoot_R
+    100054: HindKnee_L
+    100056: HindKnee_R
+    100058: HindPaw_L
+    100060: HindPaw_R
+    100062: HindShin_L
+    100064: HindShin_R
+    100066: HindThigh_L
+    100068: HindThigh_R
+    100070: Main_CTRL
+    100072: Neck
+    100074: Nose
+    100076: Paw_L
+    100078: Paw_R
+    100080: Pelvis
+    100082: Pelvis_CTRL
+    100084: Stomach
+    100086: Tail1
+    100088: Tail2
+    100090: Tail3
+    100092: TailRoot
+    100094: TailTip
+    100096: Torso_CTRL
+    400000: Body
+    400002: //RootNode
+    400004: ChikoDamageDealer1
+    400006: CTRL_forefoot_L
+    400008: CTRL_forefoot_R
+    400010: CTRL_foreleg_L
+    400012: CTRL_foreleg_R
+    400014: CTRL_hindankle_L
+    400016: CTRL_hindankle_R
+    400018: CTRL_hindfoot_L
+    400020: CTRL_hindfoot_R
+    400022: CTRL_hindleg_L
+    400024: CTRL_hindleg_R
+    400026: Ear_L
+    400028: Ear_R
+    400030: EarTip_L
+    400032: EarTip_R
+    400034: ForeBicep_L
+    400036: ForeBicep_R
+    400038: ForeElbow_L
+    400040: ForeElbow_R
+    400042: ForeHand_L
+    400044: ForeHand_R
+    400046: Head
+    400048: Head_CTRL
+    400050: HindFoot_L
+    400052: HindFoot_R
+    400054: HindKnee_L
+    400056: HindKnee_R
+    400058: HindPaw_L
+    400060: HindPaw_R
+    400062: HindShin_L
+    400064: HindShin_R
+    400066: HindThigh_L
+    400068: HindThigh_R
+    400070: Main_CTRL
+    400072: Neck
+    400074: Nose
+    400076: Paw_L
+    400078: Paw_R
+    400080: Pelvis
+    400082: Pelvis_CTRL
+    400084: Stomach
+    400086: Tail1
+    400088: Tail2
+    400090: Tail3
+    400092: TailRoot
+    400094: TailTip
+    400096: Torso_CTRL
+    4300000: ChikoDamageDealer1
+    7400000: Take 001
+    9500000: //RootNode
+    11100000: //RootNode
+    13700000: ChikoDamageDealer1
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Take 001
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 200
+      wrapMode: 2
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 1
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: ChikoDamageDealer1
+        weight: 1
+      - path: Main_CTRL
+        weight: 1
+      - path: Main_CTRL/Body
+        weight: 1
+      - path: Main_CTRL/Body/ForeBicep_L
+        weight: 1
+      - path: Main_CTRL/Body/ForeBicep_L/ForeElbow_L
+        weight: 1
+      - path: Main_CTRL/Body/ForeBicep_L/ForeElbow_L/ForeHand_L
+        weight: 1
+      - path: Main_CTRL/Body/ForeBicep_L/ForeElbow_L/ForeHand_L/Paw_L
+        weight: 1
+      - path: Main_CTRL/Body/ForeBicep_R
+        weight: 1
+      - path: Main_CTRL/Body/ForeBicep_R/ForeElbow_R
+        weight: 1
+      - path: Main_CTRL/Body/ForeBicep_R/ForeElbow_R/ForeHand_R
+        weight: 1
+      - path: Main_CTRL/Body/ForeBicep_R/ForeElbow_R/ForeHand_R/Paw_R
+        weight: 1
+      - path: Main_CTRL/Body/Neck
+        weight: 1
+      - path: Main_CTRL/Body/Neck/Head
+        weight: 1
+      - path: Main_CTRL/Body/Neck/Head/Ear_L
+        weight: 1
+      - path: Main_CTRL/Body/Neck/Head/Ear_L/EarTip_L
+        weight: 1
+      - path: Main_CTRL/Body/Neck/Head/Ear_R
+        weight: 1
+      - path: Main_CTRL/Body/Neck/Head/Ear_R/EarTip_R
+        weight: 1
+      - path: Main_CTRL/Body/Neck/Head/Nose
+        weight: 1
+      - path: Main_CTRL/Body/Stomach
+        weight: 1
+      - path: Main_CTRL/Body/Stomach/Pelvis
+        weight: 1
+      - path: Main_CTRL/Body/Stomach/Pelvis/HindThigh_L
+        weight: 1
+      - path: Main_CTRL/Body/Stomach/Pelvis/HindThigh_L/HindKnee_L
+        weight: 1
+      - path: Main_CTRL/Body/Stomach/Pelvis/HindThigh_L/HindKnee_L/HindShin_L
+        weight: 1
+      - path: Main_CTRL/Body/Stomach/Pelvis/HindThigh_L/HindKnee_L/HindShin_L/HindFoot_L
+        weight: 1
+      - path: Main_CTRL/Body/Stomach/Pelvis/HindThigh_L/HindKnee_L/HindShin_L/HindFoot_L/HindPaw_L
+        weight: 1
+      - path: Main_CTRL/Body/Stomach/Pelvis/HindThigh_R
+        weight: 1
+      - path: Main_CTRL/Body/Stomach/Pelvis/HindThigh_R/HindKnee_R
+        weight: 1
+      - path: Main_CTRL/Body/Stomach/Pelvis/HindThigh_R/HindKnee_R/HindShin_R
+        weight: 1
+      - path: Main_CTRL/Body/Stomach/Pelvis/HindThigh_R/HindKnee_R/HindShin_R/HindFoot_R
+        weight: 1
+      - path: Main_CTRL/Body/Stomach/Pelvis/HindThigh_R/HindKnee_R/HindShin_R/HindFoot_R/HindPaw_R
+        weight: 1
+      - path: Main_CTRL/Body/Stomach/Pelvis/TailRoot
+        weight: 1
+      - path: Main_CTRL/Body/Stomach/Pelvis/TailRoot/Tail1
+        weight: 1
+      - path: Main_CTRL/Body/Stomach/Pelvis/TailRoot/Tail1/Tail2
+        weight: 1
+      - path: Main_CTRL/Body/Stomach/Pelvis/TailRoot/Tail1/Tail2/Tail3
+        weight: 1
+      - path: Main_CTRL/Body/Stomach/Pelvis/TailRoot/Tail1/Tail2/Tail3/TailTip
+        weight: 1
+      - path: Main_CTRL/CTRL_foreleg_L
+        weight: 1
+      - path: Main_CTRL/CTRL_foreleg_L/CTRL_forefoot_L
+        weight: 1
+      - path: Main_CTRL/CTRL_foreleg_R
+        weight: 1
+      - path: Main_CTRL/CTRL_foreleg_R/CTRL_forefoot_R
+        weight: 1
+      - path: Main_CTRL/CTRL_hindankle_L
+        weight: 1
+      - path: Main_CTRL/CTRL_hindankle_L/CTRL_hindfoot_L
+        weight: 1
+      - path: Main_CTRL/CTRL_hindankle_L/CTRL_hindleg_L
+        weight: 1
+      - path: Main_CTRL/CTRL_hindankle_R
+        weight: 1
+      - path: Main_CTRL/CTRL_hindankle_R/CTRL_hindfoot_R
+        weight: 1
+      - path: Main_CTRL/CTRL_hindankle_R/CTRL_hindleg_R
+        weight: 1
+      - path: Main_CTRL/Head_CTRL
+        weight: 1
+      - path: Main_CTRL/Pelvis_CTRL
+        weight: 1
+      - path: Main_CTRL/Torso_CTRL
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 1
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

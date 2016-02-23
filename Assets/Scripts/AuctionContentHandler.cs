@@ -16,8 +16,12 @@ public class AuctionContentHandler : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        numAuctions = 2;
+        numAuctions = 20;
+        ReloadBoxes();
+	}
 
+    void ReloadBoxes()
+    {
         for (int i = 0; i < numAuctions; i++)
         {
             GameObject clone = (GameObject)Instantiate(auctionBoxTemplate, Vector3.zero, Quaternion.identity);
@@ -34,9 +38,7 @@ public class AuctionContentHandler : MonoBehaviour {
         Vector3 clonePos = auctionOrigin;
         clonePos.x += (numAuctions * auctionSpacing);
         addClone.GetComponent<RectTransform>().localPosition = clonePos;
-
-        
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -45,11 +47,27 @@ public class AuctionContentHandler : MonoBehaviour {
 
     void RestrictAuctionView()
     {
-        if (auctionContent.transform.position.x > 20 && !Input.GetMouseButton(0))
+        if (auctionContent.transform.position.x > 0 && !Input.GetMouseButton(0))
         {
             Debug.Log(auctionContent.transform.position);
             auctionContent.transform.position = Vector3.Lerp(auctionContent.transform.position, new Vector3(0, auctionContent.transform.position.y, auctionContent.transform.position.z), 20 * Time.deltaTime); 
         }
-       
+    }
+
+    void DestroyBoxes()
+    {
+        Debug.Log("hi");
+        foreach (GameObject go in GameObject.FindGameObjectsWithTag("AuctionBox"))
+        {
+            
+            Destroy(go);
+        }
+    }
+
+    public void removeAuction()
+    {
+        numAuctions--;
+        DestroyBoxes();
+        ReloadBoxes();
     }
 }

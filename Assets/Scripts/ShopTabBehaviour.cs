@@ -26,6 +26,10 @@ public class ShopTabBehaviour : MonoBehaviour {
     int amount_int;
     Text amount_gem;
     int amount_gem_int;
+
+    Text amount2;
+    Text amount_gem2;
+
 	// Use this for initialization
 	void Start () {
         trapTab_head = trapTab.GetComponent<Image>();
@@ -36,7 +40,10 @@ public class ShopTabBehaviour : MonoBehaviour {
         amount = GameObject.Find("Gems").transform.GetChild(0).GetComponentInChildren<Text>();
         amount_gem_int = PlayerPrefs.GetInt("Gems");
         amount_gem = GameObject.Find("Gems").transform.GetChild(1).GetComponentInChildren<Text>();
-       
+
+        amount2 = GameObject.Find("Gems1").transform.GetChild(0).GetComponentInChildren<Text>();
+        amount_gem2 = GameObject.Find("Gems1").transform.GetChild(1).GetComponentInChildren<Text>();
+
         BearTrapUnlocked = PlayerPrefs.GetInt("BearTraplocked");
         if(BearTrapUnlocked != 0 || BearTrapUnlocked != 1)
             BearTrapUnlocked = 0;
@@ -60,6 +67,9 @@ public class ShopTabBehaviour : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        amount_int = PlayerPrefs.GetInt("Gold");
+        amount_gem_int = PlayerPrefs.GetInt("Gems");
+
 	    if(BearTrapUnlocked == 1)
             lockIcon_bearTrap.color = Color.clear;
         if(SpikeTraplocked == 1)
@@ -70,9 +80,12 @@ public class ShopTabBehaviour : MonoBehaviour {
             lockIcon_tripTrap.color = Color.clear;
         if (DecoyTraplocked == 1)
             lockIcon_decoyTrap.color = Color.clear;
+
         amount.text = "" + amount_int;
         amount_gem.text = "" + amount_gem_int;
 
+        amount2.text = "" + amount_int;
+        amount_gem2.text = "" + amount_gem_int;
 	}
 
     public void ChikosTabPressed()

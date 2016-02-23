@@ -376,7 +376,7 @@ public class Chiko : MonoBehaviour {
         if (isMoving == false)
         {
             target.GetComponent<Enemy>().MinusHealth(1);
-            target.GetComponent<Enemy>().OverrideTarget(gameObject);
+            target.GetComponent<Enemy>().OverrideTarget(this.gameObject);
             Debug.Log("Minus health");
             state = STATE.IDLE;
         }

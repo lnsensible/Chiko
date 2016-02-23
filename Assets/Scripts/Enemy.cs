@@ -78,17 +78,18 @@ public class Enemy : MonoBehaviour {
 
         healthBar.value = health * 0.01f;
 	}
+
     public void MinusHealth(int h)
     {
         if (health > 0)
             health -= h;
     }
+
     public void OverrideTarget(GameObject go)
     {
         target = go;
         
     }
-
     void SetPathing()
     {
         Seeker seeker = GetComponent<Seeker>();
@@ -107,6 +108,7 @@ public class Enemy : MonoBehaviour {
     {
         MOVE_SPEED = MS;
     }
+
     void Attack()
     {
         if(distToTarget <= 50)
@@ -124,6 +126,7 @@ public class Enemy : MonoBehaviour {
         
         if(col.gameObject.tag == "Enemy")
         {
+            //force the enemy to move a set distance away from the other enemies
             vel = Vector3.Normalize(transform.position - col.gameObject.transform.position);
             b_move = false;
         }

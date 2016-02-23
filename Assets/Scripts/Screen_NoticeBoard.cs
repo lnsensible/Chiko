@@ -2,7 +2,8 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class Screen_NoticeBoard : MonoBehaviour {
+public class Screen_NoticeBoard : MonoBehaviour
+{
 
     //use this to transverse between screens. call the functions will do.
     public SceneNavigation sn;
@@ -13,11 +14,6 @@ public class Screen_NoticeBoard : MonoBehaviour {
     public Sprite noticeSelected;
     public Sprite exitSelected;
 
-    RectTransform playPos;
-    RectTransform penPos;
-    RectTransform NoticeboardPos;
-    RectTransform ExitPos;
-    RectTransform ShopPos;
     RectTransform laserPos;
     bool ShowNoticeBoard = true;
     RectTransform NoticeBoardPos;
@@ -25,19 +21,16 @@ public class Screen_NoticeBoard : MonoBehaviour {
     bool moving = false;
     bool moveButtonsback = false;
     int clickedOn = 0;
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         NoticeBoardPos = GameObject.Find("NoticeBoard").GetComponent<RectTransform>();
-        playPos = GameObject.Find("Play_Button").GetComponent<RectTransform>();
-        penPos = GameObject.Find("Pen_Button").GetComponent<RectTransform>();
-        NoticeboardPos = GameObject.Find("NoticeBoard_Button").GetComponent<RectTransform>();
-        ExitPos = GameObject.Find("Exit_Button").GetComponent<RectTransform>();
-        ShopPos = GameObject.Find("Shop_Button").GetComponent<RectTransform>();
         laserPos = GameObject.Find("Background_design").GetComponent<RectTransform>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
         Animate();
         if (moving == false && ShowNoticeBoard == false)
         {
@@ -60,7 +53,7 @@ public class Screen_NoticeBoard : MonoBehaviour {
                     break;
             }
         }
-	}
+    }
     void MoveToNextScene()
     {
         moving = false;
@@ -81,7 +74,7 @@ public class Screen_NoticeBoard : MonoBehaviour {
         play.image.overrideSprite = playSelected;
         Button noticeboard = GameObject.Find("NoticeBoard_Button").GetComponent<Button>();
         noticeboard.image.overrideSprite = noticeSelected;
-        moving = true; 
+        moving = true;
         ShowNoticeBoard = false;
         clickedOn = 1;
     }
@@ -114,7 +107,7 @@ public class Screen_NoticeBoard : MonoBehaviour {
 
     void Animate()
     {
-        if(ShowNoticeBoard == true)
+        if (ShowNoticeBoard == true)
         {
             NoticeBoardPos.localPosition = Vector3.Lerp(NoticeBoardPos.localPosition, new Vector3(NoticeBoardPos.localPosition.x, -74, 0), 0.2f);
         }
@@ -126,33 +119,27 @@ public class Screen_NoticeBoard : MonoBehaviour {
                 moveButtonsback = true;
             }
         }
-        if(moveButtonsback == true)
+        if (moveButtonsback == true)
         {
-            if(clickedOn == 1 && clickedOn == 3 && clickedOn == 4)
+            if (clickedOn == 1 || clickedOn == 3 || clickedOn == 4)
             {
-                playPos.localPosition = Vector3.Lerp(playPos.localPosition, new Vector3(playPos.localPosition.x, -1, 0), 0.2f);
-                playPos.localScale = Vector3.Lerp(playPos.localScale, new Vector3(1.5f, 1.5f, 1.5f), 0.2f);
-                penPos.localPosition = Vector3.Lerp(penPos.localPosition, new Vector3(penPos.localPosition.x, -1, 0), 0.2f);
-                penPos.localScale = Vector3.Lerp(penPos.localScale, new Vector3(1.5f, 1.5f, 1.5f), 0.2f);
-                NoticeboardPos.localPosition = Vector3.Lerp(NoticeboardPos.localPosition, new Vector3(NoticeboardPos.localPosition.x, -1, 0), 0.2f);
-                NoticeboardPos.localScale = Vector3.Lerp(NoticeboardPos.localScale, new Vector3(1.5f, 1.5f, 1.5f), 0.2f);
-                ExitPos.localPosition = Vector3.Lerp(ExitPos.localPosition, new Vector3(ExitPos.localPosition.x, -1, 0), 0.2f);
-                ExitPos.localScale = Vector3.Lerp(ExitPos.localScale, new Vector3(1.5f, 1.5f, 1.5f), 0.2f);
-                ShopPos.localPosition = Vector3.Lerp(ShopPos.localPosition, new Vector3(ShopPos.localPosition.x, -1, 0), 0.2f);
-                ShopPos.localScale = Vector3.Lerp(ShopPos.localScale, new Vector3(1.5f, 1.5f, 1.5f), 0.2f);
-                laserPos.localPosition = Vector3.Lerp(laserPos.localPosition, new Vector3(laserPos.localPosition.x, -1, 0), 0.2f);
-                if (playPos.localPosition.y <= 0)
+
+                foreach (GameObject buttons in GameObject.FindGameObjectsWithTag("Navigation Buttons"))
                 {
-                    playPos.localPosition.Set(playPos.localPosition.x, 0, playPos.localPosition.z);
-                    penPos.localPosition.Set(penPos.localPosition.x, 0, penPos.localPosition.z);
-                    NoticeboardPos.localPosition.Set(NoticeboardPos.localPosition.x, 0, NoticeboardPos.localPosition.z);
-                    ExitPos.localPosition.Set(ExitPos.localPosition.x, 0, ExitPos.localPosition.z);
-                    ShopPos.localPosition.Set(ShopPos.localPosition.x, 0, ShopPos.localPosition.z);
-                    laserPos.localPosition.Set(laserPos.localPosition.x, 0, laserPos.localPosition.z);
-                    Invoke("MoveToNextScene", 0.2f);
+                    RectTransform pos = buttons.GetComponent<RectTransform>();
+                    pos.localPosition = Vector3.Lerp(pos.localPosition, new Vector3(pos.localPosition.x, -1, 0), 0.2f);
+                    pos.localScale = Vector3.Lerp(pos.localScale, new Vector3(1.5f, 1.5f, 1.5f), 0.2f);
+                    if (pos.localPosition.y <= 0)
+                    {
+                        pos.localPosition.Set(pos.localPosition.x, 0, pos.localPosition.z);
+                        laserPos.localPosition.Set(laserPos.localPosition.x, 0, laserPos.localPosition.z);
+                        //Invoke("MoveToNextScene", 0.2f);
+                        moving = false;
+                    }
                 }
+                laserPos.localPosition = Vector3.Lerp(laserPos.localPosition, new Vector3(laserPos.localPosition.x, -1, 0), 0.2f);
             }
-            else 
+            else
             {
                 Invoke("MoveToNextScene", 0.2f);
             }

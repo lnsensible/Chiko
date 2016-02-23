@@ -63,9 +63,9 @@ public class SkilltreeGesture : MonoBehaviour {
 
         // Prevent skilltree from flying off
         Vector3 lockAnchor = anchorPosition.localPosition;
-        if (anchorPosition.localPosition.x < -300)
+        if (anchorPosition.localPosition.x < -200)
         {
-            lockAnchor.x = -300;
+            lockAnchor.x = -200;
         }
         if (anchorPosition.localPosition.x > 300)
         {

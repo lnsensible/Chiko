@@ -153,8 +153,15 @@ public class Screen_MainMenu : MonoBehaviour
     {
         //if not in preGame selection - start it
         if(b_preGame == false)
+        {
             Invoke("MovingButtonsUp", 0.2f);
-
+        }
+        else
+        {
+            //set the buttons to move back down
+            b_ButtonsUp = false;
+            moving = true;
+        }
         b_preGame = !b_preGame;
     }
 
@@ -262,12 +269,6 @@ public class Screen_MainMenu : MonoBehaviour
 
                     selected.transform.localScale = Vector3.Lerp(selected.transform.localScale, new Vector3(0.66f, 0.66f, 0.66f), 0.2f);
                 }
-            }
-            else
-            {
-                //set the buttons to move back down
-                b_ButtonsUp = false;
-                moving = true;
             }
             
         }

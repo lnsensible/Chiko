@@ -125,21 +125,21 @@ public class PlayerMovement : MonoBehaviour
     //Don't go into other stuff
     void OnTriggerEnter (Collider col) {
         
-        if (col.gameObject.layer == LayerMask.NameToLayer("World"))
-        {
-            Debug.Log("Entered world");
-            transform.position = Vector3.MoveTowards(transform.position, newPosition, -playerSpeed * Time.deltaTime);
-            b_toMove = false;
-        }
+        //if (col.gameObject.layer == LayerMask.NameToLayer("World"))
+        //{
+        //    Debug.Log("Entered world");
+        //    transform.position = Vector3.MoveTowards(transform.position, newPosition, -playerSpeed * Time.deltaTime);
+        //    b_toMove = false;
+        //}
     }
 
     // I SAID DON'T GO INTO OTHER STUFF
     void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("World"))
-        {
-            transform.position = Vector3.MoveTowards(transform.position, newPosition, -playerSpeed * Time.deltaTime);
-        }
+       // if (other.gameObject.layer == LayerMask.NameToLayer("World"))
+       // {
+       //     transform.position = Vector3.MoveTowards(transform.position, newPosition, -playerSpeed * Time.deltaTime);
+       // }
     }
 
 }

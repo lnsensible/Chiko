@@ -124,7 +124,7 @@ public class Chiko : MonoBehaviour {
 
         shouldPlayerMove = true;
 
-        trapHeld = (int)TRAP.DECOY;
+        trapHeld = (int)TRAP.BEARTRAP;
     }
 
     // Update is called once per frame

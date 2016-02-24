@@ -7,6 +7,8 @@ public class BidHandler : MonoBehaviour {
     public GameObject theBid;
     private Text theBidText;
 
+    public bool AffectsMoney;
+
     private string tmpString = "";
     private TouchScreenKeyboard keyboard;
     private bool isKeyboardOpen;
@@ -25,14 +27,24 @@ public class BidHandler : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         if (changeBid)
+        {
             KeyboardHandle();
+        }
+        
+        if (theBidText.text == "")
+        {
+            theBidText.text = i_theBid + " G";
+        }
 	}
 
     public void destroyMe()
     {
-        int yourGold = PlayerPrefs.GetInt("Gold");
-        yourGold += i_theBid;
-        PlayerPrefs.SetInt("Gold", yourGold);
+        if (AffectsMoney)
+        {
+            int yourGold = PlayerPrefs.GetInt("Gold");
+            yourGold += i_theBid;
+            PlayerPrefs.SetInt("Gold", yourGold);
+        }
 
         GameObject.Find("Auction Tab").GetComponent<AuctionContentHandler>().removeAuction();
         Destroy(gameObject);
@@ -42,9 +54,12 @@ public class BidHandler : MonoBehaviour {
     {
         if (!isKeyboardOpen)
         {
-            int yourGold = PlayerPrefs.GetInt("Gold");
-            yourGold += i_theBid;
-            PlayerPrefs.SetInt("Gold", yourGold);
+            if (AffectsMoney)
+            {
+                int yourGold = PlayerPrefs.GetInt("Gold");
+                yourGold += i_theBid;
+                PlayerPrefs.SetInt("Gold", yourGold);
+            }
 
             keyboard = TouchScreenKeyboard.Open(tmpString, TouchScreenKeyboardType.NumberPad, false, false, false, false, theBidText.text);
             isKeyboardOpen = true;
@@ -59,8 +74,11 @@ public class BidHandler : MonoBehaviour {
                 if (yourGold >= int.Parse(keyboard.text))
                     i_theBid = int.Parse(keyboard.text);
 
-                yourGold -= i_theBid;
-                PlayerPrefs.SetInt("Gold", yourGold);
+                if (AffectsMoney)
+                {
+                    yourGold -= i_theBid;
+                    PlayerPrefs.SetInt("Gold", yourGold);
+                }
 
                 theBidText.text = i_theBid + " G";
             }

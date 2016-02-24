@@ -8,9 +8,8 @@ public class Enemy : MonoBehaviour {
     public GameObject target;
     Vector3 dir; //direction to the intended target , can  be ooverrided.
     float distToTarget; // magnitude of the current enemy to the target object;
-    // Use this for initialization
     //gameplay vairables;
-    int health;
+    float health;
     int damage;
     int MOVE_SPEED;
     bool b_move;
@@ -20,6 +19,7 @@ public class Enemy : MonoBehaviour {
     int currentWaypoint = 0;
     public float distToWayPoint;
     Vector3 vel;//use to move away from other enemies
+    //change between multiple animations -> 'animation.play("CLIP_NAME")'
 	// Use this for initialization
 	void Start () {
         health = 100;
@@ -34,7 +34,7 @@ public class Enemy : MonoBehaviour {
         b_move = true;
 	}   
 
-	public void SetEnemyVariables(int _health, int _damage, int _moveSpeed)
+	public void SetEnemyVariables(float _health, int _damage, int _moveSpeed)
     {
         health = _health;
         damage = _damage;
@@ -42,10 +42,37 @@ public class Enemy : MonoBehaviour {
     }
 	// Update is called once per frame
 	void Update () {
-        
+
+        //lock the movement onto the plane only
+        vel.y = 0;
+        dir.y = 0;
+
         dir = Vector3.Normalize(transform.position - target.transform.position);
         distToTarget = Vector3.Magnitude(target.transform.position - transform.position);
+
+        if (health <= 0)
+        {
+            Died();
+        }
+        else
+        {
+            //update health
+            healthBar.value = health * 0.01f;
+
+            ///DEBUG: TESTING HEALTH BAR
+            health -= 0.1f;
+
+            //walking || Chasing
+            Moving();
+
+            //carrying out attack
+            Attack();
+        }
         
+	}
+
+    void Moving()
+    {
         //moving to next waypoint
         if (path == null)
         {
@@ -59,7 +86,7 @@ public class Enemy : MonoBehaviour {
         }
         else
         {
-            if(b_move == true)
+            if (b_move == true)
             {
                 transform.position = Vector3.MoveTowards(transform.position, path.vectorPath[currentWaypoint], MOVE_SPEED * Time.deltaTime);
                 if (Vector3.Distance(transform.position, path.vectorPath[currentWaypoint]) < distToWayPoint)
@@ -72,14 +99,9 @@ public class Enemy : MonoBehaviour {
                 transform.position += vel * MOVE_SPEED * Time.deltaTime;
             }
         }
+    }
 
-        if (health <= 0)
-            Died();
-
-        healthBar.value = health * 0.01f;
-	}
-
-    public void MinusHealth(int h)
+    public void MinusHealth(float h)
     {
         if (health > 0)
             health -= h;
@@ -114,6 +136,7 @@ public class Enemy : MonoBehaviour {
         if(distToTarget <= 50)
         {
             //carry out attack;
+            Chiko attackTarget = target.GetComponent<Chiko>();
         }
     }
     public void Died()

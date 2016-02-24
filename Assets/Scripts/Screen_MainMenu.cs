@@ -94,35 +94,65 @@ public class Screen_MainMenu : MonoBehaviour
     }
     public void ShopPressed()
     {
-        //swap meshes   
-        Button shop = GameObject.Find("Shop_Button").GetComponent<Button>();
-        shop.image.overrideSprite = shopSelected;
-        Invoke("MovingButtonsUp", 0.5f);
-        clickedOn = 2;
+        if(b_preGame == false)
+        {
+            //swap meshes   
+            Button shop = GameObject.Find("Shop_Button").GetComponent<Button>();
+            shop.image.overrideSprite = shopSelected;
+            Invoke("MovingButtonsUp", 0.5f);
+            clickedOn = 2;
+        }
+        else
+        {
+            PreGameScreenPressed();
+            Invoke("ShopPressed", 0.5f);
+        }
     }
     public void PenPressed()
     {
-        //swap meshes
-        Button pens = GameObject.Find("Pen_Button").GetComponent<Button>();
-        pens.image.overrideSprite = pensSelected;
-        Invoke("MovingButtonsUp", 0.5f);
-        clickedOn = 3;
+        if (b_preGame == false)
+        {
+            //swap meshes
+            Button pens = GameObject.Find("Pen_Button").GetComponent<Button>();
+            pens.image.overrideSprite = pensSelected;
+            Invoke("MovingButtonsUp", 0.5f);
+            clickedOn = 3;
+        }
+        else
+        {
+            PreGameScreenPressed();
+            Invoke("PenPressed", 0.5f);
+        }
     }
     public void NoticeBoardPressed()
     {
-        //swap meshes
-        Button noticeboard = GameObject.Find("NoticeBoard_Button").GetComponent<Button>();
-        noticeboard.image.overrideSprite = noticeSelected;
-        Invoke("MovingButtonsUp", 0.5f);
-        clickedOn = 4;
+        if (b_preGame == false)
+        {
+            //swap meshes
+            Button noticeboard = GameObject.Find("NoticeBoard_Button").GetComponent<Button>();
+            noticeboard.image.overrideSprite = noticeSelected;
+            Invoke("MovingButtonsUp", 0.5f);
+            clickedOn = 4;
+        }
+        else
+        {
+            PreGameScreenPressed();
+        }
     }
     public void ExitPressed()
     {
-        //swap meshes
-        Button exit = GameObject.Find("Exit_Button").GetComponent<Button>(); ;
-        exit.image.overrideSprite = exitSelected;
-        Invoke("MovingButtonsUp", 0.5f);
-        clickedOn = 5;
+        if (b_preGame == false)
+        {
+            //swap meshes
+            Button exit = GameObject.Find("Exit_Button").GetComponent<Button>(); ;
+            exit.image.overrideSprite = exitSelected;
+            Invoke("MovingButtonsUp", 0.5f);
+            clickedOn = 5;
+        }
+        else
+        {
+            PreGameScreenPressed();
+        }
     }
 
     public void AccountPressed()
@@ -170,7 +200,6 @@ public class Screen_MainMenu : MonoBehaviour
         b_preGame = false;
         sn.GoToInventory();
     }
-
     public void ProceedPressed()
     {
         clickedOn = 1;
@@ -277,6 +306,12 @@ public class Screen_MainMenu : MonoBehaviour
             //moving the buttons back down
             if( moving == true)
             {
+                //title and sub text fading out effect
+                Color ca = Color.white;//title.color;
+                //ca.a += 0.1f;
+                title.color = ca;
+                subTitle.color = ca;
+
                 if(b_preGame == false)
                 {
                     //moving the proceed and the re-equip button down

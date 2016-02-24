@@ -38,8 +38,8 @@ public class PlayerInventory : MonoBehaviour {
             Debug.Log(chiko[i]);
         }
 
-        SelectedChiko[0] = ChikoList[0];
-        ChikoList.Remove(0);
+        //SelectedChiko[0] = ChikoList[0];
+        //ChikoList.Remove(0);
     }
 
     void Update()

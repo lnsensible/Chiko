@@ -67,9 +67,9 @@ public class SkilltreeGesture : MonoBehaviour {
         {
             lockAnchor.x = -200;
         }
-        if (anchorPosition.localPosition.x > 300)
+        if (anchorPosition.localPosition.x > 250)
         {
-            lockAnchor.x = 300;
+            lockAnchor.x = 250;
         }
         if (anchorPosition.localPosition.y > 150)
         {

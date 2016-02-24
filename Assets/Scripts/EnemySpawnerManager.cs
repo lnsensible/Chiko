@@ -27,16 +27,19 @@ public class EnemySpawnerManager : MonoBehaviour
  	void Update () {
 
         //resets the counter for total number of enemies
-	    foreach(GameObject g in GameObject.FindGameObjectsWithTag("Enemy"))
-        {
-            counter++;
-        }
+        counter = GameObject.FindGameObjectsWithTag("Enemy").Length;
+        
         StartSpawning();
 	}
 
     //can start spawning again.
     void StartSpawning()
     {
+        if (counter >= Max_num_of_enemies)
+        {
+            isSpawning = false;
+        }
+
         if (startSpawning == true && isSpawning == false)
         {
             InvokeRepeating("CallingRandomSpawner", 0, Spawn_Rate);
@@ -49,9 +52,9 @@ public class EnemySpawnerManager : MonoBehaviour
     {
         if (counter >= Max_num_of_enemies)
         {
+            CancelInvoke("CallingRandomSpawner");
             isSpawning = false;
         }
-
         //call a random spawner to start
         EnemySpawner child = transform.GetChild(Random.Range(0, 13)).GetComponent<EnemySpawner>();
         //setting the spawner value

@@ -17,6 +17,9 @@ public class RankMenu : MonoBehaviour {
     int bonusStat;
 	// Use this for initialization
 	void Start () {
+        //for debug person
+        PlayerPrefs.SetInt("rank", rank);
+
         rank = PlayerPrefs.GetInt("rank");
         progress = PlayerPrefs.GetInt("rankProgress");
         bonusStat = rank * 5;
@@ -25,11 +28,15 @@ public class RankMenu : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         filledProgressBar.fillAmount = progress / 10.0f;
+       
         if(filledProgressBar.fillAmount == 1)
         {
             RankUp();
         }
         RankBonusesTEXT();
+
+        //write to playerpref
+        PlayerPrefs.SetInt("rank", rank);
 	}
 
     void RankBonusesTEXT()

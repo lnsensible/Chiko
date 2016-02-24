@@ -212,7 +212,7 @@ public class Screen_MainMenu : MonoBehaviour
         //bringing down the 2nd menu
         if(b_2ndMenu == true)
         {
-            menu_2ndPos.localPosition = Vector3.Lerp(menu_2ndPos.localPosition, new Vector3(menu_2ndPos.localPosition.x, 60, 0), 0.2f);    
+            menu_2ndPos.localPosition = Vector3.Lerp(menu_2ndPos.localPosition, new Vector3(menu_2ndPos.localPosition.x, 59, 0), 0.2f);    
             //if showing the rank screen 
             if(b_RankScreen == true)
             {

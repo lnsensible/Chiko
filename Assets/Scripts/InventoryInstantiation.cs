@@ -32,11 +32,11 @@ public class InventoryInstantiation : MonoBehaviour {
 
     public void InstantiateChikoHanger()
     {
-        for (int i = 0; i < /*PlayerInventory.ChikoList.Count*/ 5; i++)
+        for (int i = 0; i < PlayerInventory.ChikoList.Count; i++)
         {
-            HangerChiko = (GameObject)Instantiate(HangerChiko, new Vector2(startPosition.x + i * hangerSpace, canvasSize.position.y * 0.8f), Quaternion.identity);
-            HangerChiko.transform.SetParent(svContent.transform);
-            HangerChiko.transform.localScale = new Vector3(1, 1, 1);
+            GameObject tempChiko = (GameObject)Instantiate(HangerChiko, new Vector2(startPosition.x + i * hangerSpace, canvasSize.position.y * 0.8f), Quaternion.identity);
+            tempChiko.transform.SetParent(svContent.transform);
+            tempChiko.transform.localScale = new Vector3(1, 1, 1);
         }
     }
 }

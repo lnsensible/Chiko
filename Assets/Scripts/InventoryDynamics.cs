@@ -1,36 +1,41 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class InventoryDynamics : MonoBehaviour
 {
-
-    bool showInvenTraps;    //shows invent
-    float heldDownTimer;
-    bool startTimer;       
-    bool showHeldTrap;      //displays trap held by chiko, if any
-
     public Vector3 initPos;
     Vector3 outOfScreen;
 
     public GameObject[] chikos;
-
     public GameObject HangerChiko;
+
+    // Canvas Info
     GameObject canvas;
     RectTransform canvasSize;
+
+    // Hanger Info
     GameObject hanger;
     RectTransform hangerSize;
-    GameObject thisChikosTrap;
-    RectTransform thisChikosTrapPos;
-    Vector3 thisChikosTrapInitPos;
- 
+
+    // Trap Info
+    GameObject[] ChikosTrap;
+    Vector3 ChikosTrapInitPos;
+    bool showHeldTrap;      //displays trap held by chiko, if any
+    bool showInvenTraps;    //shows trap inventory 
+
+    // Scroll view info
+    GameObject theScrollView;
+    Vector3 theScrollViewInitPos;
+
+    GameObject backButton;
+    bool showBackButton;
 
     // Use this for initialization
     void Start()
     {
         showInvenTraps = false;
-        heldDownTimer = 0;
-        startTimer = false;
-        showHeldTrap = false;
+        showHeldTrap = true;
 
         initPos = transform.position;
         outOfScreen = transform.position;
@@ -41,30 +46,36 @@ public class InventoryDynamics : MonoBehaviour
         canvasSize = canvas.GetComponent<RectTransform>();
         hanger = GameObject.Find("InventoryChikoPrefab");
         hangerSize = hanger.GetComponent<RectTransform>();
-        thisChikosTrap = GameObject.Find("Trap");
-        thisChikosTrapPos = thisChikosTrap.GetComponent<RectTransform>();
-        thisChikosTrapInitPos = thisChikosTrapPos.position;
+        theScrollView = GameObject.Find("Scroll View");
+        theScrollViewInitPos = theScrollView.transform.position;
+
+        ChikosTrap = GameObject.FindGameObjectsWithTag("TrapInHanger");
+
+        backButton = GameObject.Find("BackButtonCanvas");
+        showBackButton = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        if (startTimer == true)
-        {
-            heldDownTimer += Time.deltaTime;
-            if (heldDownTimer > 5)
-            {
-                showInvenTraps = true;
-                startTimer = false;
-            }
-        }
+        if (showBackButton == false)
+            backButton.SetActive(false);
+        else
+            backButton.SetActive(true);
+        Debug.Log(showBackButton);
     }
 
     // Detects click on this object
     public void displayChikoTrap()
     {
-        //MoveOtherChikos();
+        foreach (GameObject chiko in chikos)
+        {
+            chiko.GetComponent<InventoryDynamics>().showBackButton = true;
+        }
+        // Move other chikos out of view
+        MoveOtherChikos();
+        // Disable scrollview from scrolling
+        
 
         // Moving of specific hanger to the side
         Vector3 newPosition = transform.position;
@@ -74,16 +85,21 @@ public class InventoryDynamics : MonoBehaviour
         newPosition.x -= canvasSize.rect.width * 0.9f;
         transform.position = newPosition;
 
+        
         //Showing displayed hanger's trap inventory
-        // Set new pos to current pos
-        Vector3 thisChikosTrapNewPos = thisChikosTrapPos.position;
-        // Add the x scale of hanger to new pos
-        thisChikosTrapNewPos.x += hangerSize.rect.width * 2.4f;
-        // Set position to new pos
-        thisChikosTrapPos.position = thisChikosTrapNewPos;
-
-        heldDownTimer = 0;
-        showHeldTrap = true;
+        if (showHeldTrap == true)
+        {
+            foreach (GameObject trap in ChikosTrap)
+            {
+                // Set new pos to current pos
+                Vector3 thisChikosTrapNewPos = trap.transform.position;
+                // Add the x scale of hanger to new pos
+                thisChikosTrapNewPos.x += hangerSize.rect.width * 2.4f;
+                // Set position to new pos
+                trap.transform.position = thisChikosTrapNewPos;
+            }
+            showHeldTrap = false;
+        }
     }
 
     public void displayTrapInventory()
@@ -113,11 +129,13 @@ public class InventoryDynamics : MonoBehaviour
         }
     }
 
-    public void ResetHanger()
+    /*public void ResetHanger()
     {
         foreach (GameObject chiko in chikos)
         {
             chiko.transform.position = chiko.GetComponent<InventoryDynamics>().initPos;
         }
-    }
+        showHeldTrap = true;
+        //backButton.SetActive(false);
+    }*/
 }

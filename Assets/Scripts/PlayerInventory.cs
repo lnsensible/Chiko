@@ -13,6 +13,8 @@ public class PlayerInventory : MonoBehaviour {
 
     File_ReadWrite m_theIOScript;
     static public List<int> ChikoList = new List<int>();
+    static public List<int> ChikoTrapList = new List<int>();
+
     static public int[] SelectedChiko = new int[3];
 
     void Awake()
@@ -35,6 +37,7 @@ public class PlayerInventory : MonoBehaviour {
         for (int i = 0; i < chiko.Length; i++)
         {
             ChikoList.Add(int.Parse(chiko[i]));
+            ChikoTrapList.Add(0);
             Debug.Log(chiko[i]);
         }
 

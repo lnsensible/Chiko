@@ -64,9 +64,10 @@ public class SetTripWire : MonoBehaviour {
             if ((col.tag == "Enemy" || col.tag == "Player"))
             {
                 Debug.Log("Tripwire activated");
-                col.gameObject.GetComponent<Enemy>().MinusHealth(theDamage);
+                //col.gameObject.GetComponent<Enemy>().MinusHealth(theDamage);
+                Playexplosion(wiremidpoint); 
                 Destroy(gameObject);
-                Playexplosion(wiremidpoint);
+                
             }
         }
     }

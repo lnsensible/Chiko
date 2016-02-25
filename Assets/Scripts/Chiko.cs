@@ -19,7 +19,7 @@ public class Chiko : MonoBehaviour {
         OFFENSE,
     }
 
-    enum TRAP
+    public enum TRAP
     {
         BEARTRAP,
         TRIPWIRE,
@@ -35,7 +35,7 @@ public class Chiko : MonoBehaviour {
     STATE state;
     TYPE type;
 
-    int trapHeld;
+    TRAP trapHeld;
 
     public GameObject trapRadius;
 
@@ -53,6 +53,8 @@ public class Chiko : MonoBehaviour {
     public int wallRadius;
     public int spikeRadius;
     public int decoyRadius;
+
+    public GameObject trapHUD;
 
     float chikoDir;
 
@@ -80,6 +82,11 @@ public class Chiko : MonoBehaviour {
     public bool IsMoving
     {
         get { return isMoving; }
+    }
+
+    public TRAP getTrapHeld()
+    {
+        return trapHeld;
     }
 
     public bool isSelected()
@@ -126,7 +133,7 @@ public class Chiko : MonoBehaviour {
 
         shouldPlayerMove = true;
 
-        trapHeld = (int)TRAP.DECOY;
+        trapHeld = TRAP.TRIPWIRE;
 
         if(PlayerPrefs.GetInt("Birth of a Healer") == 1)
         {
@@ -140,6 +147,14 @@ public class Chiko : MonoBehaviour {
         {
             damage += 3;
         }
+
+        //initialise trapHUD
+        trapHUD = (GameObject)Instantiate(trapHUD, Vector3.zero, Quaternion.identity);
+        trapHUD.transform.parent = gameObject.transform;
+        trapHUD.transform.localPosition = new Vector3(0, 2.0f, 0);
+        trapHUD.transform.localScale = new Vector3(2.5f, 2.5f, 1.0f);
+        trapHUD.transform.LookAt(Camera.main.transform);
+        trapHUD.GetComponent<CooldownMeshHandler>().SetMaterial(trapHeld);
     }
 
     // Update is called once per frame
@@ -158,6 +173,7 @@ public class Chiko : MonoBehaviour {
         {
             case STATE.IDLE:
                 {
+                    trapHUD.GetComponent<MeshRenderer>().enabled = false;
                     // Switch to follow state when player moves out of range
                     if (Vector3.Distance(pos, PlayerMovement.playerPosition) > followDistance)
                     {
@@ -168,6 +184,7 @@ public class Chiko : MonoBehaviour {
 
             case STATE.FOLLOW:
                 {
+                    trapHUD.GetComponent<MeshRenderer>().enabled = false;
                     Follow();
 
                     // Switch back to idle state
@@ -180,6 +197,8 @@ public class Chiko : MonoBehaviour {
 
             case STATE.SELECTED:
                 {
+                    trapHUD.GetComponent<MeshRenderer>().enabled = true;
+
                     shouldPlayerMove = false;
 
                     if ((Input.GetMouseButtonDown(0) || (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)) && selectedTimer <= 0)
@@ -211,13 +230,13 @@ public class Chiko : MonoBehaviour {
 
                                     switch (trapHeld)
                                     {
-                                        case (int)TRAP.BEARTRAP:
+                                        case TRAP.BEARTRAP:
                                             trapPositionHolder = targetLocation;
                                             placingTrap = true;
                                             state = STATE.PUTTRAP;
                                             break;
 
-                                        case (int)TRAP.TRIPWIRE:
+                                        case TRAP.TRIPWIRE:
                                             if (trapPositionHolder == Vector3.zero)
                                             {
                                                 trapPositionHolder = targetLocation;
@@ -229,18 +248,18 @@ public class Chiko : MonoBehaviour {
                                                 state = STATE.PUTTRAP;
                                             }
                                             break;
-                                        case (int)TRAP.WALLS:
+                                        case TRAP.WALLS:
                                             trapPositionHolder = targetLocation;
                                             placingTrap = true;
                                             state = STATE.PUTTRAP;
                                             break;
-                                        case (int)TRAP.SPIKES:
+                                        case TRAP.SPIKES:
                                             trapPositionHolder = targetLocation;
                                             placingTrap = true;
                                             placingSpikes = true;
                                             state = STATE.PUTTRAP;
                                             break;
-                                        case (int)TRAP.DECOY:
+                                        case TRAP.DECOY:
                                             trapPositionHolder = targetLocation;
                                             placingTrap = true;
                                             state = STATE.PUTTRAP;
@@ -257,19 +276,21 @@ public class Chiko : MonoBehaviour {
 
             case STATE.ATTACK:
                 {
+                    trapHUD.GetComponent<MeshRenderer>().enabled = false;
                     Attack();
                 }
                 break;
 
             case STATE.PUTTRAP:
                 {
+                    trapHUD.GetComponent<MeshRenderer>().enabled = false;
                     switch (trapHeld)
                     {
-                        case (int)TRAP.BEARTRAP:
+                        case TRAP.BEARTRAP:
                             shouldPlayerMove = true;
                             PutTrap(trapPositionHolder);
                             break;
-                        case (int)TRAP.TRIPWIRE:
+                        case TRAP.TRIPWIRE:
                             shouldPlayerMove = true;
 
                             if (placedFirstTripwire)
@@ -277,11 +298,11 @@ public class Chiko : MonoBehaviour {
                             else
                                 PutTrap(trapPositionHolder);
                             break;
-                        case (int)TRAP.WALLS:
+                        case TRAP.WALLS:
                             shouldPlayerMove = true;
                             PutTrap(trapPositionHolder);
                             break;
-                        case (int)TRAP.SPIKES:
+                        case TRAP.SPIKES:
                             if (placingSpikes && trapPositionHolder2 == Vector3.zero)
                             {
                                 if (Input.GetMouseButtonUp(0) || (Input.touchCount > 0 && Input.GetTouch(Input.touchCount - 1).phase == TouchPhase.Ended))
@@ -310,7 +331,7 @@ public class Chiko : MonoBehaviour {
                                 PutTrap(trapPositionHolder);
                             }
                             break;
-                        case (int)TRAP.DECOY:
+                        case TRAP.DECOY:
                             shouldPlayerMove = true;
                             PutTrap(trapPositionHolder);
                             break;
@@ -320,6 +341,7 @@ public class Chiko : MonoBehaviour {
 
             case STATE.DEAD:
                 {
+                    trapHUD.GetComponent<MeshRenderer>().enabled = false;
                     Dead();
                 }
                 break;
@@ -345,19 +367,19 @@ public class Chiko : MonoBehaviour {
             GameObject clone = (GameObject)Instantiate(trapRadius, transform.position, Quaternion.identity);
            switch (trapHeld)
            {
-               case (int)TRAP.BEARTRAP:
+               case TRAP.BEARTRAP:
                    clone.transform.localScale = new Vector3(bearTrapRadius, 2, bearTrapRadius);
                    break;
-               case (int)TRAP.TRIPWIRE:
+               case TRAP.TRIPWIRE:
                    clone.transform.localScale = new Vector3(TripwireRadius, 2, TripwireRadius);
                    break;
-               case(int)TRAP.WALLS:
+               case TRAP.WALLS:
                    clone.transform.localScale = new Vector3(wallRadius, 2, wallRadius);
                    break;
-               case (int)TRAP.SPIKES:
+               case TRAP.SPIKES:
                    clone.transform.localScale = new Vector3(spikeRadius, 2, spikeRadius);
                    break;
-               case (int)TRAP.DECOY:
+               case TRAP.DECOY:
                    clone.transform.localScale = new Vector3(decoyRadius, 2, decoyRadius);
                    break;
            }
@@ -428,13 +450,13 @@ public class Chiko : MonoBehaviour {
         {
             switch (trapHeld)
             {
-                case (int)TRAP.BEARTRAP:
+                case TRAP.BEARTRAP:
                     DestroyRadius();
                     trapPositionHolder.Set(0, 0, 0);
                     GetComponent<BearTrapScript>().placeBearTrap(placeTrapPosition);
                     state = STATE.IDLE;
                     break;
-                case (int)TRAP.TRIPWIRE:
+                case TRAP.TRIPWIRE:
                     if (GetComponent<SetTripWire>().PlaceTripwire(placeTrapPosition))
                     {
                         trapPositionHolder2.Set(0, 0, 0);
@@ -449,20 +471,20 @@ public class Chiko : MonoBehaviour {
                         placedFirstTripwire = true;
                     }
                     break;
-                case (int)TRAP.WALLS:
+                case TRAP.WALLS:
                     DestroyRadius();
                     state = STATE.IDLE;
                     GetComponent<WallScript>().placeWall(placeTrapPosition, chikoDir-90);
                     trapPositionHolder.Set(0, 0, 0);
                     break;
-                case (int)TRAP.SPIKES:
+                case TRAP.SPIKES:
                     DestroyRadius();
                     state = STATE.IDLE;
                     GetComponent<SpikesScript>().placeSpikes(placeTrapPosition, trapPositionHolder2);
                     trapPositionHolder.Set(0, 0, 0);
                     trapPositionHolder2.Set(0, 0, 0);
                     break;
-                case (int)TRAP.DECOY:
+                case TRAP.DECOY:
                     DestroyRadius();
                     trapPositionHolder.Set(0, 0, 0);
                     GetComponent<DecoyBombScript>().placeDecoy(placeTrapPosition);
@@ -492,15 +514,15 @@ public class Chiko : MonoBehaviour {
     {
         switch (trapHeld)
         {
-            case (int)TRAP.BEARTRAP:
+            case TRAP.BEARTRAP:
                 return bearTrapRadius/2;
-            case (int)TRAP.TRIPWIRE:
+            case TRAP.TRIPWIRE:
                 return TripwireRadius/2;
-            case (int)TRAP.WALLS:
+            case TRAP.WALLS:
                 return wallRadius / 2;
-            case (int)TRAP.SPIKES:
+            case TRAP.SPIKES:
                 return spikeRadius / 2;
-            case (int)TRAP.DECOY:
+            case TRAP.DECOY:
                 return decoyRadius / 2;
         }
         return 0;

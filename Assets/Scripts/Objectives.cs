@@ -23,4 +23,9 @@ public class Objectives : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	}
+
+    public void MinusObjectiveHealth(int x)
+    {
+        health -= x;
+    }
 }

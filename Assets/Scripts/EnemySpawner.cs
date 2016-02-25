@@ -16,9 +16,9 @@ public class EnemySpawner : MonoBehaviour {
         Vector3 spawnPos = transform.position;
 
         //check for the positions 
-        enemySample.GetComponent<Enemy>().OverrideTarget(Objectivetarget);
-        enemySample.GetComponent<Enemy>().SetEnemyVariables(Health, Attack, MoveSpeed);
-        Instantiate(enemySample, spawnPos, Quaternion.identity);
+        GameObject e = Instantiate(enemySample, spawnPos, Quaternion.identity) as GameObject;
+        e.GetComponent<Enemy>().SetOriginalTarget(Objectivetarget);
+        e.GetComponent<Enemy>().SetEnemyVariables(Health, Attack, MoveSpeed);
         return;
     }
 }

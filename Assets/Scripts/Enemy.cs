@@ -5,7 +5,8 @@ using Pathfinding;
 
 public class Enemy : MonoBehaviour {
 
-    public GameObject target;
+    GameObject target;
+    GameObject OriginalTarget;
     Vector3 dir; //direction to the intended target , can  be ooverrided.
     float distToTarget; // magnitude of the current enemy to the target object;
     //gameplay vairables;
@@ -18,7 +19,10 @@ public class Enemy : MonoBehaviour {
     Path path;
     int currentWaypoint = 0;
     public float distToWayPoint;
+
     Vector3 vel;//use to move away from other enemies
+    float distToCollision; // distance to any other collision
+
     //change between multiple animations -> 'animation.play("CLIP_NAME")'
 	// Use this for initialization
 	void Start () {
@@ -28,10 +32,10 @@ public class Enemy : MonoBehaviour {
         healthBar = this.gameObject.transform.GetComponentInChildren<Slider>();
         //InvokeRepeating("minusHealth(2)", 0, 2);
         transform.SetParent(GameObject.Find("Canvas").GetComponent<Transform>());
+
         Seeker seeker = GetComponent<Seeker>();
-        seeker.StartPath(transform.position, PlayerMovement.playerPosition, OnPathComplete);
-        InvokeRepeating("SetPathing", 0, 2.0f);
-        b_move = true;
+        if(target != null)
+            seeker.StartPath(transform.position, target.transform.position, OnPathComplete);
 	}   
 
 	public void SetEnemyVariables(float _health, int _damage, int _moveSpeed)
@@ -56,11 +60,12 @@ public class Enemy : MonoBehaviour {
         }
         else
         {
+            if (target == null)
+                target = OriginalTarget;
+
+
             //update health
             healthBar.value = health * 0.01f;
-
-            ///DEBUG: TESTING HEALTH BAR
-            health -= 0.1f;
 
             //walking || Chasing
             Moving();
@@ -70,6 +75,13 @@ public class Enemy : MonoBehaviour {
         }
         
 	}
+
+    public void SetOriginalTarget(GameObject go)
+    {
+        OriginalTarget = target = go;
+        InvokeRepeating("SetPathing", 0, 2.0f);
+        b_move = true;
+    }
 
     void Moving()
     {
@@ -96,6 +108,7 @@ public class Enemy : MonoBehaviour {
             }
             else
             {
+                if (distToCollision < 60)
                 transform.position += vel * MOVE_SPEED * Time.deltaTime;
             }
         }
@@ -110,12 +123,13 @@ public class Enemy : MonoBehaviour {
     public void OverrideTarget(GameObject go)
     {
         target = go;
-        
+        InvokeRepeating("SetPathing", 0, 2.0f);
+        b_move = true;
     }
     void SetPathing()
     {
         Seeker seeker = GetComponent<Seeker>();
-        seeker.StartPath(transform.position, PlayerMovement.playerPosition, OnPathComplete);
+        seeker.StartPath(transform.position, target.transform.position, OnPathComplete);
     }
 
     public void OnPathComplete(Path p)
@@ -136,14 +150,30 @@ public class Enemy : MonoBehaviour {
         if(distToTarget <= 50)
         {
             //carry out attack;
-            Chiko attackTarget = target.GetComponent<Chiko>();
+            Chiko chikoTarget = target.GetComponent<Chiko>();
+            if(chikoTarget != null)
+            {
+                
+            }
+
+            WallScript wallTarget = target.GetComponent<WallScript>();
+            if(wallTarget != null)
+            {
+                
+            }
+
+            Objectives ObjectiveTarget = target.GetComponent<Objectives>();
+            if(ObjectiveTarget != null)
+            {
+
+            }
         }
     }
     public void Died()
     {
         Destroy(gameObject);
     }
-   
+
     void OnTriggerEnter(Collider col)
     {
         
@@ -151,6 +181,7 @@ public class Enemy : MonoBehaviour {
         {
             //force the enemy to move a set distance away from the other enemies
             vel = Vector3.Normalize(transform.position - col.gameObject.transform.position);
+            distToCollision = Vector3.Magnitude(transform.position - col.gameObject.transform.position);
             b_move = false;
         }
     }
@@ -158,6 +189,7 @@ public class Enemy : MonoBehaviour {
     {
         if (col.gameObject.tag == "Enemy")
         {
+            distToCollision = Vector3.Magnitude(transform.position - col.gameObject.transform.position);
             vel = Vector3.Normalize(transform.position - col.gameObject.transform.position);
             b_move = false;
         }

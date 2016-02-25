@@ -39,6 +39,10 @@ public class EnemySpawnerManager : MonoBehaviour
         {
             isSpawning = false;
         }
+        if(counter < Max_num_of_enemies)
+        {
+            startSpawning = true;
+        }
 
         if (startSpawning == true && isSpawning == false)
         {

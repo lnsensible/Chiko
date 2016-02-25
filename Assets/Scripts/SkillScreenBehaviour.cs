@@ -26,11 +26,6 @@ public class SkillScreenBehaviour : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        //////////////////////////////
-        PlayerPrefs.DeleteAll();
-        ///////////////////////////////
-
-
         requirements.text = "";
         requirements.color = Color.yellow;
         requirements.enabled = false;
@@ -48,6 +43,7 @@ public class SkillScreenBehaviour : MonoBehaviour
                 btnTxt.color = c;
             }
         }
+        //get from the data base which skill is active.
 
         GenerateSkillPoints();
     }
@@ -102,7 +98,7 @@ public class SkillScreenBehaviour : MonoBehaviour
         }
         if (counter_red > Red_skillpoints)
         {
-            GameObject child = parentT.GetChild(parentT.childCount - 1).gameObject;
+            GameObject child = parentT2.GetChild(parentT2.childCount - 1).gameObject;
             counter_red -= 1;
             Destroy(child);
         }
@@ -119,7 +115,7 @@ public class SkillScreenBehaviour : MonoBehaviour
         }
         if (counter_green > Green_skillpoints)
         {
-            GameObject child = parentT.GetChild(parentT.childCount - 1).gameObject;
+            GameObject child = parentT3.GetChild(parentT3.childCount - 1).gameObject;
             counter_green -= 1;
             Destroy(child);
         }
@@ -136,7 +132,7 @@ public class SkillScreenBehaviour : MonoBehaviour
         }
         if (counter_blue > Blue_skillpoints)
         {
-            GameObject child = parentT.GetChild(parentT.childCount - 1).gameObject;
+            GameObject child = parentT4.GetChild(parentT4.childCount - 1).gameObject;
             counter_blue -= 1;
             Destroy(child);
         }
@@ -146,18 +142,29 @@ public class SkillScreenBehaviour : MonoBehaviour
         if (nameOfSkill == "Birth of a Berserker")
         {
             Red_skillpoints += 1;
-            PlayerPrefs.SetInt("red skillpoints", Red_skillpoints);
+            PlayerPrefs.SetInt("Birth of a Berserker", 0);
         }
         else if (nameOfSkill == "Birth of a Speedster")
         {
             Blue_skillpoints += 1;
-            PlayerPrefs.SetInt("blue skillpoints", Blue_skillpoints);
+            PlayerPrefs.SetInt("Birth of a Speedster", 0);
         }
         else if (nameOfSkill == "Birth of a Healer")
         {
             Green_skillpoints += 1;
-            PlayerPrefs.SetInt("green skillpoints", Green_skillpoints);
+            PlayerPrefs.SetInt("Birth of a Healer", 0);
         }
+        else if (nameOfSkill == "Speed of Light")
+        {
+            Red_skillpoints += 1;
+            Blue_skillpoints += 1;
+            Green_skillpoints += 1;
+            PlayerPrefs.SetInt("Speed of Light", 0);
+        }
+
+        PlayerPrefs.SetInt("green skillpoints", Green_skillpoints);
+        PlayerPrefs.SetInt("blue skillpoints", Blue_skillpoints);
+        PlayerPrefs.SetInt("red skillpoints", Red_skillpoints);
     }
 
     bool SkillRequirements(string nameOfSkill)
@@ -168,6 +175,7 @@ public class SkillScreenBehaviour : MonoBehaviour
             //all skill to activate need a free skill point
             yellow_USEDSkillPoints += 1;
             PlayerPrefs.SetInt("yellow skillPoints", yellow_USEDSkillPoints);
+            PlayerPrefs.SetInt("Birth of a Berserker", 1); // 1 - activative , 0 - not active
             return true;
         }
         else if (nameOfSkill == "Birth of a Speedster")
@@ -175,6 +183,7 @@ public class SkillScreenBehaviour : MonoBehaviour
             //all skill to activate need a free skill point
             yellow_USEDSkillPoints += 1;
             PlayerPrefs.SetInt("yellow skillPoints", yellow_USEDSkillPoints);
+            PlayerPrefs.SetInt("Birth of a Speedster", 1); // 1 - activative , 0 - not active
             return true;
         }
         else if (nameOfSkill == "Birth of a Healer")
@@ -182,6 +191,7 @@ public class SkillScreenBehaviour : MonoBehaviour
             //all skill to activate need a free skill point
             yellow_USEDSkillPoints += 1;
             PlayerPrefs.SetInt("yellow skillPoints", yellow_USEDSkillPoints);
+            PlayerPrefs.SetInt("Birth of a Healer", 1); // 1 - activative , 0 - not active
             return true;
         }
 
@@ -202,6 +212,7 @@ public class SkillScreenBehaviour : MonoBehaviour
             Green_skillpoints -= 1;
             PlayerPrefs.SetInt("green skillpoints", Green_skillpoints);
 
+            PlayerPrefs.SetInt("Speed of Light", 1); // 1 - activative , 0 - not active
             return true;
         }
         return false;
@@ -216,11 +227,11 @@ public class SkillScreenBehaviour : MonoBehaviour
 
         if (nameOfSkill == "Speed of Light")
         {
-            Text others = requirements.transform.GetChild(requirements.transform.childCount - 1).GetComponentInChildren<Text>();
+            Text others = requirements.transform.GetChild(0).GetComponentInChildren<Text>();
             others.enabled = show;
-            others = requirements.transform.GetChild(requirements.transform.childCount - 2).GetComponentInChildren<Text>();
+            others = requirements.transform.GetChild(1).GetComponentInChildren<Text>();
             others.enabled = show;
-            others = requirements.transform.GetChild(requirements.transform.childCount - 3).GetComponentInChildren<Text>();
+            others = requirements.transform.GetChild(2).GetComponentInChildren<Text>();
             others.enabled = show;
         }
         //can add inbetween different skill requirements

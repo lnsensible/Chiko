@@ -73,6 +73,8 @@ public class Chiko : MonoBehaviour {
     bool shouldPlayerMove;
 
     GameObject target;
+    
+    bool ReganHealthPerk;
 
     //Let other scripts see if the object is moving
     public bool IsMoving
@@ -125,6 +127,19 @@ public class Chiko : MonoBehaviour {
         shouldPlayerMove = true;
 
         trapHeld = (int)TRAP.BEARTRAP;
+
+        if(PlayerPrefs.GetInt("Birth of a Healer") == 1)
+        {
+            ReganHealthPerk = true;
+        }
+        else
+        {
+            ReganHealthPerk = false;
+        }
+        if(PlayerPrefs.GetInt("Birth of a Berserker") == 1)
+        {
+            damage += 3;
+        }
     }
 
     // Update is called once per frame
@@ -135,7 +150,10 @@ public class Chiko : MonoBehaviour {
 
         //Debug.Log((transform.position - PlayerMovement.playerPosition).magnitude);
         //Debug.Log(state);
-
+        if (state != STATE.DEAD && ReganHealthPerk == true)
+        {
+            health += 1;
+        }
         switch (state)
         {
             case STATE.IDLE:

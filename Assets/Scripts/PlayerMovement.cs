@@ -28,6 +28,10 @@ public class PlayerMovement : MonoBehaviour
     {
         // Initialise values;
         b_toMove = false;
+
+        // 1 - activative , 0 - not active
+        if ( PlayerPrefs.GetInt("Birth of a Speedster") == 1)
+            playerSpeed = playerSpeed * 2;
     }
 
     void Update()

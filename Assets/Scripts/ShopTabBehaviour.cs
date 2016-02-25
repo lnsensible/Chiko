@@ -146,14 +146,6 @@ public class ShopTabBehaviour : MonoBehaviour {
         //havent unlock ,set to unlock first then upon clicking again will buy it.
         if(BearTrapUnlocked == 0)
         {
-            //Transform pos = GameObject.Find("Shop Tab").transform;
-            //GameObject temp = (GameObject)Instantiate(popUpbox, Vector3.zero, Quaternion.identity);
-            //temp.transform.SetParent(pos);
-            //temp.transform.localPosition = Vector3.zero;
-            //temp.transform.SetAsLastSibling();
-            //PromptBox x = temp.GetComponent<PromptBox>();
-            //x.setMsg("Do you want to buy BearTrap?");
-
             if (amount_int >= 1500)
             {
                 amount_int -= 1500;
@@ -163,6 +155,8 @@ public class ShopTabBehaviour : MonoBehaviour {
                 bo.GetComponentInChildren<Text>().text = "BUY";
                 //writing to player pref so that the bear trap is unlocked.
                 PlayerPrefs.SetInt("BearTraplocked", BearTrapUnlocked);
+
+                PlayerPrefs.SetInt("Gold", amount_int);
             }
         }
         else
@@ -185,6 +179,8 @@ public class ShopTabBehaviour : MonoBehaviour {
                 bo.GetComponentInChildren<Text>().text = "BUY";
                 //writing to player pref so that the bear trap is unlocked.
                 PlayerPrefs.SetInt("SpikeTraplocked", SpikeTraplocked);
+
+                PlayerPrefs.SetInt("Gold", amount_int);
             }
         }
         else
@@ -206,6 +202,8 @@ public class ShopTabBehaviour : MonoBehaviour {
                 bo.GetComponentInChildren<Text>().text = "BUY";
                 //writing to player pref so that the bear trap is unlocked.
                 PlayerPrefs.SetInt("TripTraplocked", TripTraplocked);
+
+                PlayerPrefs.SetInt("Gold", amount_int);
             }
         }
         else
@@ -227,6 +225,8 @@ public class ShopTabBehaviour : MonoBehaviour {
                 bo.GetComponentInChildren<Text>().text = "BUY";
                 //writing to player pref so that the bear trap is unlocked.
                 PlayerPrefs.SetInt("DecoyTraplocked", DecoyTraplocked);
+
+                PlayerPrefs.SetInt("Gold", amount_int);
            }
         }
         else
@@ -248,6 +248,8 @@ public class ShopTabBehaviour : MonoBehaviour {
                 bo.GetComponentInChildren<Text>().text = "BUY";
                 //writing to player pref so that the bear trap is unlocked.
                 PlayerPrefs.SetInt("WallTraplocked", WallTraplocked);
+
+                PlayerPrefs.SetInt("Gold", amount_int);
             }
         }
         else
@@ -263,6 +265,8 @@ public class ShopTabBehaviour : MonoBehaviour {
         if(amount_gem_int >= temp)
         { 
             amount_gem_int -= temp;
+            chiko.SetActive(false);
+            PlayerPrefs.SetInt("Gems", amount_gem_int);
             //send to playerpref that this chiko skin is bought
         }
     }
@@ -270,10 +274,12 @@ public class ShopTabBehaviour : MonoBehaviour {
     public void CHEAT_topup()
     {
         amount_int += 1000;
+        PlayerPrefs.SetInt("Gold", amount_int);
     }
 
     public void CHEAT_topUpGEM()
     {
         amount_gem_int += 5;
+        PlayerPrefs.SetInt("Gems" , amount_gem_int);
     }
 }

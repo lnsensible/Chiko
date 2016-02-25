@@ -126,7 +126,7 @@ public class Chiko : MonoBehaviour {
 
         shouldPlayerMove = true;
 
-        trapHeld = (int)TRAP.BEARTRAP;
+        trapHeld = (int)TRAP.DECOY;
 
         if(PlayerPrefs.GetInt("Birth of a Healer") == 1)
         {

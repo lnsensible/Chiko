@@ -4,6 +4,7 @@ using System.Collections;
 public class BearTrapScript : MonoBehaviour {
 
     public GameObject bearTrapPrefab;
+    public float theDamage;
 
 	// Use this for initialization
 	void Start () {
@@ -30,6 +31,7 @@ public class BearTrapScript : MonoBehaviour {
             if (col.tag == "Enemy" || col.tag == "Player")
             {
                 GetComponent<Animation>().Play();
+                col.gameObject.GetComponent<Enemy>().MinusHealth(theDamage);
                 Invoke("DestroyBearTrap", 1.0f);
             }
         }

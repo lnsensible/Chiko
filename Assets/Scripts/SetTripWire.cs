@@ -17,6 +17,8 @@ public class SetTripWire : MonoBehaviour {
 
     private float distance;
 
+    public float theDamage;
+
 	// Use this for initialization
 	void Start () {
 	}
@@ -62,6 +64,7 @@ public class SetTripWire : MonoBehaviour {
             if ((col.tag == "Enemy" || col.tag == "Player"))
             {
                 Debug.Log("Tripwire activated");
+                col.gameObject.GetComponent<Enemy>().MinusHealth(theDamage);
                 Destroy(gameObject);
                 Playexplosion(wiremidpoint);
             }

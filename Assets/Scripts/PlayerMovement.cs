@@ -61,7 +61,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (currentWaypoint >= path.vectorPath.Count)
             {
-                Debug.Log("end of path reached");
+                //Debug.Log("end of path reached");
             }
             else
             {
@@ -113,7 +113,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnPathComplete(Path p)
     {
-        Debug.Log("path RETURNED " + p.error);
+        //Debug.Log("path RETURNED " + p.error);
         if (!p.error)
         {
             path = p;

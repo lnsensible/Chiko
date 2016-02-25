@@ -8,6 +8,8 @@ public class SpikesScript : MonoBehaviour {
 
     private Vector3 spiksDir;
 
+    public float theDamage;
+
     // Use this for initialization
     void Start()
     {
@@ -39,6 +41,7 @@ public class SpikesScript : MonoBehaviour {
             if (col.tag == "Enemy" || col.tag == "Player")
             {
                PlaySpikes();
+               col.gameObject.GetComponent<Enemy>().MinusHealth(theDamage);
                Debug.Log("destroyed");
             }
         }

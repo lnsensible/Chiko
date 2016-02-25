@@ -7,6 +7,7 @@ public class Tracer : MonoBehaviour {
     public GameObject anchor;
 
     public float DistFromCenter;
+    public float DistToDeRender;
 
     private Vector3 objChikoPos;
     private Vector3 anchorPos;
@@ -18,7 +19,16 @@ public class Tracer : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        transform.eulerAngles = new Vector3(0, Vector3.Angle(objChikoPos, transform.position)-180, 0);
-        transform.position = anchor.transform.position - (transform.forward * DistFromCenter);
+        if (Vector3.Distance(objChikoPos, gameObject.transform.position) > DistToDeRender)
+        {
+            gameObject.GetComponent<MeshRenderer>().enabled = true;
+            transform.LookAt(objChikoPos);
+            transform.Rotate(0, 180, 0);
+            transform.position = anchor.transform.position - (transform.forward * DistFromCenter);
+        }
+        else
+        {
+            gameObject.GetComponent<MeshRenderer>().enabled = false;
+        }
 	}
 }

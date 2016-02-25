@@ -32,7 +32,7 @@ public class CameraHandler : MonoBehaviour {
             {
                 if (theMesh != hit.collider.gameObject)
                 {
-                    if (theMesh != null && hit.collider.gameObject.GetComponent<MeshTextureHandler>() != null)
+                    if (theMesh != null)
                     {
                         hit.collider.gameObject.GetComponentInChildren<MeshRenderer>().material  = hit.collider.gameObject.GetComponent<MeshTextureHandler>().opaqueMat;
                         theMesh = hit.collider.gameObject;
@@ -41,12 +41,11 @@ public class CameraHandler : MonoBehaviour {
                     theMesh = hit.collider.gameObject;
                 }
 
-                if (hit.collider.gameObject.GetComponent<MeshTextureHandler>() != null)
                     hit.collider.gameObject.GetComponentInChildren<MeshRenderer>().material = hit.collider.gameObject.GetComponent<MeshTextureHandler>().transparentMat;
             }
             else
             {
-                if (theMesh != null && hit.collider.gameObject.GetComponent<MeshTextureHandler>() != null)
+                if (theMesh != null)
                 {
                     theMesh.GetComponentInChildren<MeshRenderer>().material = theMesh.GetComponent<MeshTextureHandler>().opaqueMat;
                     theMesh = null;

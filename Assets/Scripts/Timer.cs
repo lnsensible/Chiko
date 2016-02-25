@@ -3,27 +3,31 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class Timer : MonoBehaviour {
-    public float maxTime;
+    private float maxTime;
     public float timeLeft = 30.0f;
   
 	// Use this for initialization
 	void Start () {
-            
+        maxTime = timeLeft;
 	}
 	
 	// Update is called once per frame
 	void Update () {
         PreCountDown();
-        GetComponent<Text>().text = timeLeft.ToString();
+        GetComponent<Text>().text = Mathf.RoundToInt(timeLeft).ToString();
 	}
 
     void PreCountDown()
     {
         timeLeft -= Time.deltaTime;
-        if(timeLeft < 0)
+        if(timeLeft < maxTime*0.1f)
         {
-            //End the level
-            //GameOver();
+            GetComponent<Text>().color = Color.red;
+        }
+
+        if (timeLeft < 0)
+        {
+            Application.LoadLevel("Mission Complete");
         }
 
     }

@@ -44,25 +44,59 @@ public class ShopTabBehaviour : MonoBehaviour {
         amount2 = GameObject.Find("Gems1").transform.GetChild(0).GetComponentInChildren<Text>();
         amount_gem2 = GameObject.Find("Gems1").transform.GetChild(1).GetComponentInChildren<Text>();
 
+        //get player prefab is trap is already unlocked.
         BearTrapUnlocked = PlayerPrefs.GetInt("BearTraplocked");
-        if(BearTrapUnlocked != 0 || BearTrapUnlocked != 1)
-            BearTrapUnlocked = 0;
-
         SpikeTraplocked = PlayerPrefs.GetInt("SpikeTraplocked");
-        if (SpikeTraplocked != 0 || SpikeTraplocked != 1)
-            SpikeTraplocked = 0;
-
         TripTraplocked = PlayerPrefs.GetInt("TripTraplocked");
-        if (TripTraplocked != 0 || TripTraplocked != 1)
-            TripTraplocked = 0;
-
         DecoyTraplocked = PlayerPrefs.GetInt("SpikeTraplocked");
-        if (DecoyTraplocked != 0 || DecoyTraplocked != 1)
-            DecoyTraplocked = 0;
-
         WallTraplocked = PlayerPrefs.GetInt("WallTraplocked");
-        if (WallTraplocked != 0 || WallTraplocked != 1)
-            WallTraplocked = 0;
+        if (BearTrapUnlocked == 1)
+        {
+            Button bo = GameObject.Find("BearTrapBuyButton").GetComponent<Button>();
+            bo.GetComponentInChildren<Text>().text = "BUY";
+        }
+        if (SpikeTraplocked == 1)
+        {
+            Button bo = GameObject.Find("SpikeTrapBuyButton").GetComponent<Button>();
+            bo.GetComponentInChildren<Text>().text = "BUY";
+        }
+        if (TripTraplocked == 1)
+        {
+            Button bo = GameObject.Find("TripWireTrapBuyButton").GetComponent<Button>();
+            bo.GetComponentInChildren<Text>().text = "BUY";
+        }
+        if (DecoyTraplocked == 1)
+        {
+            Button bo = GameObject.Find("DecoyTrapBuyButton").GetComponent<Button>();
+            bo.GetComponentInChildren<Text>().text = "BUY";
+        }
+        if (WallTraplocked == 1)
+        {
+            Button bo = GameObject.Find("WallTrapBuyButton").GetComponent<Button>();
+            bo.GetComponentInChildren<Text>().text = "BUY";
+        }
+
+        if(PlayerPrefs.GetInt("Chiko_1Bought") == 1)
+        {
+            GameObject.Find("Chiko_1").SetActive(false);
+        }
+        if(PlayerPrefs.GetInt("Chiko_2Bought") == 1)
+        {
+            GameObject.Find("Chiko_2").SetActive(false);
+        }
+        if (PlayerPrefs.GetInt("Chiko_3Bought") == 1)
+        {
+            GameObject.Find("Chiko_3").SetActive(false);
+        }
+        if (PlayerPrefs.GetInt("Chiko_4Bought") == 1)
+        {
+            GameObject.Find("Chiko_4").SetActive(false);
+        }
+        if (PlayerPrefs.GetInt("Chiko_5Bought") == 1)
+        {
+            GameObject.Find("Chiko_5").SetActive(false);
+        }
+
 	}
 	
 	// Update is called once per frame
@@ -70,7 +104,7 @@ public class ShopTabBehaviour : MonoBehaviour {
         amount_int = PlayerPrefs.GetInt("Gold");
         amount_gem_int = PlayerPrefs.GetInt("Gems");
 
-	    if(BearTrapUnlocked == 1)
+        if (BearTrapUnlocked == 1)
             lockIcon_bearTrap.color = Color.clear;
         if(SpikeTraplocked == 1)
             lockIcon_spikeTrap.color = Color.clear;
@@ -150,21 +184,22 @@ public class ShopTabBehaviour : MonoBehaviour {
             {
                 amount_int -= 1500;
                 BearTrapUnlocked = 1;
-
                 Button bo = GameObject.Find("BearTrapBuyButton").GetComponent<Button>();
                 bo.GetComponentInChildren<Text>().text = "BUY";
                 //writing to player pref so that the bear trap is unlocked.
                 PlayerPrefs.SetInt("BearTraplocked", BearTrapUnlocked);
 
-                PlayerPrefs.SetInt("Gold", amount_int);
             }
         }
         else
         {
-
+            //buying the bear trap
+            if (amount_int >= 1500)
+            {
+                PlayerPrefs.SetInt("Gold", amount_int);
+            }
         }
     }
-
     public void BuySpikeTrap()
     {
         //havent unlock ,set to unlock first then upon clicking again will buy it.
@@ -185,10 +220,13 @@ public class ShopTabBehaviour : MonoBehaviour {
         }
         else
         {
-
+            //buying the bear trap
+            if (amount_int >= 1500)
+            {
+                PlayerPrefs.SetInt("Gold", amount_int);
+            }
         }
     }
-
     public void BuyTripTrap()
     {
         //havent unlock ,set to unlock first then upon clicking again will buy it.
@@ -208,10 +246,13 @@ public class ShopTabBehaviour : MonoBehaviour {
         }
         else
         {
-
+            //buying the bear trap
+            if (amount_int >= 1500)
+            {
+                PlayerPrefs.SetInt("Gold", amount_int);
+            }
         }
     }
-
     public void buyDecoyTrap()
     {
         //havent unlock ,set to unlock first then upon clicking again will buy it.
@@ -231,10 +272,13 @@ public class ShopTabBehaviour : MonoBehaviour {
         }
         else
         {
-
+            //buying the bear trap
+            if (amount_int >= 1500)
+            {
+                PlayerPrefs.SetInt("Gold", amount_int);
+            }
         }
     }
-
     public void buyWallTrap()
     {
         //havent unlock ,set to unlock first then upon clicking again will buy it.
@@ -254,7 +298,11 @@ public class ShopTabBehaviour : MonoBehaviour {
         }
         else
         {
-
+            //buying the bear trap
+            if (amount_int >= 1500)
+            {
+                PlayerPrefs.SetInt("Gold", amount_int);
+            }
         }
     }
 
@@ -266,8 +314,10 @@ public class ShopTabBehaviour : MonoBehaviour {
         { 
             amount_gem_int -= temp;
             chiko.SetActive(false);
+
             PlayerPrefs.SetInt("Gems", amount_gem_int);
             //send to playerpref that this chiko skin is bought
+            PlayerPrefs.SetInt(chiko.name + "Bought", 1);
         }
     }
 

@@ -9,12 +9,9 @@ public class SkilltreeGesture : MonoBehaviour {
     Vector3 mouseAnchorPosition;
     Vector3 currentMousePosition;
 
-    Text meow;
-
 	// Use this for initialization
 	void Start () {
         anchorPosition = gameObject.GetComponent<RectTransform>();
-        meow = GameObject.Find("skill_Text").GetComponent<Text>();
 	}
 	
 	// Update is called once per frame
@@ -29,7 +26,6 @@ public class SkilltreeGesture : MonoBehaviour {
         }
         if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
-            meow.text = "Touched";
   
             currentMousePosition = mouseAnchorPosition = Input.GetTouch(0).position;
             currentAnchorPosition = anchorPosition.localPosition;
@@ -43,8 +39,6 @@ public class SkilltreeGesture : MonoBehaviour {
         }
         if (Input.touchCount == 1)
         {
-            meow.text = "Dragging";
-
             currentMousePosition = Input.GetTouch(0).position;
             anchorPosition.localPosition = currentAnchorPosition + (currentMousePosition - mouseAnchorPosition)/4;
         }
@@ -56,8 +50,6 @@ public class SkilltreeGesture : MonoBehaviour {
         }
         if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended)
         {
-            meow.text = "Released";
-
             anchorPosition.localPosition = currentAnchorPosition + (currentMousePosition - mouseAnchorPosition)/4; 
         }
 

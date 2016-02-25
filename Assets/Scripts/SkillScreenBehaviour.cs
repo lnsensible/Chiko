@@ -169,6 +169,9 @@ public class SkillScreenBehaviour : MonoBehaviour
 
     bool SkillRequirements(string nameOfSkill)
     {
+        // NOTE : DONT NEED TO CHECK FOR FREE SKILL POINTS , ONLY CHECK FOR CORRESPONDING TYPE AND SETTING THE PREFAB
+        //          FREE SKILL POINT IS ALREADY BEING CHECKED BEFORE THIS FUNCTION CALL
+        
         //basic skills
         if (nameOfSkill == "Birth of a Berserker")
         {
@@ -195,54 +198,67 @@ public class SkillScreenBehaviour : MonoBehaviour
             return true;
         }
 
-
         //hybrid skills extra requirements here
-        if (nameOfSkill == "Speed of Light" && Red_skillpoints >= 1 && Blue_skillpoints >= 1 && Green_skillpoints >= 1)
+        if (Red_skillpoints >= 1 && Blue_skillpoints >= 1 && Green_skillpoints >= 1)
         {
-            //all skill to activate need a free skill point
-            yellow_USEDSkillPoints += 1;
-            PlayerPrefs.SetInt("yellow skillPoints", yellow_USEDSkillPoints);
+            if(nameOfSkill == "Speed of Light")
+            {
+                //all skill to activate need a free skill point
+                yellow_USEDSkillPoints += 1;
+                PlayerPrefs.SetInt("yellow skillPoints", yellow_USEDSkillPoints);
 
-            Red_skillpoints -= 1;
-            PlayerPrefs.SetInt("red skillpoints", Red_skillpoints);
+                Red_skillpoints -= 1;
+                PlayerPrefs.SetInt("red skillpoints", Red_skillpoints);
         
-            Blue_skillpoints -= 1;
-            PlayerPrefs.SetInt("blue skillpoints", Blue_skillpoints);
+                Blue_skillpoints -= 1;
+                PlayerPrefs.SetInt("blue skillpoints", Blue_skillpoints);
       
-            Green_skillpoints -= 1;
-            PlayerPrefs.SetInt("green skillpoints", Green_skillpoints);
+                Green_skillpoints -= 1;
+                PlayerPrefs.SetInt("green skillpoints", Green_skillpoints);
 
-            PlayerPrefs.SetInt("Speed of Light", 1); // 1 - activative , 0 - not active
-            return true;
+                PlayerPrefs.SetInt("Speed of Light", 1); // 1 - activative , 0 - not active
+                return true;
+            }
         }
         return false;
     }
 
     void ShowRequirements(string nameOfSkill, bool show)
     {
+        //red, blue, green
+        Text redPoint = requirements.transform.GetChild(0).GetComponentInChildren<Text>();
+        Text bluePoint = requirements.transform.GetChild(1).GetComponentInChildren<Text>();
+        Text greenPoint = requirements.transform.GetChild(2).GetComponentInChildren<Text>();
+
         requirements.enabled = show;
         //do a switch statement here, check against name foor diff requirement
         requirements.text = "1 skill point";
+        //for all base skills
+        redPoint.enabled = false;
+        bluePoint.enabled = false;
+        greenPoint.enabled = false;
 
-
-        if (nameOfSkill == "Speed of Light")
+        //these skills require all 3 types
+        if (nameOfSkill == "Speed of Light" || nameOfSkill == "Gold Digger")
         {
-            Text others = requirements.transform.GetChild(0).GetComponentInChildren<Text>();
-            others.enabled = show;
-            others = requirements.transform.GetChild(1).GetComponentInChildren<Text>();
-            others.enabled = show;
-            others = requirements.transform.GetChild(2).GetComponentInChildren<Text>();
-            others.enabled = show;
+            redPoint.enabled = show;
+            bluePoint.enabled = show;
+            greenPoint.enabled = show;
         }
-        //can add inbetween different skill requirements
-        else
+
+        //only require 2 types
+        // <! red and blue
+        if(nameOfSkill == "Sharp Witted")
         {
-            Text others = requirements.transform.GetChild(requirements.transform.childCount - 1).GetComponentInChildren<Text>();
-            others.enabled = false;
-            others = requirements.transform.GetChild(requirements.transform.childCount - 2).GetComponentInChildren<Text>();
-            others.enabled = false;
-            others = requirements.transform.GetChild(requirements.transform.childCount - 3).GetComponentInChildren<Text>();
-            others.enabled = false;
+            redPoint.enabled = show;
+            bluePoint.enabled = show;
+        }
+
+        // <! red and green
+        if (nameOfSkill == "Bloodrage" || nameOfSkill == "Blood Sucker")
+        {
+            redPoint.enabled = show;
+            greenPoint.enabled = show;
         }
     }
 
@@ -315,16 +331,20 @@ public class SkillScreenBehaviour : MonoBehaviour
         }
     }
 
+
+
+
+    //THE CONFIRMATION PROMPT BOX IS SHOWN HERE.
     GameObject tempStoreSkill;
     void ShowResetBox(GameObject targetSkill)
     {
         tempStoreSkill = targetSkill;
         //move it to center of screen
+        SkillPopUpBox.transform.GetComponentInChildren<Text>().text = "Do you want to reset \n" + targetSkill.name + "?";
         SkillPopUpBox.transform.localPosition = new Vector3(4, 0, 0);
         SkillPopUpBox.transform.SetAsLastSibling();
         
     }
-
     //deactivate skill HERE
     public void YesPressed()
     {

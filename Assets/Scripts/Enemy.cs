@@ -68,7 +68,15 @@ public class Enemy : MonoBehaviour {
             healthBar.value = health * 0.01f;
 
             //walking || Chasing
-            Moving();
+            if(distToTarget < 5000) 
+            {
+                //if really far away, skip computing and go directly straight for it , ignore collision
+                Moving();
+            }
+            else
+            {
+                transform.position = Vector3.MoveTowards(transform.position, target.transform.position, MOVE_SPEED * Time.deltaTime);
+            }
 
             //carrying out attack
             Attack();
@@ -108,7 +116,7 @@ public class Enemy : MonoBehaviour {
             }
             else
             {
-                if (distToCollision < 60)
+                //if (distToCollision < 100)
                 transform.position += vel * MOVE_SPEED * Time.deltaTime;
             }
         }
@@ -176,8 +184,8 @@ public class Enemy : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
-        
-        if(col.gameObject.tag == "Enemy")
+
+        if (col.gameObject.tag == "Enemy")
         {
             //force the enemy to move a set distance away from the other enemies
             vel = Vector3.Normalize(transform.position - col.gameObject.transform.position);
@@ -187,7 +195,7 @@ public class Enemy : MonoBehaviour {
     }
     void OnTriggerStay(Collider col)
     {
-        if (col.gameObject.tag == "Enemy")
+        if (col.gameObject.tag == "Enemy" )
         {
             distToCollision = Vector3.Magnitude(transform.position - col.gameObject.transform.position);
             vel = Vector3.Normalize(transform.position - col.gameObject.transform.position);

@@ -3,7 +3,7 @@ using System.Collections;
 public class EnemySpawnerManager : MonoBehaviour 
 {
     public int Max_num_of_enemies;
-    int counter = 0;
+    int enemyNumbers = 0;
     int TotalSpawners;
     public float Spawn_Rate;
     bool startSpawning; // used to START spawning
@@ -27,7 +27,7 @@ public class EnemySpawnerManager : MonoBehaviour
  	void Update () {
 
         //resets the counter for total number of enemies
-        counter = GameObject.FindGameObjectsWithTag("Enemy").Length;
+        enemyNumbers = GameObject.FindGameObjectsWithTag("Enemy").Length;
         
         StartSpawning();
 	}
@@ -35,11 +35,8 @@ public class EnemySpawnerManager : MonoBehaviour
     //can start spawning again.
     void StartSpawning()
     {
-        if (counter >= Max_num_of_enemies)
-        {
-            isSpawning = false;
-        }
-        if(counter < Max_num_of_enemies)
+        
+        if(enemyNumbers < Max_num_of_enemies)
         {
             startSpawning = true;
         }
@@ -54,10 +51,11 @@ public class EnemySpawnerManager : MonoBehaviour
 
     void CallingRandomSpawner()
     {
-        if (counter >= Max_num_of_enemies)
+        if (enemyNumbers >= Max_num_of_enemies)
         {
-            CancelInvoke("CallingRandomSpawner");
             isSpawning = false;
+            CancelInvoke("CallingRandomSpawner");
+            return;
         }
         //call a random spawner to start
         EnemySpawner child = transform.GetChild(Random.Range(0, 13)).GetComponent<EnemySpawner>();

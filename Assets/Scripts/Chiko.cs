@@ -57,6 +57,7 @@ public class Chiko : MonoBehaviour {
     public GameObject trapHUD;
 
     float chikoDir;
+    Vector3 moveDir;
 
     //Selected state
     bool selected;
@@ -64,7 +65,7 @@ public class Chiko : MonoBehaviour {
     //Follow state
     float followDistance;
     float stopDistance;
-    float followSpeed;
+    public float followSpeed;
     //Moving to Attack or Place Trap
     Vector3 targetLocation;
     private Transform objectTransfom;
@@ -77,6 +78,8 @@ public class Chiko : MonoBehaviour {
     GameObject target;
     
     bool ReganHealthPerk;
+
+    Animation ani;
 
     //Let other scripts see if the object is moving
     public bool IsMoving
@@ -116,8 +119,6 @@ public class Chiko : MonoBehaviour {
         //        }
         //        break;
         //}
-        // Follow would be the default state
-        //state = STATE.IDLE;
         // Set pos based on player's position
         //pos = ;
         selected = false;
@@ -128,7 +129,7 @@ public class Chiko : MonoBehaviour {
         state = STATE.IDLE;
         followDistance = 200.0f;
         stopDistance = 100.0f;
-        followSpeed = 2.0f;
+        followSpeed = 3.0f;
         pos = transform.position;
 
         shouldPlayerMove = true;
@@ -155,6 +156,11 @@ public class Chiko : MonoBehaviour {
         trapHUD.transform.localScale = new Vector3(2.5f, 2.5f, 1.0f);
         trapHUD.transform.LookAt(Camera.main.transform);
         trapHUD.GetComponent<CooldownMeshHandler>().SetMaterial(trapHeld);
+
+        //Animation
+
+        ani = GetComponent<Animation>();
+        ani.Stop();
     }
 
     // Update is called once per frame
@@ -162,6 +168,7 @@ public class Chiko : MonoBehaviour {
 
         pos = transform.position;
         selectedTimer -= Time.deltaTime;
+       // moveDir = (PlayerMovement.playerPosition - pos).normalized;
 
         //Debug.Log((transform.position - PlayerMovement.playerPosition).magnitude);
         //Debug.Log(state);
@@ -173,6 +180,7 @@ public class Chiko : MonoBehaviour {
         {
             case STATE.IDLE:
                 {
+                    ani.Play("Idle");
                     trapHUD.GetComponent<MeshRenderer>().enabled = false;
                     // Switch to follow state when player moves out of range
                     if (Vector3.Distance(pos, PlayerMovement.playerPosition) > followDistance)
@@ -184,6 +192,8 @@ public class Chiko : MonoBehaviour {
 
             case STATE.FOLLOW:
                 {
+                    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(PlayerMovement.playerPosition - pos), Time.fixedDeltaTime * 5.0f);
+                    ani.Play("Move");
                     trapHUD.GetComponent<MeshRenderer>().enabled = false;
                     Follow();
 
@@ -406,6 +416,7 @@ public class Chiko : MonoBehaviour {
         if (Vector3.Distance(targetLocation, pos) >= noMovementThreshold)
         {
             isMoving = true;
+            ani.Play("Move");
         }
         else
         {
@@ -415,6 +426,7 @@ public class Chiko : MonoBehaviour {
         // Stop moving & start attacking enemy
         if (isMoving == false)
         {
+            ani.Play("Attack");
             target.GetComponent<Enemy>().MinusHealth(1);
             target.GetComponent<Enemy>().OverrideTarget(this.gameObject);
             Debug.Log("Minus health");

@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 4f39458431c0c1b4c9266927afd24ec3
-timeCreated: 1456205449
+guid: d9a43d07e9ac05c4098a072e6a59e512
+timeCreated: 1456400914
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -80,7 +80,7 @@ ModelImporter:
     400070: TailRoot
     400072: TailTip
     4300000: ChikoDamageDealer1
-    7400000: Attack
+    7400000: Idle2
     9500000: //RootNode
     11100000: //RootNode
     13700000: ChikoDamageDealer1
@@ -106,7 +106,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: Attack
+      name: Idle2
       takeName: Take 001
       firstFrame: 1
       lastFrame: 200

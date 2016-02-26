@@ -77,8 +77,9 @@ public class PlayerMovement : MonoBehaviour
         }
 
         Vector3 pos = new Vector3(gameObject.transform.position.x, playerY, gameObject.transform.position.z);
-        transform.position = pos;
         playerPosition = transform.position;
+        pos.y += GetComponent<PlayerAnimation>().getY();
+        transform.position = pos;
         
     }
 

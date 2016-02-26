@@ -46,12 +46,13 @@ public class CameraHandler : MonoBehaviour {
         if (AIFAIFJO2)
             transform.Translate(Vector3.left * Time.deltaTime * camRotateSpeed);
 
-        transform.LookAt(PlayerMovement.playerPosition);
-        Vector3 c = transform.position;
-        c.y = cameraHeight;
-        transform.position = c;
-        
-        //transform.Translate(Vector3.right * Time.deltaTime * camRotateSpeed);
+        Vector3 tempPos = PlayerMovement.playerPosition;
+        tempPos.y = 0;
+        transform.LookAt(tempPos);
+
+        //Vector3 c = transform.position;
+        //c.y = cameraHeight;
+        //transform.position = c;
 
         // Making mesh disappear
 	    Transform cam = Camera.main.transform;

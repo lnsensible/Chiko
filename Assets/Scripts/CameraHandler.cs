@@ -8,13 +8,43 @@ public class CameraHandler : MonoBehaviour {
     public float camRotateSpeed;
     public float cameraHeight;
 
+    private bool FOEIFJOIF;
+    private bool AIFAIFJO2;
+
 	// Use this for initialization
 	void Start () {
         theMesh = null;
 	}
+
+    public void RotateRight()
+    {
+        FOEIFJOIF = true;
+        
+    }
+
+    public void RotateLeft()
+    {
+        AIFAIFJO2 = true;
+    }
+
+    public void StopRotateRight()
+    {
+        FOEIFJOIF = false;
+    }
+
+    public void StopRotateLeft()
+    {
+        AIFAIFJO2 = false;
+    }
 	
 	// Update is called once per frame
 	void Update () {
+
+        if (FOEIFJOIF)
+            transform.Translate(Vector3.right * Time.deltaTime * camRotateSpeed);
+
+        if (AIFAIFJO2)
+            transform.Translate(Vector3.left * Time.deltaTime * camRotateSpeed);
 
         transform.LookAt(PlayerMovement.playerPosition);
         Vector3 c = transform.position;

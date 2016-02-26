@@ -14,6 +14,9 @@ public class PlayerMovement : MonoBehaviour
     private int currentWaypoint = 0;
     public float nextWaypointDistance;
 
+    //waypiont
+    public GameObject waypointAnim;
+
     // Movement conditions
     private bool b_toMove;
     private Vector3 newPosition;
@@ -83,30 +86,34 @@ public class PlayerMovement : MonoBehaviour
     void SetPlayerWaypoint()
     {
         bool doMove = true;
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, mask) && (Vector3.Distance(hit.point, newPosition) > minDistToMove)
-            && hit.collider.tag == "Movable")
+        if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
         {
-            foreach (GameObject chiko in GameObject.FindGameObjectsWithTag("Chiko"))
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, mask) && (Vector3.Distance(hit.point, newPosition) > minDistToMove)
+                && hit.collider.tag == "Movable")
             {
-                if (chiko.GetComponent<Chiko>().isSelected())
+                foreach (GameObject chiko in GameObject.FindGameObjectsWithTag("Chiko"))
                 {
-                    doMove = false;
+                    if (chiko.GetComponent<Chiko>().isSelected())
+                    {
+                        doMove = false;
+                    }
                 }
-            }
 
-            if (doMove)
-            {
-              //  if (skipClick)
-               //     skipClick = false;
-              //  else
-              //  {
-                Seeker seeker = GetComponent<Seeker>();
-                seeker.StartPath(transform.position, hit.point, OnPathComplete);
+                if (doMove)
+                {
+                    //Waypoint
+                    GameObject clone = (GameObject)Instantiate(waypointAnim, hit.point, Quaternion.identity);
+                    Vector3 nya = clone.transform.position;
+                    nya.y = 3;
+                    clone.transform.position = nya;
+
+                    Seeker seeker = GetComponent<Seeker>();
+                    seeker.StartPath(transform.position, hit.point, OnPathComplete);
                     newPosition = hit.point;
                     b_toMove = true;
-             //   }
+                }
             }
         }
     }

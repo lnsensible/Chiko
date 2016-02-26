@@ -3,6 +3,8 @@ using System.Collections;
 
 public class destroyAnimation : MonoBehaviour {
 
+    public bool destroyParent = false;
+
 	// Use this for initialization
 	void Start () {
 	}
@@ -11,7 +13,12 @@ public class destroyAnimation : MonoBehaviour {
 	void Update () {
 	    if (!GetComponent<Animation>().isPlaying)
         {
-            Destroy(gameObject);
+            if (destroyParent)
+                Destroy(gameObject.transform.parent.gameObject);
+            else
+                Destroy(gameObject);
+           
+                
         }
 	}
 }

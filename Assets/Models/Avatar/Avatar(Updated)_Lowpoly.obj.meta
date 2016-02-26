@@ -1,22 +1,17 @@
 fileFormatVersion: 2
-guid: 4328ee45862387047ada71a4b054e406
-timeCreated: 1456105432
+guid: ca56a7a13e6458346ab216d60d57b83b
+timeCreated: 1456399226
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
-    100000: AVATAR
-    100002: //RootNode
-    100004: initialShadingGroup_AVATAR
-    400000: AVATAR
-    400002: //RootNode
-    400004: initialShadingGroup_AVATAR
-    2300000: AVATAR
-    2300002: initialShadingGroup_AVATAR
-    3300000: AVATAR
-    3300002: initialShadingGroup_AVATAR
-    4300000: AVATAR
-    4300002: initialShadingGroup_AVATAR
+    100000: //RootNode
+    100002: AvatarLowpoly
+    400000: //RootNode
+    400002: AvatarLowpoly
+    2300000: AvatarLowpoly
+    3300000: AvatarLowpoly
+    4300000: AvatarLowpoly
   materials:
     importMaterials: 1
     materialName: 0

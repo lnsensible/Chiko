@@ -17,6 +17,8 @@ public class PlayerInventory : MonoBehaviour {
 
     static public int[] SelectedChiko = new int[3];
 
+    static public string playerName = "";
+
     void Awake()
     {
         if (instance != null && instance != this)

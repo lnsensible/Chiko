@@ -4,21 +4,26 @@ using System.Collections;
 
 public class NetworkManager : MonoBehaviour {
 
-    private Text textbox;
+    
     private bool checkedName = false;
 
-    private bool enterName = false;
+    public bool enterName = false;
+
+    private char theSeparator = '!';
+
+    public float checkTimer = 2;
 
     public enum EventCodes
     {
         CHECK_NAME = 1,
         CHECKED_NAME,
+        REGISTER_NAME,
     }
 
 	// Use this for initialization
 	void Start () {
         //Debug.Log((byte)EventCodes.CHECK_NAME);
-        textbox = GameObject.Find("Servertext").GetComponent<Text>();
+        PhotonNetwork.OnEventCall += OnEventHandler;
         Connect();
         
 	}
@@ -30,12 +35,11 @@ public class NetworkManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetMouseButton(0))
-        {
-            Application.LoadLevel("menuscreen");
-        }
 
-        textbox.text = (PhotonNetwork.connectionState.ToString());
+	}
+
+    public void UpdateNetworkSplashScreen(Text textbox)
+    {
         if (PhotonNetwork.connectedAndReady && !PhotonNetwork.inRoom)
         {
             PhotonNetwork.JoinRandomRoom();
@@ -43,29 +47,62 @@ public class NetworkManager : MonoBehaviour {
 
         if (PhotonNetwork.inRoom && !checkedName)
         {
-            // set the callback func
-            PhotonNetwork.OnEventCall += OnEventHandler;
-
-            //send only to master-c
-            RaiseEventOptions theeventOP = RaiseEventOptions.Default;
-            theeventOP.Receivers = ExitGames.Client.Photon.ReceiverGroup.MasterClient;
-
-            //ask to check name.
-            PhotonNetwork.RaiseEvent((byte)EventCodes.CHECK_NAME, SystemInfo.deviceUniqueIdentifier, false, RaiseEventOptions.Default);            
+            CheckUsername(textbox);
+            checkedName = true;
         }
 
-        if (PhotonNetwork.inRoom && checkedName && enterName)
+        if (checkedName)
         {
-            //enter name
+            checkTimer -= Time.deltaTime;
+            if (checkTimer < 0)
+            {
+                checkedName = false;
+                checkTimer = 2;
+            }
         }
-	}
+    }
+
+    public void CheckUsername(Text textbox)
+    {
+        //send only to master-c
+        RaiseEventOptions theeventOP = RaiseEventOptions.Default;
+        theeventOP.Receivers = ExitGames.Client.Photon.ReceiverGroup.MasterClient;
+        Debug.Log("CHECKING USERNAME");
+        //ask to check name.
+        PhotonNetwork.RaiseEvent((byte)EventCodes.CHECK_NAME, SystemInfo.deviceUniqueIdentifier, true, theeventOP);
+    }
+
+    public bool checkRegisterUsername()
+    {
+        return enterName;
+    }
+
+    public void RegisterUsername(string theusername)
+    {
+        //send only to master-c
+        RaiseEventOptions theeventOP = RaiseEventOptions.Default;
+        theeventOP.Receivers = ExitGames.Client.Photon.ReceiverGroup.MasterClient;
+
+        //ask to register name.
+        byte oiajf = 3;
+        PhotonNetwork.RaiseEvent(oiajf, SystemInfo.deviceUniqueIdentifier + theSeparator + theusername, true, theeventOP);
+        Debug.Log("Trying to register");
+    }
 
     private void OnEventHandler(byte eventCode, object content, int senderID)
     {
-        if (eventCode == (byte)EventCodes.CHECKED_NAME)
+        if (eventCode == (byte)2)
         {
-            Debug.Log("something is happening");
-
+            if(content == null)
+            {
+                //register name
+                enterName = true;
+            }
+            else
+            {
+                Debug.Log("set playername" + content.ToString());
+                PlayerInventory.playerName = content.ToString();
+            }
         }
     }
 

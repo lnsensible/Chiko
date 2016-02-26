@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Chiko : MonoBehaviour {
 
@@ -30,6 +31,7 @@ public class Chiko : MonoBehaviour {
 
     Vector3 pos;
     int ID;
+    int maxHealth;
     static public int health;
     static public int damage;
     STATE state;
@@ -81,6 +83,8 @@ public class Chiko : MonoBehaviour {
 
     Animation ani;
 
+    //Slider healthbar;
+
     //Let other scripts see if the object is moving
     public bool IsMoving
     {
@@ -124,7 +128,8 @@ public class Chiko : MonoBehaviour {
         selected = false;
 
         // Test values
-        health = 20;
+        maxHealth = 20;
+        health = maxHealth;
         damage = 5;
         state = STATE.IDLE;
         followDistance = 200.0f;
@@ -158,9 +163,11 @@ public class Chiko : MonoBehaviour {
         trapHUD.GetComponent<CooldownMeshHandler>().SetMaterial(trapHeld);
 
         //Animation
-
         ani = GetComponent<Animation>();
         ani.Stop();
+
+        //healthbar = this.gameObject.transform.GetComponentInChildren<Slider>();
+        transform.SetParent(GameObject.Find("Canvas").GetComponent<Transform>());
     }
 
     // Update is called once per frame
@@ -168,7 +175,18 @@ public class Chiko : MonoBehaviour {
 
         pos = transform.position;
         selectedTimer -= Time.deltaTime;
-       // moveDir = (PlayerMovement.playerPosition - pos).normalized;
+        Debug.Log(state);
+
+        if (isMoving)
+        {
+            ani.Play("Move");
+        }
+
+        if (state != STATE.DEAD)
+        {
+            float ratioToFill = 1 / maxHealth;
+            //healthbar.value = 1;
+        }
 
         //Debug.Log((transform.position - PlayerMovement.playerPosition).magnitude);
         //Debug.Log(state);
@@ -180,7 +198,12 @@ public class Chiko : MonoBehaviour {
         {
             case STATE.IDLE:
                 {
-                    ani.Play("Idle");
+                    if (Random.Range(0, 1) == 0)
+                        ani.Play("Idle");
+                    else
+                        ani.Play("Idle2");
+                    DestroyRadius();
+                    shouldPlayerMove = true;
                     trapHUD.GetComponent<MeshRenderer>().enabled = false;
                     // Switch to follow state when player moves out of range
                     if (Vector3.Distance(pos, PlayerMovement.playerPosition) > followDistance)
@@ -225,11 +248,16 @@ public class Chiko : MonoBehaviour {
                                 state = STATE.ATTACK;
                                 target = hit.collider.gameObject;
                             }
+                            // if select self, unselect
+                            else if (hit.collider.gameObject == this.gameObject)
+                            { 
+                                state = STATE.IDLE;
+                            }
                             // if click on other chiko, change selected chiko
-                            /*else if (hit.collider.tag == "MyChiko")
+                            else if (hit.collider.tag == "MyChiko")
                             {
                                 state = STATE.IDLE;
-                            }*/
+                            }
 
                             // if click ground, put trap
                             else
@@ -237,7 +265,6 @@ public class Chiko : MonoBehaviour {
                                 if (Vector3.Distance(hit.point, gameObject.transform.position) < GetTrapPlaceDistance())
                                 {
                                     PlayerMovement.skipClick = true;
-
                                     switch (trapHeld)
                                     {
                                         case TRAP.BEARTRAP:
@@ -426,7 +453,12 @@ public class Chiko : MonoBehaviour {
         // Stop moving & start attacking enemy
         if (isMoving == false)
         {
-            ani.Play("Attack");
+            if (Random.Range(0, 2) == 0)
+                ani.Play("Attack");
+            else if (Random.Range(0, 2) == 1)
+                ani.Play("Attack2");
+            else
+                ani.Play("Attack3");
             target.GetComponent<Enemy>().MinusHealth(1);
             target.GetComponent<Enemy>().OverrideTarget(this.gameObject);
             Debug.Log("Minus health");

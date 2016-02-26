@@ -175,7 +175,6 @@ public class Chiko : MonoBehaviour {
 
         pos = transform.position;
         selectedTimer -= Time.deltaTime;
-        Debug.Log(state);
 
         if (isMoving)
         {
@@ -214,8 +213,7 @@ public class Chiko : MonoBehaviour {
                 break;
 
             case STATE.FOLLOW:
-                {
-                    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(PlayerMovement.playerPosition - pos), Time.fixedDeltaTime * 5.0f);
+                { 
                     ani.Play("Move");
                     trapHUD.GetComponent<MeshRenderer>().enabled = false;
                     Follow();
@@ -427,6 +425,7 @@ public class Chiko : MonoBehaviour {
 
     void Follow()
     {
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(PlayerMovement.playerPosition - pos), Time.fixedDeltaTime * 5.0f);
         Vector3 direction = (PlayerMovement.playerPosition - pos).normalized;
         pos += direction * followSpeed;
         transform.position = pos;
@@ -436,6 +435,7 @@ public class Chiko : MonoBehaviour {
     {
         // Move to target
         Vector3 direction = (targetLocation - pos).normalized;
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(targetLocation - pos), Time.fixedDeltaTime * 5.0f);
         pos += direction * followSpeed;
         transform.position = pos;
 
@@ -443,7 +443,6 @@ public class Chiko : MonoBehaviour {
         if (Vector3.Distance(targetLocation, pos) >= noMovementThreshold)
         {
             isMoving = true;
-            ani.Play("Move");
         }
         else
         {
@@ -476,6 +475,7 @@ public class Chiko : MonoBehaviour {
     {
         // Move to target
         Vector3 direction = (placeTrapPosition - pos).normalized;
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(targetLocation - pos), Time.fixedDeltaTime * 5.0f);
         pos += direction * followSpeed;
         transform.position = pos;
 

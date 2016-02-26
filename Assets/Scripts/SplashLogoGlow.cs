@@ -30,7 +30,6 @@ public class SplashLogoGlow : MonoBehaviour {
             if (c.a < .2)
                 fade_Dir = true;
         }
-        Debug.Log(c.a);
         image.color = c;
 	}
 }

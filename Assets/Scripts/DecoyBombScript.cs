@@ -24,7 +24,7 @@ public class DecoyBombScript : MonoBehaviour {
             triggeredHealth0 = true;
             Destroy(gameObject);
             GameObject theexplosion = (GameObject)Instantiate(explosionPrefab, gameObject.transform.position, Quaternion.identity);
-            Vector3 scale = theexplosion.transform.localScale * 2;
+            //Vector3 scale = theexplosion.transform.localScale * 2;
             theexplosion.GetComponent<Animation>().Play();
         }
     }

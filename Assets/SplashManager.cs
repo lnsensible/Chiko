@@ -15,7 +15,7 @@ public class SplashManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         //bypass
-        if (Input.GetMouseButton(0) || Input.touchCount == 3)
+        if (Input.GetKey(KeyCode.J) || Input.touchCount == 3)
         {
             Application.LoadLevel("menuscreen");
         }

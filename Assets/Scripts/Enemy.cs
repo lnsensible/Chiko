@@ -14,16 +14,20 @@ public class Enemy : MonoBehaviour {
     int damage;
     int MOVE_SPEED;
     bool b_move;
+    bool b_OverrideMove;
+    bool b_AbleToAttack;
     Slider healthBar;
 
     Path path;
     int currentWaypoint = 0;
     public float distToWayPoint;
 
+    public AnimationClip[] animationList;
+
     Vector3 vel;//use to move away from other enemies
     float distToCollision; // distance to any other collision
 
-    //change between multiple animations -> 'animation.play("CLIP_NAME")'
+    Animation currentAnimation;
 	// Use this for initialization
 	void Start () {
         health = 100;
@@ -32,10 +36,14 @@ public class Enemy : MonoBehaviour {
         healthBar = this.gameObject.transform.GetComponentInChildren<Slider>();
         //InvokeRepeating("minusHealth(2)", 0, 2);
         transform.SetParent(GameObject.Find("Canvas").GetComponent<Transform>());
-
+        transform.position.Set(transform.position.x, transform.position.y + 2, transform.position.z);
         Seeker seeker = GetComponent<Seeker>();
         if(target != null)
             seeker.StartPath(transform.position, target.transform.position, OnPathComplete);
+
+        b_OverrideMove = true;
+        currentAnimation = GetComponent<Animation>();
+
 	}   
 
 	public void SetEnemyVariables(float _health, int _damage, int _moveSpeed)
@@ -79,20 +87,24 @@ public class Enemy : MonoBehaviour {
             }
 
             //carrying out attack
-            Attack();
+            if(b_AbleToAttack == true)
+                Attack();
         }
         
 	}
 
     public void SetOriginalTarget(GameObject go)
     {
-        OriginalTarget = target = go;
+        target = go;
+        OriginalTarget = go;
         InvokeRepeating("SetPathing", 0, 2.0f);
         b_move = true;
     }
 
     void Moving()
     {
+        //play walking animation
+        
         //moving to next waypoint
         if (path == null)
         {
@@ -108,6 +120,11 @@ public class Enemy : MonoBehaviour {
         {
             if (b_move == true)
             {
+                currentAnimation.clip = animationList[0];
+                currentAnimation[currentAnimation.clip.name].speed = 2;
+                currentAnimation.Play();
+                //animation.PlayQueued("Enemy_Move");
+                transform.LookAt(path.vectorPath[currentWaypoint]);
                 transform.position = Vector3.MoveTowards(transform.position, path.vectorPath[currentWaypoint], MOVE_SPEED * Time.deltaTime);
                 if (Vector3.Distance(transform.position, path.vectorPath[currentWaypoint]) < distToWayPoint)
                 {
@@ -155,50 +172,77 @@ public class Enemy : MonoBehaviour {
 
     void Attack()
     {
-        if(distToTarget <= 50)
+        if (currentAnimation.isPlaying == false) 
         {
-            //carry out attack;
-            Chiko chikoTarget = target.GetComponent<Chiko>();
-            if(chikoTarget != null)
-            {
-                
-            }
+            if (Random.Range(0, 2) == 1)
+                currentAnimation.clip = animationList[1];
+            else
+                currentAnimation.clip = animationList[2];
 
-            WallScript wallTarget = target.GetComponent<WallScript>();
-            if(wallTarget != null)
-            {
-                
-            }
+            currentAnimation[currentAnimation.clip.name].speed = 2;
+            currentAnimation.Play();
 
-            Objectives ObjectiveTarget = target.GetComponent<Objectives>();
-            if(ObjectiveTarget != null)
-            {
-
-            }
+            
         }
+        
+        //carry out attack;
+        Chiko chikoTarget = target.GetComponent<Chiko>();
+        if (chikoTarget != null)
+        {
+
+        }
+
+        WallScript wallTarget = target.GetComponent<WallScript>();
+        if (wallTarget != null)
+        {
+
+        }
+
+        Objectives ObjectiveTarget = target.GetComponent<Objectives>();
+        if (ObjectiveTarget != null)
+        {
+
+        }
+        
     }
     public void Died()
     {
-        Destroy(gameObject);
+        currentAnimation.clip = animationList[2];
+        currentAnimation.Play();
+
+        if(currentAnimation.isPlaying == false)
+            Destroy(gameObject);
     }
 
     void OnTriggerEnter(Collider col)
     {
 
-        if (col.gameObject.tag == "Enemy")
+        if (col.gameObject.tag == "Enemy" && b_OverrideMove == true)
         {
             //force the enemy to move a set distance away from the other enemies
             vel = Vector3.Normalize(transform.position - col.gameObject.transform.position);
             distToCollision = Vector3.Magnitude(transform.position - col.gameObject.transform.position);
             b_move = false;
         }
+        if (col.gameObject.tag == "Objective")
+        {
+            b_AbleToAttack = true;
+            b_move = false;
+            b_OverrideMove = false;
+        }
     }
     void OnTriggerStay(Collider col)
     {
-        if (col.gameObject.tag == "Enemy" )
+        if (col.gameObject.tag == "Enemy" && b_OverrideMove == true)
         {
             distToCollision = Vector3.Magnitude(transform.position - col.gameObject.transform.position);
             vel = Vector3.Normalize(transform.position - col.gameObject.transform.position);
+            b_move = false;
+        }
+        if (col.gameObject.tag == "Objective")
+        {
+            b_AbleToAttack = true;
+            b_move = false;     
             b_move = false;
         }
     }
@@ -206,5 +250,10 @@ public class Enemy : MonoBehaviour {
     {
         vel = Vector3.zero;
         b_move = true;
+        if (col.gameObject.tag == "Objective")
+        {
+            b_OverrideMove = false;
+            b_AbleToAttack = false;
+        }   
     }
 }

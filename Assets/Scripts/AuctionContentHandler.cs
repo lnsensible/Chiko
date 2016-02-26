@@ -36,14 +36,16 @@ public class AuctionContentHandler : MonoBehaviour {
         numAuctions = 5;
         numBids = 10;
         numPlacedBids = 2;
-        auctionContentInitialPos = new Vector3(-7.5f, 217.7f, 0.0f);
+        auctionContentInitialPos = new Vector3(-11.3f, 325.6f, 0.0f);
         ReloadBoxes(false);
 	}
 
     void ReloadBoxes(bool reset)
     {
         if (reset)
+        {
             auctionContent.transform.position = auctionContentInitialPos;
+        }
 
         if (theTab == 1)
         {
@@ -91,6 +93,7 @@ public class AuctionContentHandler : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        Debug.Log(auctionContent.transform.position);
         RestrictAuctionView();
 	}
 

@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
-public class EnemySpawnerManager : MonoBehaviour 
+public class EnemySpawnerManager : MonoBehaviour
 {
     public int Max_num_of_enemies;
     int enemyNumbers = 0;
     int TotalSpawners;
     public float Spawn_Rate;
+    bool b_GameStart;
     bool startSpawning; // used to START spawning
     bool isSpawning; // used to check if this spawner is creating enemies.
 
@@ -16,36 +17,45 @@ public class EnemySpawnerManager : MonoBehaviour
 
 
     // Use this for initialization
-	void Start () {
+    void Start()
+    {
 
-        startSpawning = true;
+        startSpawning = false;
         isSpawning = false;
         TotalSpawners = transform.childCount;
-	}
-	
-	// Update is called once per frame
- 	void Update () {
+    }
+
+    public void StartSpawningWaves()
+    {
+        b_GameStart = true;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
 
         //resets the counter for total number of enemies
         enemyNumbers = GameObject.FindGameObjectsWithTag("Enemy").Length;
-        
+
         StartSpawning();
-	}
+    }
 
     //can start spawning again.
     void StartSpawning()
     {
-        
-        if(enemyNumbers < Max_num_of_enemies)
+        if (b_GameStart == true)
         {
-            startSpawning = true;
-        }
+            if (enemyNumbers < Max_num_of_enemies)
+            {
+                startSpawning = true;
+            }
 
-        if (startSpawning == true && isSpawning == false)
-        {
-            InvokeRepeating("CallingRandomSpawner", 0, Spawn_Rate);
-            startSpawning = false;
-            isSpawning = true;
+            if (startSpawning == true && isSpawning == false)
+            {
+                InvokeRepeating("CallingRandomSpawner", 0, Spawn_Rate);
+                startSpawning = false;
+                isSpawning = true;
+            }
         }
     }
 
@@ -64,7 +74,7 @@ public class EnemySpawnerManager : MonoBehaviour
         child.Attack = EnemyAttack;
         child.MoveSpeed = EnemyMoveSpeed;
         child.BuildEnemy();
-        
+
     }
 
 }

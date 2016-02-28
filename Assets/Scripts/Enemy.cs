@@ -3,7 +3,8 @@ using System.Collections;
 using UnityEngine.UI;
 using Pathfinding;
 
-public class Enemy : MonoBehaviour {
+public class Enemy : MonoBehaviour
+{
 
     GameObject target;
     GameObject OriginalTarget;
@@ -28,8 +29,11 @@ public class Enemy : MonoBehaviour {
     float distToCollision; // distance to any other collision
 
     Animation currentAnimation;
-	// Use this for initialization
-	void Start () {
+
+    Transform camPos;
+    // Use this for initialization
+    void Start()
+    {
         health = 100;
         damage = 10;
         MOVE_SPEED = 250;
@@ -38,22 +42,23 @@ public class Enemy : MonoBehaviour {
         transform.SetParent(GameObject.Find("Canvas").GetComponent<Transform>());
         transform.position.Set(transform.position.x, transform.position.y + 2, transform.position.z);
         Seeker seeker = GetComponent<Seeker>();
-        if(target != null)
+        if (target != null)
             seeker.StartPath(transform.position, target.transform.position, OnPathComplete);
 
         b_OverrideMove = true;
         currentAnimation = GetComponent<Animation>();
+        camPos = GameObject.Find("Main Camera").GetComponent<Transform>();
+    }
 
-	}   
-
-	public void SetEnemyVariables(float _health, int _damage, int _moveSpeed)
+    public void SetEnemyVariables(float _health, int _damage, int _moveSpeed)
     {
         health = _health;
         damage = _damage;
         MOVE_SPEED = _moveSpeed;
     }
-	// Update is called once per frame
-	void Update () {
+    // Update is called once per frame
+    void Update()
+    {
 
         //lock the movement onto the plane only
         vel.y = 0;
@@ -75,23 +80,17 @@ public class Enemy : MonoBehaviour {
             //update health
             healthBar.value = health * 0.01f;
 
-            //walking || Chasing
-            if(distToTarget < 5000) 
-            {
-                //if really far away, skip computing and go directly straight for it , ignore collision
-                Moving();
-            }
-            else
-            {
-                transform.position = Vector3.MoveTowards(transform.position, target.transform.position, MOVE_SPEED * Time.deltaTime);
-            }
+            healthBar.transform.LookAt(camPos.position);
+
+            //walking || Chasing            
+            Moving();
 
             //carrying out attack
-            if(b_AbleToAttack == true)
+            if (b_AbleToAttack == true)
                 Attack();
         }
-        
-	}
+
+    }
 
     public void SetOriginalTarget(GameObject go)
     {
@@ -104,7 +103,7 @@ public class Enemy : MonoBehaviour {
     void Moving()
     {
         //play walking animation
-        
+
         //moving to next waypoint
         if (path == null)
         {
@@ -172,7 +171,7 @@ public class Enemy : MonoBehaviour {
 
     void Attack()
     {
-        if (currentAnimation.isPlaying == false) 
+        if (currentAnimation.isPlaying == false)
         {
             if (Random.Range(0, 2) == 1)
                 currentAnimation.clip = animationList[1];
@@ -181,10 +180,8 @@ public class Enemy : MonoBehaviour {
 
             currentAnimation[currentAnimation.clip.name].speed = 2;
             currentAnimation.Play();
-
-            
         }
-        
+
         //carry out attack;
         Chiko chikoTarget = target.GetComponent<Chiko>();
         if (chikoTarget != null)
@@ -203,14 +200,14 @@ public class Enemy : MonoBehaviour {
         {
 
         }
-        
+
     }
     public void Died()
     {
         currentAnimation.clip = animationList[2];
         currentAnimation.Play();
 
-        if(currentAnimation.isPlaying == false)
+        if (currentAnimation.isPlaying == false)
             Destroy(gameObject);
     }
 
@@ -219,9 +216,9 @@ public class Enemy : MonoBehaviour {
 
         if (col.gameObject.tag == "Enemy" && b_OverrideMove == true)
         {
-            //force the enemy to move a set distance away from the other enemies
+            ////force the enemy to move a set distance away from the other enemies
             vel = Vector3.Normalize(transform.position - col.gameObject.transform.position);
-            distToCollision = Vector3.Magnitude(transform.position - col.gameObject.transform.position);
+            //transform.position = Vector3.MoveTowards(transform.position, vel, MOVE_SPEED * Time.deltaTime);
             b_move = false;
         }
         if (col.gameObject.tag == "Objective")
@@ -235,14 +232,15 @@ public class Enemy : MonoBehaviour {
     {
         if (col.gameObject.tag == "Enemy" && b_OverrideMove == true)
         {
-            distToCollision = Vector3.Magnitude(transform.position - col.gameObject.transform.position);
+
             vel = Vector3.Normalize(transform.position - col.gameObject.transform.position);
+            //transform.position = Vector3.MoveTowards(transform.position, vel, MOVE_SPEED * Time.deltaTime);
             b_move = false;
         }
         if (col.gameObject.tag == "Objective")
         {
             b_AbleToAttack = true;
-            b_move = false;     
+            b_move = false;
             b_move = false;
         }
     }
@@ -254,6 +252,6 @@ public class Enemy : MonoBehaviour {
         {
             b_OverrideMove = false;
             b_AbleToAttack = false;
-        }   
+        }
     }
 }

@@ -40,7 +40,12 @@ public class Screen_MainMenu : MonoBehaviour
     
     //showing the pregame selection mode
     bool b_preGame = false;
-    
+
+    public Image[] selectedChikos;
+    public Image[] selectedChikoTRAPS;
+    public Sprite[] TOTALKINDOFCHIKOS;
+    public Sprite[] TOTALTRAPICONS;
+
     // Use this for initialization    
     void Start()
     {
@@ -55,6 +60,40 @@ public class Screen_MainMenu : MonoBehaviour
         re_equipPos= GameObject.Find("Re-equip_Button").GetComponent<RectTransform>();
         title = GameObject.Find("Title").GetComponent<Text>();
         subTitle = GameObject.Find("subTitle").GetComponent<Text>();
+
+        if (PlayerInventory.SelectedChiko[0] != -1)
+        {
+            //showing the main menu pic of the selected chikos <- in background first when in pre-gameSelection then bring up
+            selectedChikos[0].sprite = TOTALKINDOFCHIKOS[PlayerInventory.SelectedChiko[0]];
+            //selectedChikoTRAPS[0].sprite = TOTALTRAPICONS[PlayerInventory.ChikoTrapList[0]];
+        }
+        else
+        {
+            selectedChikos[0].sprite = null;
+            selectedChikoTRAPS[0].sprite = null;
+        }
+
+        if (PlayerInventory.SelectedChiko[1] != -1)
+        {
+            selectedChikos[1].sprite = TOTALKINDOFCHIKOS[PlayerInventory.SelectedChiko[1]];
+            //selectedChikoTRAPS[1].sprite = TOTALTRAPICONS[PlayerInventory.ChikoTrapList[1]];
+        }
+        else
+        {
+            selectedChikos[1].sprite = null;
+            selectedChikoTRAPS[1].sprite = null;
+        }
+
+        if (PlayerInventory.SelectedChiko[2] != -1)
+        {
+            selectedChikos[2].sprite = TOTALKINDOFCHIKOS[PlayerInventory.SelectedChiko[2]];
+            //selectedChikoTRAPS[2].sprite = TOTALTRAPICONS[PlayerInventory.ChikoTrapList[2]];
+        }
+        else
+        {
+            selectedChikos[2].sprite = null;
+            selectedChikoTRAPS[2].sprite = null;
+        }
     }
 
     int clickedOn = 0;
@@ -62,6 +101,7 @@ public class Screen_MainMenu : MonoBehaviour
     void Update()
     {
         animate();
+        updateSelectedChikos();
         //when buttons reach the top and buttons not moving then go to the next screen and not in preGame selection mode
         if (b_ButtonsUp == true && moving == false && b_preGame == false)
         {
@@ -86,6 +126,73 @@ public class Screen_MainMenu : MonoBehaviour
                     break;
             }
         }
+    }
+
+    void updateSelectedChikos()
+    {
+        if (b_preGame == true)
+        {
+            for (int i = 0; i < selectedChikos.Length; i++)
+            {
+                
+                //bring foward the selected chiko stuff.
+                selectedChikos[i].transform.localScale = Vector3.Lerp(selectedChikos[i].transform.localScale, new Vector3(0.66f, 0.66f, 0.66f), 0.2f);
+
+                if(selectedChikos[i].sprite != null)
+                {
+                    //light it up
+                    Color pc = selectedChikos[i].color;
+                    pc.a += 0.2f;
+                    selectedChikos[i].color = pc;
+                    //check for the traps
+                    if(selectedChikoTRAPS[i].sprite == null)
+                    {
+                        //only change the value if there isnt any traps equiped.
+                        Color c_ = selectedChikoTRAPS[i].color;
+                        c_.a = 0;
+                        selectedChikoTRAPS[i].color = c_;
+                    }
+                }
+                else
+                {
+                    Color pc = selectedChikos[i].color;
+                    pc.a = 0;
+                    selectedChikos[i].color = pc;
+                }
+            }           
+        }
+        else
+        {
+            //bring foward the selected chiko stuff.
+            for (int i = 0; i < selectedChikos.Length; i++)
+            {
+                //bring foward the selected chiko stuff.
+                selectedChikos[i].transform.localScale = Vector3.Lerp(selectedChikos[i].transform.localScale, new Vector3(1, 1, 1), 0.2f);
+
+                if (selectedChikos[i].sprite != null)
+                {
+                    //light it up
+                    Color pc = selectedChikos[i].color;
+                    pc.a = 0.28f;
+                    selectedChikos[i].color = pc;
+                    //check for the traps
+                    if (selectedChikoTRAPS[i].sprite == null)
+                    {
+                        //only change the value if there isnt any traps equiped.
+                        Color c_ = selectedChikoTRAPS[i].color;
+                        c_.a = 0;
+                        selectedChikoTRAPS[i].color = c_;
+                    }
+                }
+                else
+                {
+                    Color pc = selectedChikos[i].color;
+                    pc.a = 0;
+                    selectedChikos[i].color = pc;
+                }
+            }
+        }
+
     }
     void MovingButtonsUp()
     {
@@ -288,16 +395,6 @@ public class Screen_MainMenu : MonoBehaviour
                 //move the proceed and re-equip button up
                 proceedPos.localPosition = Vector3.Lerp(proceedPos.localPosition, new Vector3(proceedPos.localPosition.x, -100, 0), 0.2f);
                 re_equipPos.localPosition = Vector3.Lerp(re_equipPos.localPosition, new Vector3(re_equipPos.localPosition.x, -100, 0), 0.2f);
-                //bring foward the selected chiko stuff.
-                foreach(GameObject selected in GameObject.FindGameObjectsWithTag("Selected Chikos"))
-                {
-                    Image pic = selected.GetComponent<Image>();
-                    Color pc = pic.color;
-                    pc.a += 0.2f;
-                    pic.color = pc;
-
-                    selected.transform.localScale = Vector3.Lerp(selected.transform.localScale, new Vector3(0.66f, 0.66f, 0.66f), 0.2f);
-                }
             }
             
         }
@@ -318,15 +415,7 @@ public class Screen_MainMenu : MonoBehaviour
                     proceedPos.localPosition = Vector3.Lerp(proceedPos.localPosition, new Vector3(proceedPos.localPosition.x, -157, 0), 0.2f);
                     re_equipPos.localPosition = Vector3.Lerp(re_equipPos.localPosition, new Vector3(re_equipPos.localPosition.x, -157, 0), 0.2f);
 
-                    //bring foward the selected chiko stuff.
-                    foreach (GameObject selected in GameObject.FindGameObjectsWithTag("Selected Chikos"))
-                    {
-                        selected.transform.localScale = Vector3.Lerp(selected.transform.localScale, new Vector3(1.0f, 1.0f, 1.0f), 0.2f);
-                        Image pic = selected.GetComponent<Image>();                        
-                        Color c = pic.color;
-                        c.a = 0.28f;
-                        pic.color = c;
-                    }
+                   
                 }
 
                 //moving the navigation buttons back

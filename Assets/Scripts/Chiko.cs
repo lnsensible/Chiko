@@ -169,7 +169,7 @@ public class Chiko : MonoBehaviour {
         healthbar = this.gameObject.transform.GetComponentInChildren<Slider>();
         transform.SetParent(GameObject.Find("Canvas").GetComponent<Transform>());
     }
-
+    
     // Update is called once per frame
     void Update () {
 
@@ -184,7 +184,7 @@ public class Chiko : MonoBehaviour {
         if (state != STATE.DEAD)
         {
             float ratioToFill = 1 / maxHealth;
-            healthbar.value = health * ratioToFill;
+            //healthbar.value = health * ratioToFill;
         }
 
         //Debug.Log((transform.position - PlayerMovement.playerPosition).magnitude);

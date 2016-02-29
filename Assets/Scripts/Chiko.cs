@@ -84,6 +84,7 @@ public class Chiko : MonoBehaviour {
     Animation ani;
 
     Slider healthbar;
+    Transform camPos;
 
     //Let other scripts see if the object is moving
     public bool IsMoving
@@ -166,13 +167,15 @@ public class Chiko : MonoBehaviour {
         ani = GetComponent<Animation>();
         ani.Stop();
 
-        healthbar = this.gameObject.transform.GetComponentInChildren<Slider>();
+        healthbar = this.gameObject.transform.GetChild(3).GetComponent<Slider>();
         transform.SetParent(GameObject.Find("Canvas").GetComponent<Transform>());
+        camPos = GameObject.Find("Main Camera").GetComponent<Transform>();
     }
     
     // Update is called once per frame
     void Update () {
 
+        healthbar.transform.LookAt(camPos.position);
         pos = transform.position;
         selectedTimer -= Time.deltaTime;
 
@@ -181,11 +184,8 @@ public class Chiko : MonoBehaviour {
             ani.Play("Move");
         }
 
-        if (state != STATE.DEAD)
-        {
-            float ratioToFill = 1 / maxHealth;
-            //healthbar.value = health * ratioToFill;
-        }
+        float ratioToFill = 1 / maxHealth;
+        healthbar.value = health * ratioToFill;
 
         //Debug.Log((transform.position - PlayerMovement.playerPosition).magnitude);
         //Debug.Log(state);

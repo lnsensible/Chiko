@@ -141,8 +141,10 @@ public class Chiko : MonoBehaviour {
         maxHealth = 20;
         health = maxHealth;
         damage = 5;
-        state = STATE.FOLLOW;
+        state = STATE.IDLE;
         pos = transform.position;
+        isMoving = false;
+        targetLocation = PlayerMovement.playerPosition;
 
         shouldPlayerMove = true;
 
@@ -212,6 +214,13 @@ public class Chiko : MonoBehaviour {
 
         trapCooldown -= Time.deltaTime;
 
+        if (path == null)
+        {
+            Seeker seeker = GetComponent<Seeker>();
+            seeker.StartPath(transform.position, PlayerMovement.playerPosition, OnPathComplete);
+            Debug.Log("wtf");
+        }
+
         if (isMoving)
         {
             ani.Play("Move");
@@ -241,7 +250,7 @@ public class Chiko : MonoBehaviour {
                     shouldPlayerMove = true;
                     trapHUD.GetComponent<MeshRenderer>().enabled = false;
                     // Switch to follow state when player moves out of range
-                    if (Vector3.Distance(pos, PlayerMovement.playerPosition) > followDistance)
+                    if (Vector3.Distance(pos, PlayerMovement.playerPosition) > followDistance || path == null)
                     {
                         Seeker seeker = GetComponent<Seeker>();
                         seeker.StartPath(transform.position, PlayerMovement.playerPosition, OnPathComplete);

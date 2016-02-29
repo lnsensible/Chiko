@@ -34,25 +34,26 @@ public class PlayerInventory : MonoBehaviour {
 
     void Start()
     {
-        m_theIOScript = GetComponent<File_ReadWrite>();
-        string[] chiko = m_theIOScript.Read("Assets\\Texts\\Chikos.txt");
-        for (int i = 0; i < chiko.Length; i++)
-        {
-            ChikoList.Add(int.Parse(chiko[i]));
-            ChikoTrapList.Add(0);
-            Debug.Log(chiko[i]);
-        }
-
-        SelectedChiko[0] = ChikoList[0];
-        SelectedChiko[1] = ChikoList[1];
-        SelectedChiko[2] = ChikoList[2];
-        ChikoList.Remove(0);
-        ChikoList.Remove(0);
-        ChikoList.Remove(0);
+        SelectedChiko[0] = -1;
+        SelectedChiko[1] = -1;
+        SelectedChiko[2] = -1;
     }
 
     void Update()
     {
 
+    }
+
+    void OnApplicatonQuit()
+    {
+        string tmpchikoList = "";
+        for (int i = 0; i < ChikoList.Count; i++ )
+        {
+            tmpchikoList += ChikoList[i];
+            if (i < ChikoList.Count - 1)
+                tmpchikoList += " ";
+        }
+
+        NetworkManager.syncChikoList(tmpchikoList);
     }
 }

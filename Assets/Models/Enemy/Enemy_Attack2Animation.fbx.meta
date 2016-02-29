@@ -1,0 +1,230 @@
+fileFormatVersion: 2
+guid: e5532823306911a4fa893c5e22cf22bb
+timeCreated: 1456460022
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: ArmL_CTRL
+    100002: ArmL_CTRL1
+    100004: Chin
+    100006: //RootNode
+    100008: Foot_L
+    100010: Foot_R
+    100012: ForeArm_L
+    100014: ForeArm_R
+    100016: Hand_L
+    100018: Hand_R
+    100020: Head
+    100022: ikHandle1
+    100024: ikHandle2
+    100026: ikHandle3
+    100028: ikHandle4
+    100030: Jaw
+    100032: LegL_CTRL
+    100034: LegR_CTRL
+    100036: Main
+    100038: Nose
+    100040: pCube6
+    100042: Pelvis
+    100044: Pelvis_CTRL
+    100046: Shin_L
+    100048: Shin_R
+    100050: Shoulder_L
+    100052: Shoulder_R
+    100054: Snout
+    100056: Thigh_L
+    100058: Thigh_R
+    100060: Torso
+    100062: Waist
+    400000: ArmL_CTRL
+    400002: ArmL_CTRL1
+    400004: Chin
+    400006: //RootNode
+    400008: Foot_L
+    400010: Foot_R
+    400012: ForeArm_L
+    400014: ForeArm_R
+    400016: Hand_L
+    400018: Hand_R
+    400020: Head
+    400022: ikHandle1
+    400024: ikHandle2
+    400026: ikHandle3
+    400028: ikHandle4
+    400030: Jaw
+    400032: LegL_CTRL
+    400034: LegR_CTRL
+    400036: Main
+    400038: Nose
+    400040: pCube6
+    400042: Pelvis
+    400044: Pelvis_CTRL
+    400046: Shin_L
+    400048: Shin_R
+    400050: Shoulder_L
+    400052: Shoulder_R
+    400054: Snout
+    400056: Thigh_L
+    400058: Thigh_R
+    400060: Torso
+    400062: Waist
+    4300000: pCube6
+    7400000: Enemy_Attack2
+    9500000: //RootNode
+    11100000: //RootNode
+    13700000: pCube6
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Enemy_Attack2
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 65
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: ikHandle1
+        weight: 1
+      - path: ikHandle2
+        weight: 1
+      - path: ikHandle3
+        weight: 1
+      - path: ikHandle4
+        weight: 1
+      - path: Main
+        weight: 1
+      - path: Main/ArmL_CTRL
+        weight: 1
+      - path: Main/ArmL_CTRL1
+        weight: 1
+      - path: Main/LegL_CTRL
+        weight: 1
+      - path: Main/LegR_CTRL
+        weight: 1
+      - path: Main/Pelvis
+        weight: 1
+      - path: Main/Pelvis/Thigh_L
+        weight: 1
+      - path: Main/Pelvis/Thigh_L/Shin_L
+        weight: 1
+      - path: Main/Pelvis/Thigh_L/Shin_L/Foot_L
+        weight: 1
+      - path: Main/Pelvis/Thigh_R
+        weight: 1
+      - path: Main/Pelvis/Thigh_R/Shin_R
+        weight: 1
+      - path: Main/Pelvis/Thigh_R/Shin_R/Foot_R
+        weight: 1
+      - path: Main/Pelvis/Waist
+        weight: 1
+      - path: Main/Pelvis/Waist/Torso
+        weight: 1
+      - path: Main/Pelvis/Waist/Torso/Head
+        weight: 1
+      - path: Main/Pelvis/Waist/Torso/Head/Jaw
+        weight: 1
+      - path: Main/Pelvis/Waist/Torso/Head/Jaw/Chin
+        weight: 1
+      - path: Main/Pelvis/Waist/Torso/Head/Snout
+        weight: 1
+      - path: Main/Pelvis/Waist/Torso/Head/Snout/Nose
+        weight: 1
+      - path: Main/Pelvis/Waist/Torso/Shoulder_L
+        weight: 1
+      - path: Main/Pelvis/Waist/Torso/Shoulder_L/ForeArm_L
+        weight: 1
+      - path: Main/Pelvis/Waist/Torso/Shoulder_L/ForeArm_L/Hand_L
+        weight: 1
+      - path: Main/Pelvis/Waist/Torso/Shoulder_R
+        weight: 1
+      - path: Main/Pelvis/Waist/Torso/Shoulder_R/ForeArm_R
+        weight: 1
+      - path: Main/Pelvis/Waist/Torso/Shoulder_R/ForeArm_R/Hand_R
+        weight: 1
+      - path: pCube6
+        weight: 1
+      - path: Pelvis_CTRL
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 1
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

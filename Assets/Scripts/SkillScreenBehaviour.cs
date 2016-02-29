@@ -30,11 +30,9 @@ public class SkillScreenBehaviour : MonoBehaviour
         requirements.color = Color.yellow;
         requirements.enabled = false;
         b_SeeSkill = false;
-        int i = 0;
         
         foreach (GameObject button in GameObject.FindGameObjectsWithTag("Skill Button"))
         {
-            
             Button bo = button.GetComponent<Button>();
             if (bo != null)
             {
@@ -44,7 +42,14 @@ public class SkillScreenBehaviour : MonoBehaviour
                 c.a = 0.5f;
                 btnTxt.color = c;
             }
-            
+            if(PlayerPrefs.GetInt(button.name) == 1)
+            {
+                bo.image.color = Color.white;
+                Text btnTxt = button.GetComponentInChildren<Text>();
+                Color c = btnTxt.color;
+                c.a = 1;
+                btnTxt.color = c;
+            }
         }
         GenerateSkillPoints();
     }

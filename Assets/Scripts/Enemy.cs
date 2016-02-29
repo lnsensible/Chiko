@@ -186,19 +186,19 @@ public class Enemy : MonoBehaviour
         Chiko chikoTarget = target.GetComponent<Chiko>();
         if (chikoTarget != null)
         {
-
+           
         }
 
         WallScript wallTarget = target.GetComponent<WallScript>();
         if (wallTarget != null)
         {
-
+            wallTarget.theHealth -= 1;
         }
 
         Objectives ObjectiveTarget = target.GetComponent<Objectives>();
         if (ObjectiveTarget != null)
         {
-
+            ObjectiveTarget.MinusObjectiveHealth(1);
         }
 
     }
@@ -253,10 +253,8 @@ public class Enemy : MonoBehaviour
     {
         vel = Vector3.zero;
         b_move = true;
-        if (col.gameObject.tag == "Objective")
-        {
-            b_OverrideMove = false;
-            b_AbleToAttack = false;
-        }
+        b_OverrideMove = false;
+        b_AbleToAttack = false;
+       
     }
 }

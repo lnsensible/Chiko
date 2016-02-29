@@ -8,7 +8,7 @@ public class Objectives : MonoBehaviour {
 
     public Material[] theMaterials;
 
-    int health;
+    public int health;
 	// Use this for initialization
 	void Start () {
         int f = Random.Range(0, (spawnPositions.Length) - 1);
@@ -23,6 +23,10 @@ public class Objectives : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if(health <= 0)
+        {
+            Application.LoadLevel("Mission Fail");
+        }
 	}
 
     public void MinusObjectiveHealth(int x)

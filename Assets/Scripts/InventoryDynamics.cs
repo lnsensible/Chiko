@@ -31,6 +31,8 @@ public class InventoryDynamics : MonoBehaviour
     GameObject backButton;
     bool showBackButton;
 
+    bool isSelected;
+
     // Use this for initialization
     void Start()
     {
@@ -53,16 +55,26 @@ public class InventoryDynamics : MonoBehaviour
 
         backButton = GameObject.Find("BackButtonCanvas");
         showBackButton = false;
+
+        isSelected = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (showBackButton == false)
-            backButton.SetActive(false);
-        else
-            backButton.SetActive(true);
         Debug.Log(showBackButton);
+        foreach (GameObject chiko in chikos)
+        {
+            if (chiko.GetComponent<InventoryDynamics>().showBackButton == true)
+            {
+                backButton.SetActive(true);
+            }
+            else
+            {
+                backButton.SetActive(false);
+            }
+        }
+        
     }
 
     // Detects click on this object
@@ -72,6 +84,9 @@ public class InventoryDynamics : MonoBehaviour
         {
             chiko.GetComponent<InventoryDynamics>().showBackButton = true;
         }
+
+        //Only for this game object
+        isSelected = true;
         // Move other chikos out of view
         MoveOtherChikos();
         // Disable scrollview from scrolling
@@ -129,13 +144,27 @@ public class InventoryDynamics : MonoBehaviour
         }
     }
 
-    /*public void ResetHanger()
+    public void AddTrapToChiko()
     {
         foreach (GameObject chiko in chikos)
         {
-            chiko.transform.position = chiko.GetComponent<InventoryDynamics>().initPos;
+            // The chiko that is being shown
+            if (chiko.GetComponent<InventoryDynamics>().isSelected == true)
+            {
+                // Set all back to active
+                //foreach (GameObject trap in ChikosTrap)
+                //{
+                //    trap.SetActive(true);
+                //}
+
+                // Add the trap to that chiko
+                GameObject newTrap = (GameObject)Instantiate(this.gameObject, new Vector3(chiko.gameObject.transform.GetChild(0).position.x, chiko.gameObject.transform.GetChild(0).position.y, 0), Quaternion.identity);
+                newTrap.transform.SetParent(chiko.gameObject.transform.GetChild(0));
+
+                // Remove the trap from the trap inventory
+                GameObject temp = this.gameObject.transform.parent.gameObject;
+                temp.SetActive(false);
+            }
         }
-        showHeldTrap = true;
-        //backButton.SetActive(false);
-    }*/
+    }
 }

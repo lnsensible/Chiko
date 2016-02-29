@@ -264,6 +264,7 @@ public class Chiko : MonoBehaviour {
 
             case STATE.SELECTED:
                 {
+                    trapHUD.GetComponent<CooldownMeshHandler>().SetAlpha(maxtrapCooldown-trapCooldown, maxtrapCooldown);
                     trapHUD.GetComponent<CooldownMeshHandler>().SetAlpha(trapCooldown, maxtrapCooldown);
                     trapHUD.GetComponent<MeshRenderer>().enabled = true;
 
@@ -287,6 +288,23 @@ public class Chiko : MonoBehaviour {
                                 }
                                 // if select self, unselect
                                 else if (hit.collider.gameObject == this.gameObject)
+                                {
+                                    state = STATE.IDLE;
+                                }
+                                // if click on other chiko, change selected chiko
+                                else if (hit.collider.tag == "MyChiko")
+                                {
+                                    state = STATE.IDLE;
+                                }
+
+                                // if click ground, put trap
+                                else
+                                {
+                                    if (Vector3.Distance(hit.point, gameObject.transform.position) < GetTrapPlaceDistance())
+                                    {
+                                        if (trapCooldown < 0)
+                                        {
+=======
                                 {
                                     state = STATE.IDLE;
                                 }
@@ -333,6 +351,30 @@ public class Chiko : MonoBehaviour {
                                                 placingSpikes = true;
                                                 state = STATE.PUTTRAP;
                                                 break;
+
+                                            case TRAP.TRIPWIRE:
+                                                if (trapPositionHolder == Vector3.zero)
+                                                {
+                                                    trapPositionHolder = targetLocation;
+                                                }
+                                                else
+                                                {
+                                                    trapPositionHolder2 = targetLocation;
+                                                    placingTrap = true;
+                                                    state = STATE.PUTTRAP;
+                                                }
+                                                break;
+                                            case TRAP.WALLS:
+                                                trapPositionHolder = targetLocation;
+                                                placingTrap = true;
+                                                state = STATE.PUTTRAP;
+                                                break;
+                                            case TRAP.SPIKES:
+                                                trapPositionHolder = targetLocation;
+                                                placingTrap = true;
+                                                placingSpikes = true;
+                                                state = STATE.PUTTRAP;
+                                                break;
                                             case TRAP.DECOY:
                                                 trapPositionHolder = targetLocation;
                                                 placingTrap = true;
@@ -340,7 +382,11 @@ public class Chiko : MonoBehaviour {
                                                 break;
                                         }
                                     }
-
+                                    else
+                                    {
+                                        state = STATE.IDLE;
+                                        selected = false;
+                                    }
                                 }
                             }
                             selected = false;
@@ -539,6 +585,7 @@ public class Chiko : MonoBehaviour {
                     trapPositionHolder.Set(0, 0, 0);
                     GetComponent<BearTrapScript>().placeBearTrap(placeTrapPosition);
                     state = STATE.IDLE;
+                    trapCooldown = maxtrapCooldown;
                     break;
                 case TRAP.TRIPWIRE:
                     if (GetComponent<SetTripWire>().PlaceTripwire(placeTrapPosition))
@@ -548,6 +595,7 @@ public class Chiko : MonoBehaviour {
                         DestroyRadius();
                         state = STATE.IDLE;
                         placedFirstTripwire = false;
+                        trapCooldown = maxtrapCooldown;
                     }
                     else
                     {
@@ -560,6 +608,7 @@ public class Chiko : MonoBehaviour {
                     state = STATE.IDLE;
                     GetComponent<WallScript>().placeWall(placeTrapPosition, chikoDir-90);
                     trapPositionHolder.Set(0, 0, 0);
+                    trapCooldown = maxtrapCooldown;
                     break;
                 case TRAP.SPIKES:
                     DestroyRadius();
@@ -567,12 +616,14 @@ public class Chiko : MonoBehaviour {
                     GetComponent<SpikesScript>().placeSpikes(placeTrapPosition, trapPositionHolder2);
                     trapPositionHolder.Set(0, 0, 0);
                     trapPositionHolder2.Set(0, 0, 0);
+                    trapCooldown = maxtrapCooldown;
                     break;
                 case TRAP.DECOY:
                     DestroyRadius();
                     trapPositionHolder.Set(0, 0, 0);
                     GetComponent<DecoyBombScript>().placeDecoy(placeTrapPosition);
                     state = STATE.IDLE;
+                    trapCooldown = maxtrapCooldown;
                     break;
             }
 

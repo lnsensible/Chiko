@@ -15,8 +15,15 @@ public class CooldownMeshHandler : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+        transform.LookAt(Camera.main.transform);
 	}
+    
+    public void SetAlpha(float curCD, float maxCD)
+    {
+        Color thecolor = GetComponent<MeshRenderer>().material.color;
+        thecolor.a = Mathf.Max(0.1f, curCD / maxCD);
+        GetComponent<MeshRenderer>().material.color = thecolor;
+    }
 
     public void SetMaterial(Chiko.TRAP trapType)
     {

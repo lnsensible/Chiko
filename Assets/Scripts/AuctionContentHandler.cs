@@ -36,7 +36,7 @@ public class AuctionContentHandler : MonoBehaviour {
         numAuctions = 5;
         numBids = 10;
         numPlacedBids = 2;
-        auctionContentInitialPos = new Vector3(-11.3f, 325.6f, 0.0f);
+        auctionContentInitialPos = new Vector3(-0.5f, 473.0f, 0.0f);
         ReloadBoxes(false);
 	}
 
@@ -113,9 +113,9 @@ public class AuctionContentHandler : MonoBehaviour {
         }
         else
         {
-            if (auctionContent.transform.position.x < -(Mathf.Max(0, numBids)) * (auctionSpacing + 50/*boxwidth*/) && !Input.GetMouseButton(0))
+            if (auctionContent.transform.position.x < -(Mathf.Max(0, numBids+numPlacedBids)) * (auctionSpacing + 50/*boxwidth*/) && !Input.GetMouseButton(0))
             {
-                auctionContent.transform.position = Vector3.Lerp(auctionContent.transform.position, new Vector3(-(Mathf.Max(0, numBids)) * (auctionSpacing + 50/*boxwidth*/), auctionContent.transform.position.y, auctionContent.transform.position.z), 20 * Time.deltaTime);
+                auctionContent.transform.position = Vector3.Lerp(auctionContent.transform.position, new Vector3(-(Mathf.Max(0, numBids + numPlacedBids)) * (auctionSpacing + 50/*boxwidth*/), auctionContent.transform.position.y, auctionContent.transform.position.z), 20 * Time.deltaTime);
             }
         }
     }

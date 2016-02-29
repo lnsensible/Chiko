@@ -67,7 +67,12 @@ public class RegisterUsername : MonoBehaviour {
         theText.text = "...";
         if (networkmanager.GetComponent<NetworkManager>().enterName)
         {
-            registerusername = networkmanager.GetComponent<NetworkManager>().checkRegisterUsername();
+            if (Application.platform == RuntimePlatform.WindowsEditor)
+            {
+                networkmanager.GetComponent<NetworkManager>().RegisterUsername("Motherserver");
+            }
+            else
+                registerusername = networkmanager.GetComponent<NetworkManager>().checkRegisterUsername();
         }
 
         //networkmanager.GetComponent<NetworkManager>().RegisterUsername("Motherserver");

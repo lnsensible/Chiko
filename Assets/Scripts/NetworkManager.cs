@@ -4,7 +4,6 @@ using System.Collections;
 
 public class NetworkManager : MonoBehaviour {
 
-    
     private bool checkedName = false;
 
     public bool enterName = false;
@@ -16,8 +15,10 @@ public class NetworkManager : MonoBehaviour {
     public enum EventCodes
     {
         CHECK_NAME = 1,
-        CHECKED_NAME,
-        REGISTER_NAME,
+        CHECKED_NAME = 2,
+        REGISTER_NAME = 3,
+        SYNC_LIST = 4,
+        LOAD_LIST = 5,
     }
 
 	// Use this for initialization
@@ -72,6 +73,28 @@ public class NetworkManager : MonoBehaviour {
         PhotonNetwork.RaiseEvent((byte)EventCodes.CHECK_NAME, SystemInfo.deviceUniqueIdentifier, true, theeventOP);
     }
 
+    static public void syncChikoList(string theList)
+    {
+        //send only to master-c
+        RaiseEventOptions theeventOP = RaiseEventOptions.Default;
+        theeventOP.Receivers = ExitGames.Client.Photon.ReceiverGroup.MasterClient;
+
+        string theCheck = SystemInfo.deviceUniqueIdentifier + "!" + theList;
+        Debug.Log("SYNCING CHIKOLIST for: " + theCheck);
+        // ask to sync chikos
+        PhotonNetwork.RaiseEvent((byte)EventCodes.SYNC_LIST, SystemInfo.deviceUniqueIdentifier, true, theeventOP);
+    }
+
+    static public void loadChikoList()
+    {
+        //send only to master-c
+        RaiseEventOptions theeventOP = RaiseEventOptions.Default;
+        theeventOP.Receivers = ExitGames.Client.Photon.ReceiverGroup.MasterClient;
+        Debug.Log("LOADING CHIKOLIST");
+        // ask to sync chikos
+        PhotonNetwork.RaiseEvent((byte)EventCodes.LOAD_LIST, SystemInfo.deviceUniqueIdentifier, true, theeventOP);
+    }
+
     public bool checkRegisterUsername()
     {
         return enterName;
@@ -102,6 +125,23 @@ public class NetworkManager : MonoBehaviour {
             {
                 Debug.Log("set playername" + content.ToString());
                 PlayerInventory.playerName = content.ToString();
+            }
+        }
+
+        if (eventCode == (byte)EventCodes.LOAD_LIST)
+        {
+            string[] whee = content.ToString().Split('!');
+            if (whee[0] == SystemInfo.deviceUniqueIdentifier)
+            {
+                string[] chlist = whee[1].Split(' ');
+                for (int k = 0; k < chlist.Length; k++)
+                {
+                    PlayerInventory.ChikoList.Add(int.Parse(chlist[k]));
+                }
+                for (int l = 0; l < PlayerInventory.ChikoList.Count; l++)
+                {
+                    Debug.Log(PlayerInventory.ChikoList[l]);
+                }
             }
         }
     }

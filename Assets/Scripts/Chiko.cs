@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class Chiko : MonoBehaviour {
@@ -38,7 +38,8 @@ public class Chiko : MonoBehaviour {
     TYPE type;
 
     TRAP trapHeld;
-
+    public float maxtrapCooldown;
+    private float trapCooldown;
     public GameObject trapRadius;
 
     bool placingTrap;
@@ -84,7 +85,6 @@ public class Chiko : MonoBehaviour {
     Animation ani;
 
     Slider healthbar;
-    Transform camPos;
 
     //Let other scripts see if the object is moving
     public bool IsMoving
@@ -142,14 +142,36 @@ public class Chiko : MonoBehaviour {
 
         trapHeld = TRAP.TRIPWIRE;
 
+        switch (trapHeld)
+        {
+            case TRAP.BEARTRAP:
+                maxtrapCooldown = 10.0f;
+                break;
+            case TRAP.DECOY:
+                maxtrapCooldown = 10.0f;
+                break;
+            case TRAP.SPIKES:
+                maxtrapCooldown = 10.0f;
+                break;
+            case TRAP.TRIPWIRE:
+                maxtrapCooldown = 10.0f;
+                break;
+            case TRAP.WALLS:
+                maxtrapCooldown = 10.0f;
+                break;
+        }
+
+        trapCooldown = maxtrapCooldown;
+
         if(PlayerPrefs.GetInt("Birth of a Healer") == 1)
         {
-            ReganHealthPerk = true;
+            InvokeRepeating("ActivateSkillPerks", 0, 1);
         }
         else
         {
-            ReganHealthPerk = false;
+           damage += damage / 100 * 15;
         }
+
         if(PlayerPrefs.GetInt("Birth of a Berserker") == 1)
         {
             damage += 3;
@@ -158,26 +180,28 @@ public class Chiko : MonoBehaviour {
         //initialise trapHUD
         trapHUD = (GameObject)Instantiate(trapHUD, Vector3.zero, Quaternion.identity);
         trapHUD.transform.parent = gameObject.transform;
-        trapHUD.transform.localPosition = new Vector3(0, 2.0f, 0);
-        trapHUD.transform.localScale = new Vector3(2.5f, 2.5f, 1.0f);
+        trapHUD.transform.localPosition = new Vector3(-0, 0.13f, 0);
+        trapHUD.transform.localScale = new Vector3(0.1f, 0.1f, 1.0f);
         trapHUD.transform.LookAt(Camera.main.transform);
+        trapHUD.transform.Rotate(0, 180, 0);
         trapHUD.GetComponent<CooldownMeshHandler>().SetMaterial(trapHeld);
+        trapHUD.GetComponent<MeshRenderer>().enabled = false;
 
         //Animation
         ani = GetComponent<Animation>();
         ani.Stop();
 
-        healthbar = this.gameObject.transform.GetChild(3).GetComponent<Slider>();
+        healthbar = this.gameObject.transform.GetComponentInChildren<Slider>();
         transform.SetParent(GameObject.Find("Canvas").GetComponent<Transform>());
-        camPos = GameObject.Find("Main Camera").GetComponent<Transform>();
     }
-    
+
     // Update is called once per frame
     void Update () {
 
-        healthbar.transform.LookAt(camPos.position);
         pos = transform.position;
         selectedTimer -= Time.deltaTime;
+
+        trapCooldown -= Time.deltaTime;
 
         if (isMoving)
         {
@@ -186,11 +210,8 @@ public class Chiko : MonoBehaviour {
 
         if (state != STATE.DEAD)
         {
-            float ratioToFill = maxHealth * 0.0025f;
-            healthbar.value = health * ratioToFill;
-
-            Debug.Log(ratioToFill);
-            Debug.Log(healthbar.value);
+            float ratioToFill = 1 / maxHealth;
+            //healthbar.value = health * ratioToFill;
         }
 
         //Debug.Log((transform.position - PlayerMovement.playerPosition).magnitude);
@@ -234,83 +255,95 @@ public class Chiko : MonoBehaviour {
 
             case STATE.SELECTED:
                 {
+                    trapHUD.GetComponent<CooldownMeshHandler>().SetAlpha(maxtrapCooldown-trapCooldown, maxtrapCooldown);
                     trapHUD.GetComponent<MeshRenderer>().enabled = true;
 
                     shouldPlayerMove = false;
 
-                    if ((Input.GetMouseButtonDown(0) || (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)) && selectedTimer <= 0)
-                    {
-                        RaycastHit hit;
-                        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                        if (Physics.Raycast(ray, out hit))
+                        if ((Input.GetMouseButtonDown(0) || (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)) && selectedTimer <= 0)
                         {
-                            targetLocation = hit.point;
+                            RaycastHit hit;
+                            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                            if (Physics.Raycast(ray, out hit))
+                            {
+                                targetLocation = hit.point;
 
-                            // if click enemy, attack
-                            if (hit.collider.tag == "Enemy" && !placingTrap)
-                            {
-                                state = STATE.ATTACK;
-                                target = hit.collider.gameObject;
-                            }
-                            // if select self, unselect
-                            else if (hit.collider.gameObject == this.gameObject)
-                            { 
-                                state = STATE.IDLE;
-                            }
-                            // if click on other chiko, change selected chiko
-                            else if (hit.collider.tag == "MyChiko")
-                            {
-                                state = STATE.IDLE;
-                            }
-
-                            // if click ground, put trap
-                            else
-                            {
-                                if (Vector3.Distance(hit.point, gameObject.transform.position) < GetTrapPlaceDistance())
+                                // if click enemy, attack
+                                if (hit.collider.tag == "Enemy" && !placingTrap)
                                 {
-                                    PlayerMovement.skipClick = true;
-                                    switch (trapHeld)
-                                    {
-                                        case TRAP.BEARTRAP:
-                                            trapPositionHolder = targetLocation;
-                                            placingTrap = true;
-                                            state = STATE.PUTTRAP;
-                                            break;
+                                    state = STATE.ATTACK;
+                                    target = hit.collider.gameObject;
+                                }
+                                // if select self, unselect
+                                else if (hit.collider.gameObject == this.gameObject)
+                                {
+                                    state = STATE.IDLE;
+                                }
+                                // if click on other chiko, change selected chiko
+                                else if (hit.collider.tag == "MyChiko")
+                                {
+                                    state = STATE.IDLE;
+                                }
 
-                                        case TRAP.TRIPWIRE:
-                                            if (trapPositionHolder == Vector3.zero)
+                                // if click ground, put trap
+                                else
+                                {
+                                    if (Vector3.Distance(hit.point, gameObject.transform.position) < GetTrapPlaceDistance())
+                                    {
+                                        if (trapCooldown < 0)
+                                        {
+                                            PlayerMovement.skipClick = true;
+                                            switch (trapHeld)
                                             {
-                                                trapPositionHolder = targetLocation;
+                                                case TRAP.BEARTRAP:
+                                                    trapPositionHolder = targetLocation;
+                                                    placingTrap = true;
+                                                    state = STATE.PUTTRAP;
+                                                    break;
+
+                                                case TRAP.TRIPWIRE:
+                                                    if (trapPositionHolder == Vector3.zero)
+                                                    {
+                                                        trapPositionHolder = targetLocation;
+                                                    }
+                                                    else
+                                                    {
+                                                        trapPositionHolder2 = targetLocation;
+                                                        placingTrap = true;
+                                                        state = STATE.PUTTRAP;
+                                                    }
+                                                    break;
+                                                case TRAP.WALLS:
+                                                    trapPositionHolder = targetLocation;
+                                                    placingTrap = true;
+                                                    state = STATE.PUTTRAP;
+                                                    break;
+                                                case TRAP.SPIKES:
+                                                    trapPositionHolder = targetLocation;
+                                                    placingTrap = true;
+                                                    placingSpikes = true;
+                                                    state = STATE.PUTTRAP;
+                                                    break;
+                                                case TRAP.DECOY:
+                                                    trapPositionHolder = targetLocation;
+                                                    placingTrap = true;
+                                                    state = STATE.PUTTRAP;
+                                                    break;
                                             }
-                                            else
-                                            {
-                                                trapPositionHolder2 = targetLocation;
-                                                placingTrap = true;
-                                                state = STATE.PUTTRAP;
-                                            }
-                                            break;
-                                        case TRAP.WALLS:
-                                            trapPositionHolder = targetLocation;
-                                            placingTrap = true;
-                                            state = STATE.PUTTRAP;
-                                            break;
-                                        case TRAP.SPIKES:
-                                            trapPositionHolder = targetLocation;
-                                            placingTrap = true;
-                                            placingSpikes = true;
-                                            state = STATE.PUTTRAP;
-                                            break;
-                                        case TRAP.DECOY:
-                                            trapPositionHolder = targetLocation;
-                                            placingTrap = true;
-                                            state = STATE.PUTTRAP;
-                                            break;
+                                        }
+                                        else 
+                                        {
+                                            state = STATE.IDLE;
+                                            selected = false;
+                                        }
+                                    }
+                                    else 
+                                    {
+                                        state = STATE.IDLE;
+                                        selected = false;
                                     }
                                 }
-                               
-                            }
                         }
-                        selected = false;
                     }
                 }
                 break;
@@ -505,6 +538,7 @@ public class Chiko : MonoBehaviour {
                     trapPositionHolder.Set(0, 0, 0);
                     GetComponent<BearTrapScript>().placeBearTrap(placeTrapPosition);
                     state = STATE.IDLE;
+                    trapCooldown = maxtrapCooldown;
                     break;
                 case TRAP.TRIPWIRE:
                     if (GetComponent<SetTripWire>().PlaceTripwire(placeTrapPosition))
@@ -514,6 +548,7 @@ public class Chiko : MonoBehaviour {
                         DestroyRadius();
                         state = STATE.IDLE;
                         placedFirstTripwire = false;
+                        trapCooldown = maxtrapCooldown;
                     }
                     else
                     {
@@ -526,6 +561,7 @@ public class Chiko : MonoBehaviour {
                     state = STATE.IDLE;
                     GetComponent<WallScript>().placeWall(placeTrapPosition, chikoDir-90);
                     trapPositionHolder.Set(0, 0, 0);
+                    trapCooldown = maxtrapCooldown;
                     break;
                 case TRAP.SPIKES:
                     DestroyRadius();
@@ -533,12 +569,14 @@ public class Chiko : MonoBehaviour {
                     GetComponent<SpikesScript>().placeSpikes(placeTrapPosition, trapPositionHolder2);
                     trapPositionHolder.Set(0, 0, 0);
                     trapPositionHolder2.Set(0, 0, 0);
+                    trapCooldown = maxtrapCooldown;
                     break;
                 case TRAP.DECOY:
                     DestroyRadius();
                     trapPositionHolder.Set(0, 0, 0);
                     GetComponent<DecoyBombScript>().placeDecoy(placeTrapPosition);
                     state = STATE.IDLE;
+                    trapCooldown = maxtrapCooldown;
                     break;
             }
 

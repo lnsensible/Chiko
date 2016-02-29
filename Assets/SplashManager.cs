@@ -6,6 +6,7 @@ public class SplashManager : MonoBehaviour {
 
     private Text textbox;
     private bool notif = true;
+    private bool loadded = false;
 
 	// Use this for initialization
 	void Start () {
@@ -32,6 +33,15 @@ public class SplashManager : MonoBehaviour {
         }
 
         if (PlayerInventory.playerName != "")
-            Application.LoadLevel("menuscreen");
+        {
+            if (!loadded)
+            {
+                loadded = true;
+                NetworkManager.loadChikoList();
+            }
+
+            if (PlayerInventory.ChikoList.Count != 0)
+                Application.LoadLevel("menuscreen");
+        }
 	}
 }

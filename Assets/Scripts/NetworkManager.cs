@@ -4,13 +4,6 @@ using System.Collections;
 
 public class NetworkManager : MonoBehaviour {
 
-    private static NetworkManager instance = null;
-
-    public static NetworkManager Instance
-    {
-        get { return instance; }
-    }
-
     private bool checkedName = false;
 
     public bool enterName = false;
@@ -26,19 +19,6 @@ public class NetworkManager : MonoBehaviour {
         REGISTER_NAME = 3,
         SYNC_LIST = 4,
         LOAD_LIST = 5,
-    }
-
-    void Awake()
-    {
-        if (instance != null && instance != this)
-        {
-            Destroy(this.gameObject);
-            return;
-        }
-
-        instance = this;
-        DontDestroyOnLoad(gameObject);
-
     }
 
 	// Use this for initialization

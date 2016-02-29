@@ -17,6 +17,7 @@ public class Objectives : MonoBehaviour {
 
         GameObject themesh = GameObject.Find("objChikoMesh");
         int g = Random.Range(0, (spawnPositions.Length) - 1);
+        PlayerPrefs.SetInt("ChikoGained", g);
         themesh.gameObject.GetComponent<Renderer>().material = theMaterials[g];
     }
 	

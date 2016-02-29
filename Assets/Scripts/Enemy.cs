@@ -218,6 +218,12 @@ public class Enemy : MonoBehaviour
 
     void OnTriggerEnter(Collider col)
     {
+        if(col.gameObject == target)
+        {
+            b_AbleToAttack = true;
+            b_move = false;
+            b_OverrideMove = false;
+        }
 
         if (col.gameObject.tag == "Enemy" && b_OverrideMove == true)
         {
@@ -226,40 +232,21 @@ public class Enemy : MonoBehaviour
             //transform.position = Vector3.MoveTowards(transform.position, vel, MOVE_SPEED * Time.deltaTime);
             b_move = false;
         }
-        if (col.gameObject.tag == "Objective")
+    }
+    void OnTriggerStay(Collider col)
+    {
+        if (col.gameObject == target)
         {
             b_AbleToAttack = true;
             b_move = false;
             b_OverrideMove = false;
         }
-    }
-    void OnTriggerStay(Collider col)
-    {
+
         if (col.gameObject.tag == "Enemy" && b_OverrideMove == true)
         {
-
             vel = Vector3.Normalize(transform.position - col.gameObject.transform.position);
             //transform.position = Vector3.MoveTowards(transform.position, vel, MOVE_SPEED * Time.deltaTime);
             b_move = false;
-        }
-        if (col.gameObject.tag == "Objective")
-        {
-            b_AbleToAttack = true;
-            b_move = false;
-            b_move = false;
-        } 
-  
-        // check if it is a trap type
-        if(col.gameObject.tag == "Trap")
-        {
-            //check against the name if its a wall or a decoy <!The rest no need to attack/>
-            if(col.gameObject.name == "WallTrap(clone)")
-            {
-                OverrideTarget(col.gameObject);
-                b_AbleToAttack = true;
-                b_move = false;
-                b_move = false;
-            }
         }
     }
     void OnTriggerExit(Collider col)

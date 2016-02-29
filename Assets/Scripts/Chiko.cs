@@ -141,7 +141,7 @@ public class Chiko : MonoBehaviour {
 
         shouldPlayerMove = true;
 
-        trapHeld = TRAP.TRIPWIRE;
+        trapHeld = TRAP.WALLS;
 
         switch (trapHeld)
         {

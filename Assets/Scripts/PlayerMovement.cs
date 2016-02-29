@@ -34,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
 
         // 1 - activative , 0 - not active
         if ( PlayerPrefs.GetInt("Birth of a Speedster") == 1)
-            playerSpeed = playerSpeed * 2;
+            playerSpeed += playerSpeed / 100 * 15;
     }
 
     void Update()

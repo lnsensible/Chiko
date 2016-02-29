@@ -211,6 +211,11 @@ public class Enemy : MonoBehaviour
             Destroy(gameObject);
     }
 
+    public void EnableAttack(bool enable = true)
+    {
+        b_AbleToAttack = enable;
+    }
+
     void OnTriggerEnter(Collider col)
     {
 
@@ -242,6 +247,19 @@ public class Enemy : MonoBehaviour
             b_AbleToAttack = true;
             b_move = false;
             b_move = false;
+        } 
+  
+        // check if it is a trap type
+        if(col.gameObject.tag == "Trap")
+        {
+            //check against the name if its a wall or a decoy <!The rest no need to attack/>
+            if(col.gameObject.name == "WallTrap(clone)")
+            {
+                OverrideTarget(col.gameObject);
+                b_AbleToAttack = true;
+                b_move = false;
+                b_move = false;
+            }
         }
     }
     void OnTriggerExit(Collider col)

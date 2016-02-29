@@ -144,7 +144,7 @@ public class Chiko : MonoBehaviour {
 
         if(PlayerPrefs.GetInt("Birth of a Healer") == 1)
         {
-            ReganHealthPerk = true;
+            InvokeRepeating("ActivateSkillPerks", 0, 1);
         }
         else
         {
@@ -152,7 +152,7 @@ public class Chiko : MonoBehaviour {
         }
         if(PlayerPrefs.GetInt("Birth of a Berserker") == 1)
         {
-            damage += 3;
+            damage += damage / 100 * 15;
         }
 
         //initialise trapHUD
@@ -172,6 +172,19 @@ public class Chiko : MonoBehaviour {
         camPos = GameObject.Find("Main Camera").GetComponent<Transform>();
     }
     
+    void ActivateSkillPerks()
+    {
+        if(state == STATE.DEAD)
+        {
+            CancelInvoke("ActivateSkillPerks");
+            return;
+        }
+        if (state != STATE.DEAD && ReganHealthPerk == true)
+        {
+            health += health / 100 * 10;
+        }
+    }
+
     // Update is called once per frame
     void Update () {
 
@@ -189,10 +202,6 @@ public class Chiko : MonoBehaviour {
 
         //Debug.Log((transform.position - PlayerMovement.playerPosition).magnitude);
         //Debug.Log(state);
-        if (state != STATE.DEAD && ReganHealthPerk == true)
-        {
-            health += 1;
-        }
         switch (state)
         {
             case STATE.IDLE:

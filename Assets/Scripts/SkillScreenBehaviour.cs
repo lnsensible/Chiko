@@ -25,7 +25,8 @@ public class SkillScreenBehaviour : MonoBehaviour
 
     // Use this for initialization
     void Start()
-    {
+    { 
+        PlayerPrefs.DeleteAll();
         requirements.text = "";
         requirements.color = Color.yellow;
         requirements.enabled = false;
@@ -81,8 +82,11 @@ public class SkillScreenBehaviour : MonoBehaviour
         if (counter_yellow > yellow_skillpoints)
         {
             GameObject child = parentT.GetChild(parentT.childCount - 1).gameObject;
-            counter_yellow -= 1;
-            Destroy(child);
+            if(child != null)
+            {
+                counter_yellow -= 1;
+                Destroy(child);
+            }
         }
 
         //////////////================ RED SKILL POINT =====================================
@@ -330,8 +334,6 @@ public class SkillScreenBehaviour : MonoBehaviour
             ShowResetBox(self);
         }
     }
-
-
 
 
     //THE CONFIRMATION PROMPT BOX IS SHOWN HERE.

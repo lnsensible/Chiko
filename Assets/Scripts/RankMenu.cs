@@ -17,12 +17,13 @@ public class RankMenu : MonoBehaviour {
     int bonusStat;
 	// Use this for initialization
 	void Start () {
-        //for debug person
-        PlayerPrefs.SetInt("rank", rank);
-
         rank = PlayerPrefs.GetInt("rank");
         progress = PlayerPrefs.GetInt("rankProgress");
         bonusStat = rank * 5;
+
+        //setting the initial text
+        currentRank.text = "" + rank;
+        nextRank.text = "" + (rank + 1);
 	}
 	
 	// Update is called once per frame

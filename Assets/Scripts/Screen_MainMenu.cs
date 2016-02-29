@@ -61,64 +61,36 @@ public class Screen_MainMenu : MonoBehaviour
         title = GameObject.Find("Title").GetComponent<Text>();
         subTitle = GameObject.Find("subTitle").GetComponent<Text>();
 
-        if (PlayerInventory.SelectedChiko[0] != -1) // if there is something assigned to the selected chiko
+        for (int i = 0; i < selectedChikos.Length; i++)
         {
-            //showing the main menu pic of the selected chikos <- in background first when in pre-gameSelection then bring up
-            selectedChikos[0].sprite = TOTALKINDOFCHIKOS[PlayerInventory.SelectedChiko[0]];
 
-            if (PlayerInventory.ChikoTrapList[0] != null)
+            if (PlayerInventory.SelectedChiko[i] != -1) // if there is assigned chiko
             {
-                //selectedChikoTRAPS[0].sprite = TOTALTRAPICONS[PlayerInventory.ChikoTrapList[0]];
+                //showing the main menu pic of the selected chikos <- in background first when in pre-gameSelection then bring up
+                selectedChikos[i].sprite = TOTALKINDOFCHIKOS[PlayerInventory.SelectedChiko[i]];
+                if (PlayerInventory.SelectedTrap[i] != -1)
+                {
+                    Debug.Log(PlayerInventory.SelectedTrap[0]);
+                    selectedChikoTRAPS[0].sprite = TOTALTRAPICONS[PlayerInventory.SelectedTrap[0]];
+                    Color c_ = selectedChikoTRAPS[i].color;
+                    c_.a = 0.28f;
+                    selectedChikoTRAPS[i].color = c_;
+                }
+                else
+                {
+                    Color c_ = selectedChikoTRAPS[i].color;
+                    c_.a = 0;
+                    selectedChikoTRAPS[i].color = c_;
+                }
+
             }
             else
             {
-                selectedChikoTRAPS[0].sprite = null;
+                selectedChikos[i].sprite = null;
+                Color c_ = selectedChikoTRAPS[i].color;
+                c_.a = 0;
+                selectedChikoTRAPS[i].color = c_;
             }
-            
-                
-        }
-        else
-        {
-            selectedChikos[0].sprite = null;
-            selectedChikoTRAPS[0].sprite = null;
-        }
-
-        if (PlayerInventory.SelectedChiko[1] != -1)
-        {
-            selectedChikos[1].sprite = TOTALKINDOFCHIKOS[PlayerInventory.SelectedChiko[1]];
-
-            if(selectedChikoTRAPS[1] != null)
-            {
-                //selectedChikoTRAPS[1].sprite = TOTALTRAPICONS[PlayerInventory.ChikoTrapList[1]];
-            }
-            else
-            {
-                selectedChikoTRAPS[1].sprite = null;
-            }
-        }
-        else
-        {
-            selectedChikos[1].sprite = null;
-            selectedChikoTRAPS[1].sprite = null;
-        }
-
-        if (PlayerInventory.SelectedChiko[2] != -1)
-        {
-            selectedChikos[2].sprite = TOTALKINDOFCHIKOS[PlayerInventory.SelectedChiko[2]];
-            if(selectedChikoTRAPS[2] != null)
-            {
-                //selectedChikoTRAPS[2].sprite = TOTALTRAPICONS[PlayerInventory.ChikoTrapList[2]];
-            }
-            else
-            {
-                selectedChikoTRAPS[2].sprite = null;
-            }
-            
-        }
-        else
-        {
-            selectedChikos[2].sprite = null;
-            selectedChikoTRAPS[2].sprite = null;
         }
     }
 
@@ -160,7 +132,6 @@ public class Screen_MainMenu : MonoBehaviour
         {
             for (int i = 0; i < selectedChikos.Length; i++)
             {
-                
                 //bring foward the selected chiko stuff.
                 selectedChikos[i].transform.localScale = Vector3.Lerp(selectedChikos[i].transform.localScale, new Vector3(0.66f, 0.66f, 0.66f), 0.2f);
 
@@ -171,12 +142,11 @@ public class Screen_MainMenu : MonoBehaviour
                     pc.a += 0.2f;
                     selectedChikos[i].color = pc;
 
-                    //check for the traps
-                    if(selectedChikoTRAPS[i].sprite == null)
+                    //only change the value if there isnt any traps equiped.
+                    if(selectedChikoTRAPS[i].sprite != null)
                     {
-                        //only change the alpha value if there isnt any traps equiped.
                         Color c_ = selectedChikoTRAPS[i].color;
-                        c_.a = 0;
+                        c_.a += 0.2f;
                         selectedChikoTRAPS[i].color = c_;
                     }
                 }
@@ -203,14 +173,12 @@ public class Screen_MainMenu : MonoBehaviour
                     pc.a = 0.28f;
                     selectedChikos[i].color = pc;
 
-                    //check for the traps
-                    if (selectedChikoTRAPS[i].sprite == null)
-                    {
-                        //only change the value if there isnt any traps equiped.
-                        Color c_ = selectedChikoTRAPS[i].color;
-                        c_.a = 0;
-                        selectedChikoTRAPS[i].color = c_;
-                    }
+
+                    //only change the value if there isnt any traps equiped.
+                    Color c_ = selectedChikoTRAPS[i].color;
+                    c_.a = 0;
+                    selectedChikoTRAPS[i].color = c_;
+                    
                 }
                 else
                 {

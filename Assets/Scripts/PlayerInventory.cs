@@ -14,8 +14,10 @@ public class PlayerInventory : MonoBehaviour {
     File_ReadWrite m_theIOScript;
     static public List<int> ChikoList = new List<int>();
     static public List<int> ChikoTrapList = new List<int>();
+    static public List<string> ActiveSkillList = new List<string>(); // checks in order of unity editor: 1 for active, 0 for not active
 
     static public int[] SelectedChiko = new int[3];
+    static public int[] SelectedTrap = new int[3];
 
     static public string playerName = "";
 
@@ -34,9 +36,20 @@ public class PlayerInventory : MonoBehaviour {
 
     void Start()
     {
-        SelectedChiko[0] = -1;
-        SelectedChiko[1] = -1;
+        m_theIOScript = GetComponent<File_ReadWrite>();
+        SelectedChiko[0] = 1;
+        SelectedTrap[0] = 0;
+        SelectedChiko[1] = 0;
+        SelectedTrap[1] = -1;
         SelectedChiko[2] = -1;
+        SelectedTrap[2] = -1;
+
+       string[] skills = m_theIOScript.Read("Assets\\Texts\\Skills.txt");
+       for (int i = 0; i < skills.Length; i++)
+       {
+           ActiveSkillList.Add(skills[i]);
+       }
+
     }
 
     void Update()

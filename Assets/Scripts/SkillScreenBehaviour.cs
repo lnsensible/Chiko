@@ -25,15 +25,16 @@ public class SkillScreenBehaviour : MonoBehaviour
 
     // Use this for initialization
     void Start()
-    { 
-        PlayerPrefs.DeleteAll();
+    {
         requirements.text = "";
         requirements.color = Color.yellow;
         requirements.enabled = false;
         b_SeeSkill = false;
-
+        int i = 0;
+        
         foreach (GameObject button in GameObject.FindGameObjectsWithTag("Skill Button"))
         {
+            
             Button bo = button.GetComponent<Button>();
             if (bo != null)
             {
@@ -43,9 +44,8 @@ public class SkillScreenBehaviour : MonoBehaviour
                 c.a = 0.5f;
                 btnTxt.color = c;
             }
+            
         }
-        //get from the data base which skill is active.
-
         GenerateSkillPoints();
     }
     void GetSkillPointsFromPrefab()
@@ -81,11 +81,13 @@ public class SkillScreenBehaviour : MonoBehaviour
 
         if (counter_yellow > yellow_skillpoints)
         {
-            GameObject child = parentT.GetChild(parentT.childCount - 1).gameObject;
-            if(child != null)
+            if(parentT.childCount > 0)
             {
+                GameObject child = parentT.GetChild(parentT.childCount - 1).gameObject;
+
                 counter_yellow -= 1;
                 Destroy(child);
+                
             }
         }
 

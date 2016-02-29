@@ -184,8 +184,14 @@ public class Chiko : MonoBehaviour {
             ani.Play("Move");
         }
 
-        float ratioToFill = 1 / maxHealth;
-        healthbar.value = health * ratioToFill;
+        if (state != STATE.DEAD)
+        {
+            float ratioToFill = maxHealth * 0.0025f;
+            healthbar.value = health * ratioToFill;
+
+            Debug.Log(ratioToFill);
+            Debug.Log(healthbar.value);
+        }
 
         //Debug.Log((transform.position - PlayerMovement.playerPosition).magnitude);
         //Debug.Log(state);

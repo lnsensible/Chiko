@@ -106,9 +106,9 @@ public class AuctionContentHandler : MonoBehaviour {
 
         if (theTab == 1)
         {
-            if (auctionContent.transform.position.x < -(Mathf.Max(0, numAuctions + 1)) * (auctionSpacing + 50/*boxwidth*/) && !Input.GetMouseButton(0))
+            if (auctionContent.transform.position.x < -(Mathf.Max(0, numAuctions + 2)) * (auctionSpacing + 50/*boxwidth*/) && !Input.GetMouseButton(0))
             {
-                auctionContent.transform.position = Vector3.Lerp(auctionContent.transform.position, new Vector3(-(Mathf.Max(0, numAuctions + 1)) * (auctionSpacing + 50/*boxwidth*/), auctionContent.transform.position.y, auctionContent.transform.position.z), 20 * Time.deltaTime);
+                auctionContent.transform.position = Vector3.Lerp(auctionContent.transform.position, new Vector3(-(Mathf.Max(0, numAuctions + 2)) * (auctionSpacing + 50/*boxwidth*/), auctionContent.transform.position.y, auctionContent.transform.position.z), 20 * Time.deltaTime);
             }
         }
         else

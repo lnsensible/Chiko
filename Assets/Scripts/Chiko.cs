@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using Pathfinding;
 
 public class Chiko : MonoBehaviour {
 
@@ -62,12 +63,18 @@ public class Chiko : MonoBehaviour {
     float chikoDir;
     Vector3 moveDir;
 
+    // Movement flags
+    public Path path;
+    private int currentWaypoint = 0;
+    public float nextWaypointDistance;
+    private bool findingpath;
+
     //Selected state
     bool selected;
     float selectedTimer;
     //Follow state
-    float followDistance;
-    float stopDistance;
+    public float followDistance;
+    public float stopDistance;
     public float followSpeed;
     //Moving to Attack or Place Trap
     Vector3 targetLocation;
@@ -105,6 +112,7 @@ public class Chiko : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        findingpath = false;
         // Set ID based on Chiko's id
         //id = 
         // Set type based on ID
@@ -133,10 +141,7 @@ public class Chiko : MonoBehaviour {
         maxHealth = 20;
         health = maxHealth;
         damage = 5;
-        state = STATE.IDLE;
-        followDistance = 200.0f;
-        stopDistance = 100.0f;
-        followSpeed = 3.0f;
+        state = STATE.FOLLOW;
         pos = transform.position;
 
         shouldPlayerMove = true;
@@ -201,6 +206,7 @@ public class Chiko : MonoBehaviour {
     void Update () {
 
         healthbar.transform.LookAt(camPos.position);
+
         pos = transform.position;
         selectedTimer -= Time.deltaTime;
 
@@ -237,6 +243,8 @@ public class Chiko : MonoBehaviour {
                     // Switch to follow state when player moves out of range
                     if (Vector3.Distance(pos, PlayerMovement.playerPosition) > followDistance)
                     {
+                        Seeker seeker = GetComponent<Seeker>();
+                        seeker.StartPath(transform.position, PlayerMovement.playerPosition, OnPathComplete);
                         state = STATE.FOLLOW;
                     }
                 }
@@ -425,6 +433,17 @@ public class Chiko : MonoBehaviour {
         }
     }
 
+    public void OnPathComplete(Path p)
+    {
+        //Debug.Log("path RETURNED " + p.error);
+        if (!p.error)
+        {
+            findingpath = false;
+            path = p;
+            currentWaypoint = 0;
+        }
+    }
+
     // Detects click on this object
     void OnMouseDown()
     {
@@ -467,10 +486,32 @@ public class Chiko : MonoBehaviour {
 
     void Follow()
     {
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(PlayerMovement.playerPosition - pos), Time.fixedDeltaTime * 5.0f);
-        Vector3 direction = (PlayerMovement.playerPosition - pos).normalized;
-        pos += direction * followSpeed;
-        transform.position = pos;
+        Debug.Log("follow");
+        if (path == null)
+        {
+            //Seeker seeker = GetComponent<Seeker>();
+            //seeker.StartPath(transform.position, PlayerMovement.playerPosition, OnPathComplete);
+        }
+        else if (currentWaypoint >= path.vectorPath.Count)
+        {
+            if (!findingpath)
+            {
+                Seeker seeker = GetComponent<Seeker>();
+                seeker.StartPath(transform.position, PlayerMovement.playerPosition, OnPathComplete);
+                findingpath = true;
+            }
+            else
+                Debug.Log("end of path reached");
+        }
+        else
+        {
+            transform.position = Vector3.MoveTowards(transform.position, path.vectorPath[currentWaypoint], followSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(PlayerMovement.playerPosition - pos), Time.fixedDeltaTime * 5.0f);
+            if (Vector3.Distance(transform.position, path.vectorPath[currentWaypoint]) < nextWaypointDistance)
+            {
+                currentWaypoint++;
+            }
+        }
     }
 
     void Attack()
@@ -478,7 +519,7 @@ public class Chiko : MonoBehaviour {
         // Move to target
         Vector3 direction = (targetLocation - pos).normalized;
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(targetLocation - pos), Time.fixedDeltaTime * 5.0f);
-        pos += direction * followSpeed;
+        pos += direction * followSpeed * Time.deltaTime;
         transform.position = pos;
 
         // Check if position is at targeted position
@@ -518,7 +559,7 @@ public class Chiko : MonoBehaviour {
         // Move to target
         Vector3 direction = (placeTrapPosition - pos).normalized;
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(targetLocation - pos), Time.fixedDeltaTime * 5.0f);
-        pos += direction * followSpeed;
+        pos += direction * followSpeed * Time.deltaTime;
         transform.position = pos;
 
         // Check if position is at targeted position

@@ -30,6 +30,9 @@ public class ShopTabBehaviour : MonoBehaviour {
     Text amount2;
     Text amount_gem2;
 
+    public GameObject ChikoTab;
+    public GameObject TrapTab;
+
 	// Use this for initialization
 	void Start () {
         trapTab_head = trapTab.GetComponent<Image>();
@@ -148,6 +151,9 @@ public class ShopTabBehaviour : MonoBehaviour {
             if (ChikoTabImg != null)
                 ChikoTabImg.color = Color.white;
         }
+        ChikoTab.transform.SetAsLastSibling();
+        GameObject.Find("CHEAT_BUTTON").transform.SetAsLastSibling();
+        GameObject.Find("CHEAT_BUTTON2").transform.SetAsLastSibling();
     }
     public void TrapsTabPressed()
     {
@@ -173,6 +179,9 @@ public class ShopTabBehaviour : MonoBehaviour {
             if (chikoTabImg != null)
                 chikoTabImg.color = Color.clear;
         }
+        TrapTab.transform.SetAsLastSibling();
+        GameObject.Find("CHEAT_BUTTON").transform.SetAsLastSibling();
+        GameObject.Find("CHEAT_BUTTON2").transform.SetAsLastSibling();
     }
 
     public void BuyBearTrap()
@@ -188,7 +197,10 @@ public class ShopTabBehaviour : MonoBehaviour {
                 bo.GetComponentInChildren<Text>().text = "BUY";
                 //writing to player pref so that the bear trap is unlocked.
                 PlayerPrefs.SetInt("BearTraplocked", BearTrapUnlocked);
-
+            }
+            else
+            {
+                ShowPopUPBox(1500 - amount_int, true);
             }
         }
         else
@@ -197,6 +209,11 @@ public class ShopTabBehaviour : MonoBehaviour {
             if (amount_int >= 1500)
             {
                 PlayerPrefs.SetInt("Gold", amount_int);
+                PlayerPrefs.SetInt("BearTraps", PlayerPrefs.GetInt("BearTraps") + 1);
+            }
+            else
+            {
+                ShowPopUPBox(1500 - amount_int, true);
             }
         }
     }
@@ -217,6 +234,10 @@ public class ShopTabBehaviour : MonoBehaviour {
 
                 PlayerPrefs.SetInt("Gold", amount_int);
             }
+            else
+            {
+                ShowPopUPBox(1500 - amount_int, true);
+            }
         }
         else
         {
@@ -224,6 +245,11 @@ public class ShopTabBehaviour : MonoBehaviour {
             if (amount_int >= 1500)
             {
                 PlayerPrefs.SetInt("Gold", amount_int);
+                PlayerPrefs.SetInt("SpikeTraps", PlayerPrefs.GetInt("SpikeTraps") + 1);
+            }
+            else
+            {
+                ShowPopUPBox(1500 - amount_int, true);
             }
         }
     }
@@ -243,6 +269,10 @@ public class ShopTabBehaviour : MonoBehaviour {
 
                 PlayerPrefs.SetInt("Gold", amount_int);
             }
+            else
+            {
+                ShowPopUPBox(1500 - amount_int, true);
+            }
         }
         else
         {
@@ -250,6 +280,11 @@ public class ShopTabBehaviour : MonoBehaviour {
             if (amount_int >= 1500)
             {
                 PlayerPrefs.SetInt("Gold", amount_int);
+                PlayerPrefs.SetInt("TripTraps", PlayerPrefs.GetInt("TripTraps") + 1);
+            }
+            else
+            {
+                ShowPopUPBox(1500 - amount_int, true);
             }
         }
     }
@@ -259,8 +294,8 @@ public class ShopTabBehaviour : MonoBehaviour {
         if (DecoyTraplocked == 0)
         {
             if (amount_int >= 2000)
-           {
-               amount_int -= 2000;
+            {
+                amount_int -= 2000;
                 DecoyTraplocked = 1;
                 Button bo = GameObject.Find("DecoyTrapBuyButton").GetComponent<Button>();
                 bo.GetComponentInChildren<Text>().text = "BUY";
@@ -268,14 +303,23 @@ public class ShopTabBehaviour : MonoBehaviour {
                 PlayerPrefs.SetInt("DecoyTraplocked", DecoyTraplocked);
 
                 PlayerPrefs.SetInt("Gold", amount_int);
-           }
+            }
+            else
+            {
+                ShowPopUPBox(2000 - amount_int, true);
+            }
         }
         else
         {
             //buying the bear trap
-            if (amount_int >= 1500)
+            if (amount_int >= 2000)
             {
                 PlayerPrefs.SetInt("Gold", amount_int);
+                PlayerPrefs.SetInt("DecoyTraps", PlayerPrefs.GetInt("DecoyTraps") + 1);
+            }
+            else
+            {
+                ShowPopUPBox(2000 - amount_int, true);
             }
         }
     }
@@ -295,6 +339,10 @@ public class ShopTabBehaviour : MonoBehaviour {
 
                 PlayerPrefs.SetInt("Gold", amount_int);
             }
+            else
+            {
+                ShowPopUPBox(2000 - amount_int, true);
+            }
         }
         else
         {
@@ -302,6 +350,11 @@ public class ShopTabBehaviour : MonoBehaviour {
             if (amount_int >= 1500)
             {
                 PlayerPrefs.SetInt("Gold", amount_int);
+                PlayerPrefs.SetInt("WallTraps", PlayerPrefs.GetInt("WallTraps") + 1);
+            }
+            else
+            {
+                ShowPopUPBox(2000 - amount_int, true);
             }
         }
     }
@@ -309,24 +362,54 @@ public class ShopTabBehaviour : MonoBehaviour {
     public void BuyChiko(GameObject chiko)
     {
         Text chiko_price = chiko.transform.GetChild(1).GetComponent<Text>();
-        int temp = int.Parse(chiko_price.text);
-        if(amount_gem_int >= temp)
+        int temp_PriceInt = int.Parse(chiko_price.text);
+        if(amount_gem_int >= temp_PriceInt)
         { 
-            amount_gem_int -= temp;
+            amount_gem_int -= temp_PriceInt;
             chiko.SetActive(false);
 
             PlayerPrefs.SetInt("Gems", amount_gem_int);
             //send to playerpref that this chiko skin is bought
             PlayerPrefs.SetInt(chiko.name + "Bought", 1);
         }
+        else
+        {
+            ShowPopUPBox(temp_PriceInt - amount_gem_int, false);
+        }
     }
 
+    /*
+     * Shows the popup box to the location in the middle of the page.
+     * Will display popupBox with this msg:
+     * "You need" /resourceNeeded/ /gold/ (to determine gold or gem).
+     */
+    void ShowPopUPBox(int resourceNeeded, bool gold) 
+    {
+        popUpbox.transform.localPosition = Vector3.zero;
+        popUpbox.transform.SetAsLastSibling();
+        Text msg = popUpbox.transform.GetChild(0).GetComponent<Text>();
+        msg.text = "You need " + resourceNeeded;
+        if(gold)
+            msg.text += " gold ";
+        else
+            msg.text += " gems ";
+        msg.text += "more.";
+    }
+
+    //To close the popUp Box
+    public void okayPressed()
+    {
+        //move the popup box back down
+        popUpbox.transform.localPosition = new Vector3(0, -500, 0);
+        popUpbox.transform.SetAsFirstSibling();        
+    }
+
+    //Cheat buttons - for testing purpose..or hacks whichever you want
     public void CHEAT_topup()
     {
         amount_int += 1000;
         PlayerPrefs.SetInt("Gold", amount_int);
     }
-
     public void CHEAT_topUpGEM()
     {
         amount_gem_int += 5;

@@ -17,7 +17,6 @@ public class EnemySpawner : MonoBehaviour {
 
         //check for the positions 
         GameObject e = Instantiate(enemySample, spawnPos, Quaternion.identity) as GameObject;
-        e.GetComponent<Enemy>().OverrideTarget(Objectivetarget);
         e.GetComponent<Enemy>().SetOriginalTarget(Objectivetarget);
         e.GetComponent<Enemy>().SetEnemyVariables(Health, Attack, MoveSpeed);
         return;

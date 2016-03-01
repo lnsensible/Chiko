@@ -30,6 +30,9 @@ public class ShopTabBehaviour : MonoBehaviour {
     Text amount2;
     Text amount_gem2;
 
+    public GameObject ChikoTab;
+    public GameObject TrapTab;
+
 	// Use this for initialization
 	void Start () {
         trapTab_head = trapTab.GetComponent<Image>();
@@ -148,6 +151,9 @@ public class ShopTabBehaviour : MonoBehaviour {
             if (ChikoTabImg != null)
                 ChikoTabImg.color = Color.white;
         }
+        ChikoTab.transform.SetAsLastSibling();
+        GameObject.Find("CHEAT_BUTTON").transform.SetAsLastSibling();
+        GameObject.Find("CHEAT_BUTTON2").transform.SetAsLastSibling();
     }
     public void TrapsTabPressed()
     {
@@ -173,6 +179,9 @@ public class ShopTabBehaviour : MonoBehaviour {
             if (chikoTabImg != null)
                 chikoTabImg.color = Color.clear;
         }
+        TrapTab.transform.SetAsLastSibling();
+        GameObject.Find("CHEAT_BUTTON").transform.SetAsLastSibling();
+        GameObject.Find("CHEAT_BUTTON2").transform.SetAsLastSibling();
     }
 
     public void BuyBearTrap()
@@ -188,7 +197,6 @@ public class ShopTabBehaviour : MonoBehaviour {
                 bo.GetComponentInChildren<Text>().text = "BUY";
                 //writing to player pref so that the bear trap is unlocked.
                 PlayerPrefs.SetInt("BearTraplocked", BearTrapUnlocked);
-
             }
         }
         else
@@ -197,6 +205,7 @@ public class ShopTabBehaviour : MonoBehaviour {
             if (amount_int >= 1500)
             {
                 PlayerPrefs.SetInt("Gold", amount_int);
+                PlayerPrefs.SetInt("BearTraps", PlayerPrefs.GetInt("BearTraps") + 1);
             }
         }
     }
@@ -224,6 +233,7 @@ public class ShopTabBehaviour : MonoBehaviour {
             if (amount_int >= 1500)
             {
                 PlayerPrefs.SetInt("Gold", amount_int);
+                PlayerPrefs.SetInt("SpikeTraps", PlayerPrefs.GetInt("SpikeTraps") + 1);
             }
         }
     }
@@ -250,6 +260,7 @@ public class ShopTabBehaviour : MonoBehaviour {
             if (amount_int >= 1500)
             {
                 PlayerPrefs.SetInt("Gold", amount_int);
+                PlayerPrefs.SetInt("TripTraps", PlayerPrefs.GetInt("TripTraps") + 1);
             }
         }
     }
@@ -276,6 +287,7 @@ public class ShopTabBehaviour : MonoBehaviour {
             if (amount_int >= 1500)
             {
                 PlayerPrefs.SetInt("Gold", amount_int);
+                PlayerPrefs.SetInt("DecoyTraps", PlayerPrefs.GetInt("DecoyTraps") + 1);
             }
         }
     }
@@ -302,6 +314,7 @@ public class ShopTabBehaviour : MonoBehaviour {
             if (amount_int >= 1500)
             {
                 PlayerPrefs.SetInt("Gold", amount_int);
+                PlayerPrefs.SetInt("WallTraps", PlayerPrefs.GetInt("WallTraps") + 1);
             }
         }
     }

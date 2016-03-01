@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Pathfinding;
+using System;
 
 public class Chiko : MonoBehaviour {
 
@@ -33,8 +34,8 @@ public class Chiko : MonoBehaviour {
     Vector3 pos;
     int ID;
     int maxHealth;
-    static public int health;
-    static public int damage;
+    public int health;
+    public int damage;
     STATE state;
     TYPE type;
 
@@ -80,7 +81,8 @@ public class Chiko : MonoBehaviour {
     Vector3 targetLocation;
     private Transform objectTransfom;
 
-    private float noMovementThreshold = 2.0f;
+    public float noMovementThreshold;
+    public float noMovementThresholdAttack;
     private bool isMoving;
 
     bool shouldPlayerMove;
@@ -93,6 +95,10 @@ public class Chiko : MonoBehaviour {
 
     Slider healthbar;
     Transform camPos;
+
+    float timeBetweenAttack;
+    bool canAttack;
+    bool startAttacking;
 
     //Let other scripts see if the object is moving
     public bool IsMoving
@@ -138,9 +144,9 @@ public class Chiko : MonoBehaviour {
         selected = false;
 
         // Test values
-        maxHealth = 20;
+        maxHealth = 100;
         health = maxHealth;
-        damage = 5;
+        damage = 1;
         state = STATE.IDLE;
         pos = transform.position;
         isMoving = false;
@@ -148,7 +154,10 @@ public class Chiko : MonoBehaviour {
 
         shouldPlayerMove = true;
 
-        trapHeld = TRAP.WALLS;
+        noMovementThreshold = 2.0f;
+        noMovementThresholdAttack = 200.0f;
+
+    trapHeld = TRAP.WALLS;
 
         switch (trapHeld)
         {
@@ -202,6 +211,10 @@ public class Chiko : MonoBehaviour {
         healthbar = this.gameObject.transform.GetComponentInChildren<Slider>();
         transform.SetParent(GameObject.Find("Canvas").GetComponent<Transform>());
         camPos = GameObject.Find("Main Camera").GetComponent<Transform>();
+
+        timeBetweenAttack = 0.0f;
+        canAttack = true;
+        startAttacking = false;
     }
 
     // Update is called once per frame
@@ -232,8 +245,6 @@ public class Chiko : MonoBehaviour {
             //healthbar.value = health * ratioToFill;
         }
 
-        //Debug.Log((transform.position - PlayerMovement.playerPosition).magnitude);
-        //Debug.Log(state);
         if (state != STATE.DEAD && ReganHealthPerk == true)
         {
             health += 1;
@@ -242,7 +253,7 @@ public class Chiko : MonoBehaviour {
         {
             case STATE.IDLE:
                 {
-                    if (Random.Range(0, 1) == 0)
+                    if (UnityEngine.Random.Range(0, 1) == 0)
                         ani.Play("Idle");
                     else
                         ani.Play("Idle2");
@@ -440,6 +451,11 @@ public class Chiko : MonoBehaviour {
                 }
                 break;
         }
+
+        Vector3 lockRotation = transform.eulerAngles;
+        lockRotation.x = 0;
+        lockRotation.z = 0;
+        transform.eulerAngles = lockRotation;
     }
 
     public void OnPathComplete(Path p)
@@ -465,6 +481,7 @@ public class Chiko : MonoBehaviour {
         else
         {
             selected = true;
+            ani.Stop();
             state = STATE.SELECTED;
             selectedTimer = 0.25f;
            
@@ -525,42 +542,56 @@ public class Chiko : MonoBehaviour {
 
     void Attack()
     {
-        // Move to target
-        Vector3 direction = (targetLocation - pos).normalized;
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(targetLocation - pos), Time.fixedDeltaTime * 5.0f);
-        pos += direction * followSpeed * Time.deltaTime;
-        transform.position = pos;
-
-        // Check if position is at targeted position
-        if (Vector3.Distance(targetLocation, pos) >= noMovementThreshold)
+        Vector3 direction = (target.transform.position - pos).normalized;
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(target.transform.position - pos), Time.fixedDeltaTime * 5.0f);
+        if (Vector3.Distance(target.transform.position, pos) >= noMovementThresholdAttack)
         {
+            // Move to target
+            pos += direction * followSpeed * Time.deltaTime;
+            transform.position = pos;
             isMoving = true;
         }
         else
         {
             isMoving = false;
+            startAttacking = true;
         }
-        
+
         // Stop moving & start attacking enemy
-        if (isMoving == false)
+        if (startAttacking == true)
         {
-            if (Random.Range(0, 2) == 0)
+            // Look at target
+            Vector3 targetVector = (target.transform.position - transform.position);
+            targetVector = new Vector3(targetVector.x, 0, targetVector.z);
+            transform.rotation = Quaternion.LookRotation(targetVector);
+
+            // Play attack animation
+            if (UnityEngine.Random.Range(0, 1) == 0)
                 ani.Play("Attack");
-            else if (Random.Range(0, 2) == 1)
-                ani.Play("Attack2");
+            //else if (Random.Range(0, 2) == 1)
+            //    ani.Play("Attack2");
             else
                 ani.Play("Attack3");
-            target.GetComponent<Enemy>().MinusHealth(1);
+
+            
+            // Damage calculations
+            target.GetComponent<Enemy>().MinusHealth(damage);
             target.GetComponent<Enemy>().OverrideTarget(this.gameObject);
             Debug.Log("Minus health");
-            state = STATE.IDLE;
+
+            // Special cases
+            if (target.GetComponent<Enemy>().health <= 0)
+            {
+                startAttacking = false;
+                state = STATE.IDLE;
+            }
+            // Dead
+            if (health <= 0)
+            {
+                startAttacking = false;
+                state = STATE.DEAD;
+            }
         }
-        
-        //// if kill enemy
-        //    state = STATE.IDLE;
-        //// Dead
-        if (health <= 0)
-            state = STATE.DEAD;
     }
 
     void PutTrap(Vector3 placeTrapPosition)

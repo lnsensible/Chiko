@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour
     Vector3 dir; //direction to the intended target , can  be ooverrided.
     float distToTarget; // magnitude of the current enemy to the target object;
     //gameplay vairables;
-    float health;
+    public float health;
     int damage;
     int MOVE_SPEED;
     bool b_move;
@@ -35,7 +35,7 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         health = 100;
-        damage = 10;
+        damage = 1;
         MOVE_SPEED = 250;
         healthBar = this.gameObject.transform.GetComponentInChildren<Slider>();
         //InvokeRepeating("minusHealth(2)", 0, 2);
@@ -59,6 +59,8 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (target == null)
+            target = OriginalTarget;
 
         //lock the movement onto the plane only
         vel.y = 0;
@@ -73,8 +75,6 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            if (target == null)
-                target = OriginalTarget;
 
 
             //update health
@@ -186,19 +186,19 @@ public class Enemy : MonoBehaviour
         Chiko chikoTarget = target.GetComponent<Chiko>();
         if (chikoTarget != null)
         {
-           
+            chikoTarget.health -= damage;
         }
 
         WallScript wallTarget = target.GetComponent<WallScript>();
         if (wallTarget != null)
         {
-            wallTarget.theHealth -= 1;
+            wallTarget.theHealth -= damage;
         }
 
         Objectives ObjectiveTarget = target.GetComponent<Objectives>();
         if (ObjectiveTarget != null)
         {
-            ObjectiveTarget.MinusObjectiveHealth(1);
+            ObjectiveTarget.MinusObjectiveHealth(damage);
         }
 
     }

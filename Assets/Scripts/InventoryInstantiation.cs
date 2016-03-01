@@ -15,7 +15,7 @@ public class InventoryInstantiation : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        hangerSpace = 220;
+        hangerSpace = 260;
         svContent = GameObject.Find("Content");
         canvas = GameObject.Find("Canvas");
         canvasSize = canvas.GetComponent<RectTransform>();
@@ -37,12 +37,12 @@ public class InventoryInstantiation : MonoBehaviour {
     {
         for (int i = 0; i < /*PlayerInventory.ChikoTrapList.Count*/5; i++)
         {
-            GameObject tempTrap = (GameObject)Instantiate(HangerTrap, new Vector2(canvasSize.position.x * 2.8f, canvasSize.position.y - i * 200), Quaternion.identity);
+            GameObject tempTrap = (GameObject)Instantiate(HangerTrap, new Vector2(canvasSize.position.x * 2.9f, canvasSize.position.y - i * 220), Quaternion.identity);
             tempTrap.transform.SetParent(trapContent.transform);
             tempTrap.transform.localScale = new Vector3(1, 1, 1);
         }
 
-        for (int i = 0; i < /*PlayerInventory.ChikoList.Count*/5; i++)
+        for (int i = 0; i < /*PlayerInventory.ChikoList.Count*/4; i++)
         {
             GameObject tempChiko = (GameObject)Instantiate(HangerChiko, new Vector2(startPosition.x + i * hangerSpace, canvasSize.position.y * 0.8f), Quaternion.identity);
             tempChiko.transform.SetParent(svContent.transform);

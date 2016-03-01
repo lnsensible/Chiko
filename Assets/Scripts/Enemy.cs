@@ -66,8 +66,8 @@ public class Enemy : MonoBehaviour
         vel.y = 0;
         dir.y = 0;
 
-        dir = Vector3.Normalize(transform.position - target.transform.position);
-        distToTarget = Vector3.Magnitude(target.transform.position - transform.position);
+        dir = Vector3.Normalize(path.vectorPath[currentWaypoint] - this.transform.position);
+        //distToTarget = Vector3.Magnitude(target.transform.position - transform.position);
 
         if (health <= 0)
         {
@@ -75,15 +75,14 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-
-
             //update health
             healthBar.value = health * 0.01f;
 
             healthBar.transform.LookAt(camPos.position);
 
-            //walking || Chasing            
-            Moving();
+            //walking || Chasing    
+            if(b_OverrideMove == true)
+                Moving();
 
             //carrying out attack
             if (b_AbleToAttack == true)
@@ -204,11 +203,21 @@ public class Enemy : MonoBehaviour
     }
     public void Died()
     {
-        currentAnimation.clip = animationList[2];
-        currentAnimation.Play();
+        b_OverrideMove = false;
 
-        if (currentAnimation.isPlaying == false)
-            Destroy(gameObject);
+        currentAnimation.clip = animationList[3];
+        
+         if(currentAnimation.isPlaying == false)
+         {
+            currentAnimation.Play();
+            Invoke("DestroyGameObject", currentAnimation.clip.length - 0.002f);
+         }
+
+    }
+
+    void DestroyGameObject()
+    {
+        Destroy(gameObject);
     }
 
     public void EnableAttack(bool enable = true)
@@ -228,11 +237,28 @@ public class Enemy : MonoBehaviour
         if (col.gameObject.tag == "Enemy" && b_OverrideMove == true)
         {
             ////force the enemy to move a set distance away from the other enemies
-            vel = Vector3.Normalize(transform.position - col.gameObject.transform.position);
+            //vel = Vector3.Normalize(transform.position - col.gameObject.transform.position);
             //transform.position = Vector3.MoveTowards(transform.position, vel, MOVE_SPEED * Time.deltaTime);
-            b_move = false;
+
+            Vector3 colDir = col.gameObject.GetComponent<Enemy>().dir;
+            Vector3 colPosScalar = new Vector3(col.gameObject.transform.position.x / colDir.x, col.gameObject.transform.position.y / colDir.y, col.gameObject.transform.position.z / colDir.z);
+            Vector3 PosScalar = new Vector3(transform.position.x / dir.x, transform.position.y / dir.y, transform.position.z / dir.z);
+            if (!biggerorEqualThan(colPosScalar, PosScalar))
+            {
+                b_OverrideMove = false;
+                b_move = false;
+            }
         }
     }
+
+    bool biggerorEqualThan(Vector3 lhs, Vector3 rhs)
+    {
+        if (lhs.x >= rhs.x &&   lhs.y >= rhs.y && lhs.z >= rhs.z)
+            return true;
+        return false;
+
+    }
+
     void OnTriggerStay(Collider col)
     {
         if (col.gameObject == target)
@@ -244,16 +270,25 @@ public class Enemy : MonoBehaviour
 
         if (col.gameObject.tag == "Enemy" && b_OverrideMove == true)
         {
-            vel = Vector3.Normalize(transform.position - col.gameObject.transform.position);
+            //vel = Vector3.Normalize(transform.position - col.gameObject.transform.position);
             //transform.position = Vector3.MoveTowards(transform.position, vel, MOVE_SPEED * Time.deltaTime);
-            b_move = false;
+            Vector3 colDir = col.gameObject.GetComponent<Enemy>().dir;
+            Vector3 colPosScalar = new Vector3(col.gameObject.transform.position.x / colDir.x, col.gameObject.transform.position.y / colDir.y, col.gameObject.transform.position.z / colDir.z);
+            Vector3 PosScalar = new Vector3(transform.position.x / dir.x, transform.position.y / dir.y, transform.position.z / dir.z);
+            if (!biggerorEqualThan(colPosScalar, PosScalar))
+            {
+                b_OverrideMove = false;
+                b_move = false;
+            }
+            
+            
         }
     }
     void OnTriggerExit(Collider col)
     {
         vel = Vector3.zero;
         b_move = true;
-        b_OverrideMove = false;
+        b_OverrideMove = true;
         b_AbleToAttack = false;
        
     }

@@ -12,6 +12,7 @@ public class Objectives : MonoBehaviour {
     public int health;
     public Slider healthBar;
     GameObject CAM;
+    float Max_Health;
 	// Use this for initialization
 	void Start () {
         gameObject.transform.SetParent(GameObject.Find("Canvas").transform);
@@ -26,6 +27,8 @@ public class Objectives : MonoBehaviour {
         themesh.gameObject.GetComponent<Renderer>().material = theMaterials[g];
 
         CAM = GameObject.FindGameObjectsWithTag("MainCamera")[0];
+
+        Max_Health = health;
     }
 	
 	// Update is called once per frame
@@ -36,8 +39,8 @@ public class Objectives : MonoBehaviour {
         }
         else
         {
-            float ratio =  100 / health;
-            healthBar.value = ( health * ratio );
+            float ratio =  1/ Max_Health;
+            healthBar.value = health * ratio;
 
             healthBar.transform.LookAt(CAM.transform);
         }

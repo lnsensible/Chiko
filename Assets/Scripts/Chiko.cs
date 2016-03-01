@@ -146,7 +146,7 @@ public class Chiko : MonoBehaviour {
         // Test values
         maxHealth = 100;
         health = maxHealth;
-        damage = 1;
+        damage = 50;
         state = STATE.IDLE;
         pos = transform.position;
         isMoving = false;
@@ -220,6 +220,7 @@ public class Chiko : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 
+        timeBetweenAttack -= Time.deltaTime;
         healthbar.transform.LookAt(camPos.position);
 
         pos = transform.position;
@@ -573,11 +574,14 @@ public class Chiko : MonoBehaviour {
             else
                 ani.Play("Attack3");
 
-            
-            // Damage calculations
-            target.GetComponent<Enemy>().MinusHealth(damage);
-            target.GetComponent<Enemy>().OverrideTarget(this.gameObject);
-            Debug.Log("Minus health");
+            if (timeBetweenAttack <= 0)
+            {
+                // Damage calculations
+                target.GetComponent<Enemy>().MinusHealth(damage);
+                target.GetComponent<Enemy>().OverrideTarget(this.gameObject);
+                Debug.Log("Minus health");
+                timeBetweenAttack = 2.0f;
+            }
 
             // Special cases
             if (target.GetComponent<Enemy>().health <= 0)

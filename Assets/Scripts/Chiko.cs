@@ -38,6 +38,9 @@ public class Chiko : MonoBehaviour {
     STATE state;
     TYPE type;
 
+    bool mouseDelay = false;
+
+    bool showHUD = false;
     TRAP trapHeld;
     public float maxtrapCooldown;
     private float trapCooldown;
@@ -191,7 +194,7 @@ public class Chiko : MonoBehaviour {
         trapHUD.transform.localPosition = new Vector3(-0, 0.13f, 0);
         trapHUD.transform.localScale = new Vector3(0.1f, 0.1f, 1.0f);
         trapHUD.transform.LookAt(Camera.main.transform);
-        trapHUD.transform.Rotate(0, 180, 0);
+        //trapHUD.transform.Rotate(0, 180, 0);
         trapHUD.GetComponent<CooldownMeshHandler>().SetMaterial(trapHeld);
         trapHUD.GetComponent<MeshRenderer>().enabled = false;
 
@@ -206,6 +209,8 @@ public class Chiko : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
+
+        trapHUD.GetComponent<CooldownMeshHandler>().SetAlpha(maxtrapCooldown - trapCooldown, maxtrapCooldown);
 
         healthbar.transform.LookAt(camPos.position);
 
@@ -248,7 +253,22 @@ public class Chiko : MonoBehaviour {
                         ani.Play("Idle2");
                     DestroyRadius();
                     shouldPlayerMove = true;
-                    trapHUD.GetComponent<MeshRenderer>().enabled = false;
+
+                    if (Input.GetMouseButtonDown(0) || Input.touchCount > 0)
+                    {
+                        if (mouseDelay)
+                            mouseDelay = false;
+                        else
+                        {
+                            Debug.Log("Hide");
+                            showHUD = false;
+                        }
+                    }
+
+                    if (!showHUD)
+                        trapHUD.GetComponent<MeshRenderer>().enabled = false;
+
+
                     // Switch to follow state when player moves out of range
                     if (Vector3.Distance(pos, PlayerMovement.playerPosition) > followDistance || path == null)
                     {
@@ -262,7 +282,21 @@ public class Chiko : MonoBehaviour {
             case STATE.FOLLOW:
                 { 
                     ani.Play("Move");
-                    trapHUD.GetComponent<MeshRenderer>().enabled = false;
+
+                    if (Input.GetMouseButtonDown(0) || Input.touchCount > 0)
+                    {
+                        if (mouseDelay)
+                            mouseDelay = false;
+                        else
+                        {
+                            Debug.Log("Hide");
+                            showHUD = false;
+                        }
+                    }
+
+                    if (!showHUD)
+                        trapHUD.GetComponent<MeshRenderer>().enabled = false;
+
                     Follow();
 
                     // Switch back to idle state
@@ -275,7 +309,6 @@ public class Chiko : MonoBehaviour {
 
             case STATE.SELECTED:
                 {
-                    trapHUD.GetComponent<CooldownMeshHandler>().SetAlpha(maxtrapCooldown-trapCooldown, maxtrapCooldown);
                     trapHUD.GetComponent<MeshRenderer>().enabled = true;
 
                     shouldPlayerMove = false;
@@ -456,6 +489,7 @@ public class Chiko : MonoBehaviour {
     // Detects click on this object
     void OnMouseDown()
     {
+        mouseDelay = true;
        if (selected)
         {
             selected = false;
@@ -464,32 +498,40 @@ public class Chiko : MonoBehaviour {
 
         else
         {
-            selected = true;
-            state = STATE.SELECTED;
-            selectedTimer = 0.25f;
-           
            //render radius
-            GameObject clone = (GameObject)Instantiate(trapRadius, transform.position, Quaternion.identity);
-           switch (trapHeld)
-           {
-               case TRAP.BEARTRAP:
-                   clone.transform.localScale = new Vector3(bearTrapRadius, 2, bearTrapRadius);
-                   break;
-               case TRAP.TRIPWIRE:
-                   clone.transform.localScale = new Vector3(TripwireRadius, 2, TripwireRadius);
-                   break;
-               case TRAP.WALLS:
-                   clone.transform.localScale = new Vector3(wallRadius, 2, wallRadius);
-                   break;
-               case TRAP.SPIKES:
-                   clone.transform.localScale = new Vector3(spikeRadius, 2, spikeRadius);
-                   break;
-               case TRAP.DECOY:
-                   clone.transform.localScale = new Vector3(decoyRadius, 2, decoyRadius);
-                   break;
-           }
-            
-            clone.GetComponent<RadiusOwner>().setOwner(ID);
+            if (trapCooldown < 0)
+            {
+                selected = true;
+                state = STATE.SELECTED;
+                selectedTimer = 0.25f;
+                GameObject clone = (GameObject)Instantiate(trapRadius, transform.position, Quaternion.identity);
+                switch (trapHeld)
+                {
+                    case TRAP.BEARTRAP:
+                        clone.transform.localScale = new Vector3(bearTrapRadius, 2, bearTrapRadius);
+                        break;
+                    case TRAP.TRIPWIRE:
+                        clone.transform.localScale = new Vector3(TripwireRadius, 2, TripwireRadius);
+                        break;
+                    case TRAP.WALLS:
+                        clone.transform.localScale = new Vector3(wallRadius, 2, wallRadius);
+                        break;
+                    case TRAP.SPIKES:
+                        clone.transform.localScale = new Vector3(spikeRadius, 2, spikeRadius);
+                        break;
+                    case TRAP.DECOY:
+                        clone.transform.localScale = new Vector3(decoyRadius, 2, decoyRadius);
+                        break;
+                }
+
+                clone.GetComponent<RadiusOwner>().setOwner(ID);
+            }
+            else
+            {
+                Debug.Log("Show");
+                showHUD = true;
+                trapHUD.GetComponent<MeshRenderer>().enabled = true;
+            }
         }
     }
 
@@ -592,6 +634,9 @@ public class Chiko : MonoBehaviour {
                     GetComponent<BearTrapScript>().placeBearTrap(placeTrapPosition);
                     state = STATE.IDLE;
                     trapCooldown = maxtrapCooldown;
+                    MusicManager.SFX_Player.clip = MusicManager.sfx[(int)MusicManager.SoundList.beartap_placed];
+                    MusicManager.SFX_Player.Play();
+
                     break;
                 case TRAP.TRIPWIRE:
                     if (GetComponent<SetTripWire>().PlaceTripwire(placeTrapPosition))
@@ -602,6 +647,9 @@ public class Chiko : MonoBehaviour {
                         state = STATE.IDLE;
                         placedFirstTripwire = false;
                         trapCooldown = maxtrapCooldown;
+
+                        MusicManager.SFX_Player.clip = MusicManager.sfx[(int)MusicManager.SoundList.tripmine_placed];
+                        MusicManager.SFX_Player.Play();
                     }
                     else
                     {
@@ -610,11 +658,15 @@ public class Chiko : MonoBehaviour {
                     }
                     break;
                 case TRAP.WALLS:
-                    DestroyRadius();
-                    state = STATE.IDLE;
-                    GetComponent<WallScript>().placeWall(placeTrapPosition, chikoDir-90);
-                    trapPositionHolder.Set(0, 0, 0);
-                    trapCooldown = maxtrapCooldown;
+                    {
+                        DestroyRadius();
+                        state = STATE.IDLE;
+                        GetComponent<WallScript>().placeWall(placeTrapPosition, chikoDir-90);
+                        trapPositionHolder.Set(0, 0, 0);
+                        trapCooldown = maxtrapCooldown;
+                        MusicManager.SFX_Player.clip = MusicManager.sfx[(int)MusicManager.SoundList.wall_active];
+                        MusicManager.SFX_Player.Play();
+                    }
                     break;
                 case TRAP.SPIKES:
                     DestroyRadius();
@@ -623,6 +675,8 @@ public class Chiko : MonoBehaviour {
                     trapPositionHolder.Set(0, 0, 0);
                     trapPositionHolder2.Set(0, 0, 0);
                     trapCooldown = maxtrapCooldown;
+                    MusicManager.SFX_Player.clip = MusicManager.sfx[(int)MusicManager.SoundList.spikes_placed];
+                        MusicManager.SFX_Player.Play();
                     break;
                 case TRAP.DECOY:
                     DestroyRadius();
@@ -630,6 +684,8 @@ public class Chiko : MonoBehaviour {
                     GetComponent<DecoyBombScript>().placeDecoy(placeTrapPosition);
                     state = STATE.IDLE;
                     trapCooldown = maxtrapCooldown;
+                    MusicManager.SFX_Player.clip = MusicManager.sfx[(int)MusicManager.SoundList.decoy_placed];
+                        MusicManager.SFX_Player.Play();
                     break;
             }
 

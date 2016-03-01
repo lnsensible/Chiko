@@ -22,6 +22,7 @@ public class CooldownMeshHandler : MonoBehaviour {
     {
         Color thecolor = GetComponent<MeshRenderer>().material.color;
         thecolor.a = Mathf.Max(0.1f, curCD / maxCD);
+        //Debug.Log(thecolor.a);
         GetComponent<MeshRenderer>().material.color = thecolor;
     }
 

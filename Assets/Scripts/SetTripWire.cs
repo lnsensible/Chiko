@@ -65,6 +65,8 @@ public class SetTripWire : MonoBehaviour {
             {
                 Debug.Log("Tripwire activated");
                 //col.gameObject.GetComponent<Enemy>().MinusHealth(theDamage);
+                MusicManager.SFX_Player.clip = MusicManager.sfx[(int)MusicManager.SoundList.tripmine_activated];
+                MusicManager.SFX_Player.Play();
                 Playexplosion(wiremidpoint); 
                 Destroy(gameObject);
                 

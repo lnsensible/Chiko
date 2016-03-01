@@ -19,16 +19,16 @@ public class MusicManager : MonoBehaviour {
 
     public enum SoundList
     {
-        menu_bgm = 0,
-        battle_bgm = 1,
-
-        button_press = 2,
-        sound_select = 3,
-        sound_swipe = 4,
-        control_select = 5,
-        options_change = 6,
-        game_start = 7,
-        invalid_press = 8,
+        beartrap_activated = 0,
+        beartap_placed = 1,
+        decoy_placed = 2,
+        explosion = 3,
+        spikes_placed = 4,
+        tripmine_placed = 5,
+        tripmine_activated = 6,
+        wall_active = 7,
+        wall_hit = 8,
+        spikes_activated = 9,
 
         soundlist_totalsounds
     };
@@ -44,29 +44,29 @@ public class MusicManager : MonoBehaviour {
         instance = this;
         DontDestroyOnLoad(gameObject);
 
-        //sounds = GetComponents<AudioSource>();
-        //BGM_Player = sounds[0];
-        //SFX_Player = sounds[1];
-        //SFX2_Player = sounds[2];
+        sfx = new AudioClip[(int)SoundList.soundlist_totalsounds];
 
-        //sfx = new AudioClip[(int)SoundList.soundlist_totalsounds];
+        sounds = GetComponents<AudioSource>();
+        BGM_Player = sounds[0];
+        SFX_Player = sounds[1];
     }
 
     void Start()
     {
-        //sfx[0] = (AudioClip)Resources.Load("default_menu_bgm");
-        //sfx[1] = (AudioClip)Resources.Load("default_battle_bgm");
-        //sfx[2] = (AudioClip)Resources.Load("default_button_press");
-        //sfx[3] = (AudioClip)Resources.Load("default_sound_select");
-        //sfx[4] = (AudioClip)Resources.Load("default_swipe");
-        //sfx[5] = (AudioClip)Resources.Load("default_control_select");
-        //sfx[6] = (AudioClip)Resources.Load("default_options_change");
-        //sfx[7] = (AudioClip)Resources.Load("default_game_start");
-        //sfx[8] = (AudioClip)Resources.Load("default_invalid_press");
+        sfx[(int)SoundList.beartrap_activated]  = (AudioClip)Resources.Load("BearTrapActivated1");
+        sfx[(int)SoundList.beartap_placed]      = (AudioClip)Resources.Load("BearTrapActive1");
+        sfx[(int)SoundList.decoy_placed]        = (AudioClip)Resources.Load("DecoyActive1");
+        sfx[(int)SoundList.explosion]           = (AudioClip)Resources.Load("Explosion");
+        sfx[(int)SoundList.spikes_placed]       = (AudioClip)Resources.Load("SpikesActive1");
+        sfx[(int)SoundList.tripmine_placed]     = (AudioClip)Resources.Load("TripmineActive1");
+        sfx[(int)SoundList.tripmine_activated]  = (AudioClip)Resources.Load("TripmineActivated1");
+        sfx[(int)SoundList.wall_active]  = (AudioClip)Resources.Load("WallActive1");
+        sfx[(int)SoundList.wall_hit]            = (AudioClip)Resources.Load("TripmineActive1");
+        sfx[(int)SoundList.spikes_activated] = (AudioClip)Resources.Load("BearTrapActive1");
 
-        //BGM_Player.clip = sfx[0];
-        //BGM_Player.loop = true;
-       // BGM_Player.Play();
+        //BGM_Player.clip = sfx[(int)SoundList.wall_active];
+       //BGM_Player.loop = true;
+        //BGM_Player.Play();
 
     }
 }

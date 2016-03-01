@@ -66,7 +66,10 @@ public class Enemy : MonoBehaviour
         vel.y = 0;
         dir.y = 0;
 
-        dir = Vector3.Normalize(path.vectorPath[currentWaypoint] - this.transform.position);
+        if (path != null && currentWaypoint < path.vectorPath.Count)
+        {
+            dir = Vector3.Normalize(path.vectorPath[currentWaypoint] - this.transform.position);
+        }
         //distToTarget = Vector3.Magnitude(target.transform.position - transform.position);
 
         if (health <= 0)

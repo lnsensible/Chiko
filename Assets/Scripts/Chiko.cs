@@ -236,6 +236,10 @@ public class Chiko : MonoBehaviour {
 
         if (isMoving)
         {
+            if (!GetComponent<AudioSource>().isPlaying)
+            {
+                GetComponent<AudioSource>().Play();
+            }
             ani.Play("Move");
         }
 
@@ -253,6 +257,10 @@ public class Chiko : MonoBehaviour {
         {
             case STATE.IDLE:
                 {
+                    if (GetComponent<AudioSource>().isPlaying)
+                    {
+                        GetComponent<AudioSource>().Stop();
+                    }
                     if (UnityEngine.Random.Range(0, 1) == 0)
                         ani.Play("Idle");
                     else
@@ -446,6 +454,10 @@ public class Chiko : MonoBehaviour {
 
             case STATE.DEAD:
                 {
+                    if (GetComponent<AudioSource>().isPlaying)
+                    {
+                        GetComponent<AudioSource>().Stop();
+                    }
                     trapHUD.GetComponent<MeshRenderer>().enabled = false;
                     Dead();
                 }
@@ -531,6 +543,11 @@ public class Chiko : MonoBehaviour {
         }
         else
         {
+            if (!GetComponent<AudioSource>().isPlaying)
+            {
+                GetComponent<AudioSource>().Play();
+            }
+
             transform.position = Vector3.MoveTowards(transform.position, path.vectorPath[currentWaypoint], followSpeed * Time.deltaTime);
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(PlayerMovement.playerPosition - pos), Time.fixedDeltaTime * 5.0f);
             if (Vector3.Distance(transform.position, path.vectorPath[currentWaypoint]) < nextWaypointDistance)
@@ -546,6 +563,11 @@ public class Chiko : MonoBehaviour {
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(target.transform.position - pos), Time.fixedDeltaTime * 5.0f);
         if (Vector3.Distance(target.transform.position, pos) >= noMovementThresholdAttack)
         {
+            if (!GetComponent<AudioSource>().isPlaying)
+            {
+                GetComponent<AudioSource>().Play();
+            }
+
             // Move to target
             pos += direction * followSpeed * Time.deltaTime;
             transform.position = pos;
@@ -605,6 +627,10 @@ public class Chiko : MonoBehaviour {
         // Check if position is at targeted position
         if (Vector3.Distance(placeTrapPosition, pos) >= noMovementThreshold)
         {
+            if (GetComponent<AudioSource>().isPlaying)
+            {
+                GetComponent<AudioSource>().Stop();
+            }
             isMoving = true;
         }
         else

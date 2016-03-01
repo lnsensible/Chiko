@@ -42,6 +42,8 @@ public class SpikesScript : MonoBehaviour {
             {
                PlaySpikes();
                col.gameObject.GetComponent<Enemy>().MinusHealth(theDamage);
+               MusicManager.SFX_Player.clip = MusicManager.sfx[(int)MusicManager.SoundList.spikes_activated];
+               MusicManager.SFX_Player.Play();
                Debug.Log("destroyed");
             }
         }

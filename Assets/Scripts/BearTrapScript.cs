@@ -32,6 +32,8 @@ public class BearTrapScript : MonoBehaviour {
             {
                 GetComponent<Animation>().Play();
                 col.gameObject.GetComponent<Enemy>().MinusHealth(theDamage);
+                MusicManager.SFX_Player.clip = MusicManager.sfx[(int)MusicManager.SoundList.beartrap_activated];
+                MusicManager.SFX_Player.Play();
                 Invoke("DestroyBearTrap", 1.0f);
             }
         }

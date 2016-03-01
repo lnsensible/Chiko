@@ -24,6 +24,8 @@ public class DecoyBombScript : MonoBehaviour {
             triggeredHealth0 = true;
             Destroy(gameObject);
             GameObject theexplosion = (GameObject)Instantiate(explosionPrefab, gameObject.transform.position, Quaternion.identity);
+            MusicManager.SFX_Player.clip = MusicManager.sfx[(int)MusicManager.SoundList.explosion];
+            MusicManager.SFX_Player.Play();
             //Vector3 scale = theexplosion.transform.localScale * 2;
             theexplosion.GetComponent<Animation>().Play();
         }

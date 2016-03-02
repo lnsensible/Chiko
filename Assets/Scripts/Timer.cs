@@ -12,6 +12,7 @@ public class Timer : MonoBehaviour
     Text timer;
 
     bool b_startWaves;
+    bool b_playStart;
     // Use this for initialization
     void Start()
     {
@@ -31,6 +32,12 @@ public class Timer : MonoBehaviour
     }
     void CountDown()
     {
+        if(b_playStart == true)
+        {
+            GetComponent<AudioSource>().Play();
+            b_playStart = false;
+        }
+
         timeLeft -= Time.deltaTime;
         if (timeLeft < maxTime * 0.1f)
         {
@@ -50,6 +57,7 @@ public class Timer : MonoBehaviour
         {
             esm.StartSpawningWaves();
             b_startWaves = true;
+            b_playStart = true;
         }
         timer.text = "Time left to enemy Spawn:" + Mathf.RoundToInt(PreCountDownTime).ToString();
     }

@@ -13,6 +13,8 @@ public class Timer : MonoBehaviour
 
     bool b_startWaves;
     bool b_playStart;
+    AudioSource[] TOTAL_AS;
+    bool b_countDownBeepingSTART;
     // Use this for initialization
     void Start()
     {
@@ -20,6 +22,8 @@ public class Timer : MonoBehaviour
         timer = GetComponent<Text>();
         b_startWaves = false;
         esm = enemySpawnManager.GetComponent<EnemySpawnerManager>();
+        TOTAL_AS = gameObject.GetComponentsInChildren<AudioSource>();
+        
     }
 
     // Update is called once per frame
@@ -34,7 +38,7 @@ public class Timer : MonoBehaviour
     {
         if(b_playStart == true)
         {
-            GetComponent<AudioSource>().Play();
+            TOTAL_AS[0].Play();
             b_playStart = false;
         }
 
@@ -42,6 +46,11 @@ public class Timer : MonoBehaviour
         if (timeLeft < maxTime * 0.1f)
         {
             GetComponent<Text>().color = Color.red;
+            if (b_countDownBeepingSTART == false)
+            {
+                b_countDownBeepingSTART = true;
+                Invoke("countDownBeep", 1.0f);
+            }
         }
 
         if (timeLeft < 0)
@@ -49,6 +58,12 @@ public class Timer : MonoBehaviour
             Application.LoadLevel("Mission Complete");
         }
         timer.text = Mathf.RoundToInt(timeLeft).ToString();
+    }
+
+    void countDownBeep()
+    {
+        TOTAL_AS[1].Play();
+        b_countDownBeepingSTART = false;
     }
     void PreCountDown()
     {

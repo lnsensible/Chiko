@@ -12,7 +12,11 @@ public class Screen_victory : MonoBehaviour {
 	void Start () {
         int g = PlayerPrefs.GetInt("ChikoGained");
         chiko.sprite = TOTALCHIKOIMAGE[g];
-	}
+
+        int amountearned = (PlayerPrefs.GetInt("rank") + 1 * 1500);
+        PlayerPrefs.SetInt("Gold", PlayerPrefs.GetInt("Gold") + amountearned);
+        gold.text = "" + amountearned;
+    }
 
     public void AcceptButtonPressed()
     {

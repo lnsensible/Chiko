@@ -24,6 +24,7 @@ public class Chiko : MonoBehaviour {
 
     public enum TRAP
     {
+        NONE,
         BEARTRAP,
         TRIPWIRE,
         WALLS,
@@ -100,6 +101,8 @@ public class Chiko : MonoBehaviour {
     bool canAttack;
     bool startAttacking;
 
+    public GameObject thematerialtochange;
+
     //Let other scripts see if the object is moving
     public bool IsMoving
     {
@@ -119,6 +122,10 @@ public class Chiko : MonoBehaviour {
     // Use this for initialization
     void Start () {
         findingpath = false;
+
+        Debug.Log("which selectedchiko: " + GetComponent<chikoMaterialHandler>().whichSelectedChiko);
+        Debug.Log("the selected fchiko index: " + PlayerInventory.SelectedChiko[GetComponent<chikoMaterialHandler>().whichSelectedChiko]);
+        thematerialtochange.GetComponent<SkinnedMeshRenderer>().material = GetComponent<chikoMaterialHandler>().materials[PlayerInventory.SelectedChiko[GetComponent<chikoMaterialHandler>().whichSelectedChiko]];
         // Set ID based on Chiko's id
         //id = 
         // Set type based on ID
@@ -157,7 +164,7 @@ public class Chiko : MonoBehaviour {
         noMovementThreshold = 2.0f;
         noMovementThresholdAttack = 200.0f;
 
-    trapHeld = TRAP.WALLS;
+        trapHeld = TRAP.NONE;
 
         switch (trapHeld)
         {

@@ -3,6 +3,7 @@ using System.Collections;
 
 public class CooldownMeshHandler : MonoBehaviour {
 
+    public Material transMesh;
     public Material theBeartrapMesh;
     public Material theTripwireMesh;
     public Material theWallMesh;
@@ -44,6 +45,9 @@ public class CooldownMeshHandler : MonoBehaviour {
                 break;
             case Chiko.TRAP.WALLS:
                 GetComponent<MeshRenderer>().material = theWallMesh;
+                break;
+            default:
+                GetComponent<MeshRenderer>().material = transMesh;
                 break;
         }
     }

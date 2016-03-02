@@ -74,7 +74,6 @@ public class InventoryDynamics : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(showBackButton);
         foreach (GameObject chiko in chikos)
         {
             if (chiko.GetComponent<InventoryDynamics>().showBackButton == true)
@@ -88,7 +87,6 @@ public class InventoryDynamics : MonoBehaviour
         }
         if (lockScrollView == true)
             theScrollView.GetComponent<ScrollRect>().movementType = ScrollRect.MovementType.Clamped;
-
     }
 
     // Detects click on this object
@@ -111,7 +109,7 @@ public class InventoryDynamics : MonoBehaviour
         // Set new position.x to middle of screen
         newPosition.x = canvasSize.position.x;
         // Move new position.x to desired position
-        newPosition.x -= canvasSize.rect.width * 0.9f;
+        newPosition.x -= canvasSize.rect.width * 1.1f;
         transform.position = newPosition;
 
 
@@ -123,7 +121,7 @@ public class InventoryDynamics : MonoBehaviour
                 // Set new pos to current pos
                 Vector3 thisChikosTrapNewPos = trap.transform.position;
                 // Add the x scale of hanger to new pos
-                thisChikosTrapNewPos.x += hangerSize.rect.width * 2.4f;
+                thisChikosTrapNewPos.x += hangerSize.rect.width * 3.80f;
                 // Set position to new pos
                 trap.transform.position = thisChikosTrapNewPos;
             }
@@ -165,20 +163,27 @@ public class InventoryDynamics : MonoBehaviour
             // The chiko that is being shown
             if (chiko.GetComponent<InventoryDynamics>().isSelected == true)
             {
-                // Set all back to active
                 foreach (GameObject trap in invTrap)
                 {
                     trap.SetActive(true);
                 }
+                // if trap is equipped
+                if (this.gameObject.transform.parent != chiko.gameObject.transform.GetChild(0))
+                {
+                    // Add the trap to that chiko
+                    GameObject newObject = this.gameObject;
+                    GameObject newTrap = (GameObject)Instantiate(this.gameObject, new Vector3(chiko.gameObject.transform.GetChild(0).position.x, chiko.gameObject.transform.GetChild(0).position.y, 0), Quaternion.identity);
+                    newTrap.transform.SetParent(chiko.gameObject.transform.GetChild(0));
+                    newTrap.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
 
-                // Add the trap to that chiko
-                GameObject newTrap = (GameObject)Instantiate(this.gameObject, new Vector3(chiko.gameObject.transform.GetChild(0).position.x, chiko.gameObject.transform.GetChild(0).position.y, 0), Quaternion.identity);
-                newTrap.transform.SetParent(chiko.gameObject.transform.GetChild(0));
-                newTrap.transform.localScale = new Vector3 (0.7f, 0.7f, 0.7f);
-
-                // Remove the trap from the trap inventory
-                GameObject temp = this.gameObject.transform.parent.gameObject;
-                temp.SetActive(false);
+                    GameObject temp = this.gameObject.transform.parent.gameObject;
+                    temp.SetActive(false);
+                }
+                else
+                {
+                    GameObject.Destroy(this.gameObject);
+                    break;
+                }
             }
         }
     }

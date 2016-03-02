@@ -146,7 +146,7 @@ public class Chiko : MonoBehaviour {
         // Test values
         maxHealth = 100;
         health = maxHealth;
-        damage = 50;
+        damage = 1;
         state = STATE.IDLE;
         pos = transform.position;
         isMoving = false;
@@ -696,8 +696,6 @@ public class Chiko : MonoBehaviour {
 
             
         }
-        //// After putting a trap
-        //state = STATE.IDLE;
     }
 
     void Dead()

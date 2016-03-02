@@ -25,12 +25,16 @@ public class Enemy : MonoBehaviour
 
     public AnimationClip[] animationList;
 
+    public AudioClip[] clipList;
+
     Vector3 vel;//use to move away from other enemies
     float distToCollision; // distance to any other collision
 
     Animation currentAnimation;
 
     Transform camPos;
+
+    AudioSource audiSource;
     // Use this for initialization
     void Start()
     {
@@ -48,6 +52,8 @@ public class Enemy : MonoBehaviour
         b_OverrideMove = true;
         currentAnimation = GetComponent<Animation>();
         camPos = GameObject.Find("Main Camera").GetComponent<Transform>();
+        audiSource = GetComponent<AudioSource>();
+
     }
 
     public void SetEnemyVariables(float _health, int _damage, int _moveSpeed)
@@ -64,7 +70,7 @@ public class Enemy : MonoBehaviour
 
         //lock the movement onto the plane only
         vel.y = 0;
-        dir.y = 0;
+        dir.y = 0;       
 
         if (path != null && currentWaypoint < path.vectorPath.Count)
         {
@@ -121,6 +127,9 @@ public class Enemy : MonoBehaviour
         {
             if (b_move == true)
             {
+                audiSource.clip = clipList[0];
+                audiSource.Play();
+
                 currentAnimation.clip = animationList[0];
                 currentAnimation[currentAnimation.clip.name].speed = 2;
                 currentAnimation.Play();
@@ -144,6 +153,11 @@ public class Enemy : MonoBehaviour
     {
         if (health > 0)
             health -= h;
+        if(audiSource.isPlaying == false)
+        {
+            audiSource.clip = clipList[2];
+            audiSource.Play();
+        }
     }
 
     public void OverrideTarget(GameObject go)
@@ -176,12 +190,22 @@ public class Enemy : MonoBehaviour
         if (currentAnimation.isPlaying == false)
         {
             if (Random.Range(0, 2) == 1)
+            {
                 currentAnimation.clip = animationList[1];
+                currentAnimation[currentAnimation.clip.name].speed = 4;
+            }
             else
+            {
                 currentAnimation.clip = animationList[2];
+                currentAnimation[currentAnimation.clip.name].speed = 2;
 
-            currentAnimation[currentAnimation.clip.name].speed = 2;
+            }
             currentAnimation.Play();
+            if(currentAnimation.isPlaying == true)
+            {
+                audiSource.clip = clipList[1];
+                audiSource.Play();
+            }
         }
 
         //carry out attack;

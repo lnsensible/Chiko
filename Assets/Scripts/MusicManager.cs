@@ -67,8 +67,12 @@ public class MusicManager : MonoBehaviour {
         sfx[(int)SoundList.button_pressed] = (AudioClip)Resources.Load("Select");
         
         //BGM_Player.clip = sfx[(int)SoundList.wall_active];
-       //BGM_Player.loop = true;
-        //BGM_Player.Play();
+    }
+
+    static public void PlayGameBGM()
+    {
+        BGM_Player.loop = true;
+        BGM_Player.Play();
     }
 
     static public void playBtnPress()

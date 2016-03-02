@@ -44,7 +44,7 @@ public class AuctionContentHandler : MonoBehaviour {
     {
         if (reset)
         {
-            auctionContent.transform.position = auctionContentInitialPos;
+           // auctionContent.transform.position = auctionContentInitialPos;
         }
 
         if (theTab == 1)

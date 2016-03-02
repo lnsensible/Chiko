@@ -2,7 +2,8 @@
 using System.Collections;
 public class EnemySpawnerManager : MonoBehaviour
 {
-    public int Max_num_of_enemies;
+    public int Max_num_of_enemies_per_level;
+    int Max_num_of_enemies_;
     int enemyNumbers = 0;
     int TotalSpawners;
     public float Spawn_Rate;
@@ -19,7 +20,7 @@ public class EnemySpawnerManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+        Max_num_of_enemies_ = Max_num_of_enemies_per_level * (PlayerPrefs.GetInt("rank") + 1);
         startSpawning = false;
         isSpawning = false;
         TotalSpawners = transform.childCount;
@@ -45,7 +46,7 @@ public class EnemySpawnerManager : MonoBehaviour
     {
         if (b_GameStart == true)
         {
-            if (enemyNumbers < Max_num_of_enemies)
+            if (enemyNumbers < Max_num_of_enemies_)
             {
                 startSpawning = true;
             }
@@ -61,7 +62,7 @@ public class EnemySpawnerManager : MonoBehaviour
 
     void CallingRandomSpawner()
     {
-        if (enemyNumbers >= Max_num_of_enemies)
+        if (enemyNumbers >= Max_num_of_enemies_)
         {
             isSpawning = false;
             CancelInvoke("CallingRandomSpawner");

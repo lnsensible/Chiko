@@ -30,7 +30,8 @@ public class MusicManager : MonoBehaviour {
         wall_hit = 8,
         spikes_activated = 9,
         button_pressed = 10,
-
+        exp_earned = 11,
+        gold_ = 12,
         soundlist_totalsounds
     };
 
@@ -65,7 +66,8 @@ public class MusicManager : MonoBehaviour {
         sfx[(int)SoundList.wall_hit]            = (AudioClip)Resources.Load("TripmineActive1");
         sfx[(int)SoundList.spikes_activated] = (AudioClip)Resources.Load("BearTrapActive1");
         sfx[(int)SoundList.button_pressed] = (AudioClip)Resources.Load("Select");
-        
+        sfx[(int)SoundList.exp_earned] = (AudioClip)Resources.Load("XPGained");
+        sfx[(int)SoundList.gold_] = (AudioClip)Resources.Load("CurrencyEarned");
         //BGM_Player.clip = sfx[(int)SoundList.wall_active];
     }
 
@@ -79,5 +81,16 @@ public class MusicManager : MonoBehaviour {
     {
         SFX_Player.clip = MusicManager.sfx[(int)SoundList.button_pressed];
         SFX_Player.Play();
+    }
+
+    static public void PlayVictoryScreen()
+    {
+        SFX_Player.clip = MusicManager.sfx[(int)SoundList.exp_earned];
+        SFX_Player.Play();
+    }
+
+    static public void STOPBGM()
+    {
+        BGM_Player.Stop();
     }
 }

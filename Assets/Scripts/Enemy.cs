@@ -34,7 +34,9 @@ public class Enemy : MonoBehaviour
 
     Transform camPos;
 
+    AudioSource[] soundplayers;
     AudioSource audiSource;
+    AudioSource audiSource2;
     // Use this for initialization
     void Start()
     {
@@ -52,7 +54,10 @@ public class Enemy : MonoBehaviour
         b_OverrideMove = true;
         currentAnimation = GetComponent<Animation>();
         camPos = GameObject.Find("Main Camera").GetComponent<Transform>();
-        audiSource = GetComponent<AudioSource>();
+
+        soundplayers = GetComponents<AudioSource>();
+        audiSource = soundplayers[0];
+        audiSource2 = soundplayers[1];
 
     }
 
@@ -70,7 +75,17 @@ public class Enemy : MonoBehaviour
 
         //lock the movement onto the plane only
         vel.y = 0;
-        dir.y = 0;       
+        dir.y = 0;
+
+        if (Random.Range(0, 500) < 2 && audiSource2.isPlaying == false)
+        {
+            audiSource2.Play();
+        }
+        if(audiSource.isPlaying == false)
+        {
+            audiSource.clip = clipList[0];
+            audiSource.Play();
+        }
 
         if (path != null && currentWaypoint < path.vectorPath.Count)
         {
@@ -127,8 +142,7 @@ public class Enemy : MonoBehaviour
         {
             if (b_move == true)
             {
-                audiSource.clip = clipList[0];
-                audiSource.Play();
+                
 
                 currentAnimation.clip = animationList[0];
                 currentAnimation[currentAnimation.clip.name].speed = 2;
@@ -219,6 +233,10 @@ public class Enemy : MonoBehaviour
         if (wallTarget != null)
         {
             wallTarget.theHealth -= damage;
+            if(wallTarget.theHealth <= 0)
+            {
+                target = OriginalTarget; 
+            }
         }
 
         Objectives ObjectiveTarget = target.GetComponent<Objectives>();

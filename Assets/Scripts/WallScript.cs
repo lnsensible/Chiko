@@ -38,9 +38,13 @@ public class WallScript : MonoBehaviour {
             }
         }
 
+        else 
+        {
+            destroyed = true; 
+        }
         if (destroyed)
         {
-           
+            Destroy(this);
         }
     }
 

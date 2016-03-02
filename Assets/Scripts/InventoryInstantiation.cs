@@ -267,6 +267,7 @@ public class InventoryInstantiation : MonoBehaviour {
                     break;
             }
 
+
             tempChiko.GetComponentInChildren<UnityEngine.UI.Image>().sprite = ChikoImage;
             tempChiko.transform.SetParent(svContent.transform);
             tempChiko.transform.localScale = new Vector3(1, 1, 1);

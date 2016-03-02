@@ -196,68 +196,60 @@ public class InventoryDynamics : MonoBehaviour
         else
             text.GetComponent<Text>().text = "Set Active";
 
-        ////ADD CHIKO INTO SELECTED LIST
-        //// Find all the chikos in content
-        //GameObject content = GameObject.Find("Content");
+        //ADD CHIKO INTO SELECTED LIST
+        // Find all the chikos in content
+        GameObject content = GameObject.Find("Content");
 
-        //if (text.GetComponent<Text>().text == "Set Active")
-        //{
-        //    text.GetComponent<Text>().text = "Set Inactive";
+        if (text.GetComponent<Text>().text == "Set Active")
+        {
+            if (PlayerInventory.SelectedChiko.Length < 3)
+            {
+                for (int i = 0; i < PlayerInventory.ChikoList.Count; i++)
+                {
+                    // Find selected chiko in hanger 
+                    if (content.gameObject.transform.GetChild(i) == this.gameObject)
+                    {
+                        // Find empty space in selected chiko list
+                        for (int j = 0; j < PlayerInventory.SelectedChiko.Length; j++)
+                        {
+                            // if empty slot in found
+                            if (PlayerInventory.SelectedChiko[j] == -1)
+                            {
+                                // Add chiko into the list
+                                PlayerInventory.SelectedChiko[j] = PlayerInventory.ChikoList[i];
+                                // Remove chiko from list
+                                PlayerInventory.ChikoList[i] = -1;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
-        //    if (PlayerInventory.SelectedChiko.Length < 3)
-        //    {
-        //        for (int i = 0; i < PlayerInventory.ChikoList.Count; i++)
-        //        {
-        //            // Find selected chiko in hanger 
-        //            if (content.gameObject.transform.GetChild(i) == this.gameObject)
-        //            {
-        //                // Find empty space in selected chiko list
-        //                for (int j = 0; j < PlayerInventory.SelectedChiko.Length; j++)
-        //                {
-        //                    // if empty slot in found
-        //                    if (PlayerInventory.SelectedChiko[j] == -1)
-        //                    {
-        //                        // Add chiko into the list
-        //                        PlayerInventory.SelectedChiko[j] = PlayerInventory.ChikoList.IndexOf(i);
-        //                        // Remove chiko from list
-        //                        PlayerInventory.ChikoList[i] = -1;
-        //                        break;
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        text.GetComponent<Text>().text = "Set Active";
-        //    }
-        //}
-
-        ////REMOVE CHIKO FROM SELECTED LIST
-        //else
-        //{
-        //    text.GetComponent<Text>().text = "Set Active";
-
-        //    //for (int i = 0; i < PlayerInventory.SelectedChiko.Length; i++)
-        //    //{
-        //    //    // Find selected chiko in hanger 
-        //    //    if (content.gameObject.transform.GetChild(i) == this.gameObject)
-        //    //    {
-        //    //        // Find empty space in selected chiko list
-        //    //        for (int j = 0; j < PlayerInventory.SelectedChiko.Length; j++)
-        //    //        {
-        //    //            // if empty slot in found
-        //    //            if (PlayerInventory.SelectedChiko[j] == -1)
-        //    //            {
-        //    //                // Add chiko into the list
-        //    //                PlayerInventory.SelectedChiko[j] = PlayerInventory.ChikoList.IndexOf(i);
-        //    //                // Remove chiko from list
-        //    //                PlayerInventory.ChikoList[i] = -1;
-        //    //                break;
-        //    //            }
-        //    //        }
-        //    //    }
-        //    //}
-        //}
+        //REMOVE CHIKO FROM SELECTED LIST
+        else
+        {
+            for (int i = 0; i < PlayerInventory.SelectedChiko.Length; i++)
+            {
+                // Find selected chiko in hanger 
+                if (content.gameObject.transform.GetChild(i) == this.gameObject)
+                {
+                    // Find empty space in selected chiko list
+                    for (int j = 0; j < PlayerInventory.ChikoList.Count; j++)
+                    {
+                        // if empty slot in found
+                        if (PlayerInventory.ChikoList[j] == -1)
+                        {
+                            // Add chiko into the list
+                            PlayerInventory.ChikoList[j] = PlayerInventory.SelectedChiko[i];
+                            // Remove chiko from list
+                            PlayerInventory.SelectedChiko[i] = -1;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

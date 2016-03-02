@@ -70,14 +70,7 @@ public class Enemy : MonoBehaviour
 
         //lock the movement onto the plane only
         vel.y = 0;
-        dir.y = 0;
-
-
-        if(Random.Range(0, 100) < 4)
-        {
-            audiSource.clip = clipList[3];
-            audiSource.Play();
-        }
+        dir.y = 0;       
 
         if (path != null && currentWaypoint < path.vectorPath.Count)
         {

@@ -36,8 +36,8 @@ public class PlayerInventory : MonoBehaviour {
     void Start()
     {
         m_theIOScript = GetComponent<File_ReadWrite>();
-        SelectedChiko[0] = 1;
-        SelectedTrap[0] = 0;
+        SelectedChiko[0] = -1;
+        SelectedTrap[0] = -1;
         SelectedChiko[1] = 0;
         SelectedTrap[1] = -1;
         SelectedChiko[2] = -1;

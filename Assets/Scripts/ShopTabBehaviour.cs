@@ -87,19 +87,6 @@ public class ShopTabBehaviour : MonoBehaviour {
         {
             GameObject.Find("Chiko_2").SetActive(false);
         }
-        if (PlayerPrefs.GetInt("Chiko_3Bought") == 1)
-        {
-            GameObject.Find("Chiko_3").SetActive(false);
-        }
-        if (PlayerPrefs.GetInt("Chiko_4Bought") == 1)
-        {
-            GameObject.Find("Chiko_4").SetActive(false);
-        }
-        if (PlayerPrefs.GetInt("Chiko_5Bought") == 1)
-        {
-            GameObject.Find("Chiko_5").SetActive(false);
-        }
-
 	}
 	
 	// Update is called once per frame
@@ -208,8 +195,10 @@ public class ShopTabBehaviour : MonoBehaviour {
             //buying the bear trap
             if (amount_int >= 1500)
             {
+                amount_int -= 1500;
                 PlayerPrefs.SetInt("Gold", amount_int);
-                PlayerPrefs.SetInt("BearTraps", PlayerPrefs.GetInt("BearTraps") + 1);
+                showPopupSuccessful("Bear trap");
+                PlayerInventory.ChikoTrapList.Add(0);
             }
             else
             {
@@ -244,8 +233,11 @@ public class ShopTabBehaviour : MonoBehaviour {
             //buying the bear trap
             if (amount_int >= 1500)
             {
+                amount_int -= 1500;
                 PlayerPrefs.SetInt("Gold", amount_int);
-                PlayerPrefs.SetInt("SpikeTraps", PlayerPrefs.GetInt("SpikeTraps") + 1);
+                showPopupSuccessful("Imapling Spike");
+                PlayerInventory.ChikoTrapList.Add(2);
+                
             }
             else
             {
@@ -266,7 +258,6 @@ public class ShopTabBehaviour : MonoBehaviour {
                 bo.GetComponentInChildren<Text>().text = "BUY";
                 //writing to player pref so that the bear trap is unlocked.
                 PlayerPrefs.SetInt("TripTraplocked", TripTraplocked);
-
                 PlayerPrefs.SetInt("Gold", amount_int);
             }
             else
@@ -279,8 +270,10 @@ public class ShopTabBehaviour : MonoBehaviour {
             //buying the bear trap
             if (amount_int >= 1500)
             {
+                amount_int -= 1500;
                 PlayerPrefs.SetInt("Gold", amount_int);
-                PlayerPrefs.SetInt("TripTraps", PlayerPrefs.GetInt("TripTraps") + 1);
+                showPopupSuccessful("Trip wire");
+                PlayerInventory.ChikoTrapList.Add(1);
             }
             else
             {
@@ -314,8 +307,10 @@ public class ShopTabBehaviour : MonoBehaviour {
             //buying the bear trap
             if (amount_int >= 2000)
             {
+                amount_int -= 2000;
                 PlayerPrefs.SetInt("Gold", amount_int);
-                PlayerPrefs.SetInt("DecoyTraps", PlayerPrefs.GetInt("DecoyTraps") + 1);
+                showPopupSuccessful("Decoy Trap");
+                PlayerInventory.ChikoTrapList.Add(4); ;
             }
             else
             {
@@ -349,8 +344,10 @@ public class ShopTabBehaviour : MonoBehaviour {
             //buying the bear trap
             if (amount_int >= 1500)
             {
+                amount_int -= 1500;
                 PlayerPrefs.SetInt("Gold", amount_int);
-                PlayerPrefs.SetInt("WallTraps", PlayerPrefs.GetInt("WallTraps") + 1);
+                showPopupSuccessful("Wall");
+                PlayerInventory.ChikoTrapList.Add(3);
             }
             else
             {
@@ -370,7 +367,18 @@ public class ShopTabBehaviour : MonoBehaviour {
 
             PlayerPrefs.SetInt("Gems", amount_gem_int);
             //send to playerpref that this chiko skin is bought
-            PlayerPrefs.SetInt(chiko.name + "Bought", 1);
+            if (chiko.name == "Chiko_1")
+            {
+                //add into the player inventory;
+                PlayerInventory.ChikoList.Add(35);
+            }
+            else if(chiko.name == "Chiko_2")
+            {
+                //add into the player inventory;
+                PlayerInventory.ChikoList.Add(22);
+            }
+            PlayerPrefs.SetInt(chiko.name + "bought", 1);
+            showPopupSuccessful("Chiko");
         }
         else
         {
@@ -395,6 +403,18 @@ public class ShopTabBehaviour : MonoBehaviour {
             msg.text += " gems ";
         msg.text += "more.";
     }
+    /*
+     * Shows the popup box to the location in the middle of the page.
+     * Will display popupBox with this msg:
+     * "You have successfully bought /item_name/ .  
+     */
+    public void showPopupSuccessful(string item_name)
+    {
+        popUpbox.transform.localPosition = Vector3.zero;
+        popUpbox.transform.SetAsLastSibling();
+        Text msg = popUpbox.transform.GetChild(0).GetComponent<Text>();
+        msg.text = "You have successfully bought " + item_name;
+    }
 
     //To close the popUp Box
     public void okayPressed()
@@ -403,7 +423,6 @@ public class ShopTabBehaviour : MonoBehaviour {
         popUpbox.transform.localPosition = new Vector3(0, -500, 0);
         popUpbox.transform.SetAsFirstSibling();        
     }
-
     //Cheat buttons - for testing purpose..or hacks whichever you want
     public void CHEAT_topup()
     {

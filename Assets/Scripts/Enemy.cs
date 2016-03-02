@@ -214,7 +214,33 @@ public class Enemy : MonoBehaviour
                 currentAnimation[currentAnimation.clip.name].speed = 2;
 
             }
+
+            //carry out attack; - in sync wtih the animations
+            Chiko chikoTarget = target.GetComponent<Chiko>();
+            if (chikoTarget != null)
+            {
+                chikoTarget.health -= damage;
+                Debug.Log(chikoTarget.health);
+            }
+
+            WallScript wallTarget = target.GetComponent<WallScript>();
+            if (wallTarget != null)
+            {
+                wallTarget.theHealth -= damage;
+                if (wallTarget.theHealth <= 0)
+                {
+                    target = OriginalTarget;
+                }
+            }
+
+            Objectives ObjectiveTarget = target.GetComponent<Objectives>();
+            if (ObjectiveTarget != null)
+            {
+                ObjectiveTarget.MinusObjectiveHealth(damage);
+            }
+
             currentAnimation.Play();
+
             if(currentAnimation.isPlaying == true)
             {
                 audiSource.clip = clipList[1];
@@ -222,28 +248,7 @@ public class Enemy : MonoBehaviour
             }
         }
 
-        //carry out attack;
-        Chiko chikoTarget = target.GetComponent<Chiko>();
-        if (chikoTarget != null)
-        {
-            chikoTarget.health -= damage;
-        }
-
-        WallScript wallTarget = target.GetComponent<WallScript>();
-        if (wallTarget != null)
-        {
-            wallTarget.theHealth -= damage;
-            if(wallTarget.theHealth <= 0)
-            {
-                target = OriginalTarget; 
-            }
-        }
-
-        Objectives ObjectiveTarget = target.GetComponent<Objectives>();
-        if (ObjectiveTarget != null)
-        {
-            ObjectiveTarget.MinusObjectiveHealth(damage);
-        }
+        
 
     }
     public void Died()

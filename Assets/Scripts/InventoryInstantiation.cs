@@ -78,7 +78,8 @@ public class InventoryInstantiation : MonoBehaviour {
 
     public void InstantiateChiko()
     {
-        for (int i = 0; i < PlayerInventory.ChikoList.Count; i++)
+        int totalChikos = PlayerInventory.ChikoList.Count;
+        for (int i = 0; i < totalChikos; i++)
         {
             Sprite ChikoImage = DD1;
             GameObject tempChiko = (GameObject)Instantiate(HangerChiko, new Vector2(startPosition.x + i * hangerSpace, canvasSize.position.y * 0.8f), Quaternion.identity);

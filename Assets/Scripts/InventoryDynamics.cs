@@ -170,28 +170,52 @@ public class InventoryDynamics : MonoBehaviour
             // The chiko that is being shown
             if (chiko.GetComponent<InventoryDynamics>().isSelected == true)
             {
-                foreach (GameObject trap in invTrap)
-                {
-                    trap.SetActive(true);
-                }
-                // if trap is equipped
-                if (this.gameObject.transform.parent != chiko.gameObject.transform.GetChild(0))
-                {
-                    // Add the trap to that chiko
-                    GameObject newObject = this.gameObject;
-                    GameObject newTrap = (GameObject)Instantiate(this.gameObject, new Vector3(chiko.gameObject.transform.GetChild(0).position.x, chiko.gameObject.transform.GetChild(0).position.y, 0), Quaternion.identity);
-                    newTrap.transform.SetParent(chiko.gameObject.transform.GetChild(0));
-                    newTrap.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
-                    newTrap.GetComponent<UnityEngine.UI.Button>().interactable = false;
+                // Add the trap to that chiko
+                // Data
+                //for (int i = 0; i < PlayerInventory.SelectedChiko.Length; i++)
+                //{
+                //    if (PlayerInventory.SelectedChiko[i] == )
+                //    {
+                        if (this.gameObject.transform.parent.name == "InventoryBearTrap")
+                        {
+                            PlayerInventory.SelectedTrap[0] = 0;
+                        }
+                        else if (this.gameObject.transform.parent.name == "InventoryTripWireTrap")
+                        {
+                            PlayerInventory.SelectedTrap[0] = 1;
+                        }
+                        else if (this.gameObject.transform.parent.name == "InventoryDecoyTrap")
+                        {
+                            PlayerInventory.SelectedTrap[0] = 2;
+                        }
+                        else if (this.gameObject.transform.parent.name == "InventoryWallTrap")
+                        {
+                            PlayerInventory.SelectedTrap[0] = 3;
+                        }
+                        else if (this.gameObject.transform.parent.name == "InventorySpikeTrap")
+                        {
+                            PlayerInventory.SelectedTrap[0] = 4;
+                        }
+                //    }
+                //}
 
-                    //REMOVE TRAP AFTER EQUIPPING
-                    GameObject temp = this.gameObject.transform.parent.gameObject;
-                    temp.SetActive(false);
-                }
-                else
+                // Visual
+                GameObject newObject = this.gameObject;
+                GameObject newTrap = (GameObject)Instantiate(this.gameObject, new Vector3(chiko.gameObject.transform.GetChild(0).position.x, chiko.gameObject.transform.GetChild(0).position.y, 0), Quaternion.identity);
+                newTrap.transform.SetParent(chiko.gameObject.transform.GetChild(0));
+                newTrap.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+                newTrap.GetComponent<UnityEngine.UI.Button>().interactable = false;
+
+
+                //REMOVE TRAP FROM TRAP INVENTORY
+                GameObject trapContent = GameObject.Find("TrapContent");
+                for (int i = 0; i < PlayerInventory.ChikoTrapList.Count; i++)
                 {
-                    GameObject.Destroy(this.gameObject);
-                    break;
+                    if (trapContent.gameObject.transform.GetChild(i).gameObject == this.gameObject.transform.parent.gameObject)
+                    {
+                        PlayerInventory.ChikoTrapList.RemoveAt(i);
+                        break;
+                    }
                 }
             }
         }

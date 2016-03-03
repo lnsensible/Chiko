@@ -44,7 +44,7 @@ public class WallScript : MonoBehaviour {
         }
         if (destroyed)
         {
-            Destroy(this);
+            //Destroy(this);
         }
     }
 

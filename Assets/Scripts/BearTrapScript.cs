@@ -28,7 +28,7 @@ public class BearTrapScript : MonoBehaviour {
     {
         if (gameObject.tag == "Trap")
         {
-            if (col.tag == "Enemy" || col.tag == "Player")
+            if (col.tag == "Enemy")
             {
                 GetComponent<Animation>().Play();
                 col.gameObject.GetComponent<Enemy>().MinusHealth(theDamage);

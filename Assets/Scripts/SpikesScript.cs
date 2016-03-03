@@ -38,7 +38,7 @@ public class SpikesScript : MonoBehaviour {
     {
         if (gameObject.tag == "Trap")
         {
-            if (col.tag == "Enemy" || col.tag == "Player")
+            if (col.tag == "Enemy")
             {
                PlaySpikes();
                col.gameObject.GetComponent<Enemy>().MinusHealth(theDamage);

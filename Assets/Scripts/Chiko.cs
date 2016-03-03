@@ -216,7 +216,7 @@ public class Chiko : MonoBehaviour {
         noMovementThreshold = 2.0f;
         noMovementThresholdAttack = 200.0f;
 
-        trapHeld = TRAP.NONE;
+        trapHeld = TRAP.DECOY;
 
         switch (trapHeld)
         {
@@ -359,7 +359,7 @@ public class Chiko : MonoBehaviour {
 
                     shouldPlayerMove = false;
 
-                        if ((Input.GetMouseButtonDown(0) || (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)) && selectedTimer <= 0)
+                    if ((Input.GetMouseButtonDown(0) || (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)) && selectedTimer <= 0)
                         {
                             RaycastHit hit;
                             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -370,6 +370,7 @@ public class Chiko : MonoBehaviour {
                                 // if click enemy, attack
                                 if (hit.collider.tag == "Enemy" && !placingTrap)
                                 {
+                                    DestroyRadius();
                                     state = STATE.ATTACK;
                                     shouldPlayerMove = true;
                                     target = hit.collider.gameObject;
@@ -377,11 +378,13 @@ public class Chiko : MonoBehaviour {
                                 // if select self, unselect
                                 else if (hit.collider.gameObject == this.gameObject)
                                 {
+                                    DestroyRadius();
                                     state = STATE.IDLE;
                                 }
                                 // if click on other chiko, change selected chiko
                                 else if (hit.collider.tag == "MyChiko")
                                 {
+                                    DestroyRadius();
                                     state = STATE.IDLE;
                                 }
 
@@ -722,6 +725,7 @@ public class Chiko : MonoBehaviour {
             {
                 case TRAP.BEARTRAP:
                     DestroyRadius();
+                    placingTrap = false;
                     trapPositionHolder.Set(0, 0, 0);
                     GetComponent<BearTrapScript>().placeBearTrap(placeTrapPosition);
                     state = STATE.IDLE;
@@ -745,6 +749,7 @@ public class Chiko : MonoBehaviour {
                     break;
                 case TRAP.WALLS:
                     DestroyRadius();
+                    placingTrap = false;
                     state = STATE.IDLE;
                     GetComponent<WallScript>().placeWall(placeTrapPosition, chikoDir-90);
                     trapPositionHolder.Set(0, 0, 0);
@@ -752,6 +757,7 @@ public class Chiko : MonoBehaviour {
                     break;
                 case TRAP.SPIKES:
                     DestroyRadius();
+                    placingTrap = false;
                     state = STATE.IDLE;
                     GetComponent<SpikesScript>().placeSpikes(placeTrapPosition, trapPositionHolder2);
                     trapPositionHolder.Set(0, 0, 0);
@@ -760,6 +766,7 @@ public class Chiko : MonoBehaviour {
                     break;
                 case TRAP.DECOY:
                     DestroyRadius();
+                    placingTrap = false;
                     trapPositionHolder.Set(0, 0, 0);
                     GetComponent<DecoyBombScript>().placeDecoy(placeTrapPosition);
                     state = STATE.IDLE;

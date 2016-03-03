@@ -40,9 +40,6 @@ public class Enemy : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        health = 100;
-        damage = 1;
-        MOVE_SPEED = 250;
         healthBar = this.gameObject.transform.GetComponentInChildren<Slider>();
         //InvokeRepeating("minusHealth(2)", 0, 2);
         transform.SetParent(GameObject.Find("Canvas").GetComponent<Transform>());

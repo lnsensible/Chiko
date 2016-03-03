@@ -58,7 +58,7 @@ public class Enemy : MonoBehaviour
         soundplayers = GetComponents<AudioSource>();
         audiSource = soundplayers[0];
         audiSource2 = soundplayers[1];
-
+        InvokeRepeating("UpdateFacingDir",0, 0.2f);
     }
 
     public void SetEnemyVariables(float _health, int _damage, int _moveSpeed)
@@ -77,7 +77,7 @@ public class Enemy : MonoBehaviour
         vel.y = 0;
         dir.y = 0;
 
-        if (Random.Range(0, 500) < 2 && audiSource2.isPlaying == false)
+        if (Random.Range(0, 1000) < 2 && audiSource2.isPlaying == false)
         {
             audiSource2.Play();
         }
@@ -142,13 +142,9 @@ public class Enemy : MonoBehaviour
         {
             if (b_move == true)
             {
-                
-
                 currentAnimation.clip = animationList[0];
                 currentAnimation[currentAnimation.clip.name].speed = 2;
                 currentAnimation.Play();
-                //animation.PlayQueued("Enemy_Move");
-                transform.LookAt(path.vectorPath[currentWaypoint]);
                 transform.position = Vector3.MoveTowards(transform.position, path.vectorPath[currentWaypoint], MOVE_SPEED * Time.deltaTime);
                 if (Vector3.Distance(transform.position, path.vectorPath[currentWaypoint]) < distToWayPoint)
                 {
@@ -199,6 +195,12 @@ public class Enemy : MonoBehaviour
         MOVE_SPEED = MS;
     }
 
+    void UpdateFacingDir()
+    {
+        if (path.vectorPath[currentWaypoint] != transform.position)
+            transform.LookAt(path.vectorPath[currentWaypoint]);
+    }
+
     void Attack()
     {
         if (currentAnimation.isPlaying == false)
@@ -220,7 +222,6 @@ public class Enemy : MonoBehaviour
             if (chikoTarget != null)
             {
                 chikoTarget.health -= damage;
-                Debug.Log(chikoTarget.health);
             }
 
             WallScript wallTarget = target.GetComponent<WallScript>();

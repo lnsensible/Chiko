@@ -197,12 +197,13 @@ public class Enemy : MonoBehaviour
 
     void UpdateFacingDir()
     {
-        if (path != null && currentWaypoint < path.vectorPath.Count && path.vectorPath[currentWaypoint] != transform.position)
+        if (path != null && currentWaypoint < path.vectorPath.Count && path.vectorPath[currentWaypoint] != transform.position && b_AbleToAttack == false)
             transform.LookAt(path.vectorPath[currentWaypoint]);
     }
 
     void Attack()
     {
+        transform.LookAt(target.transform.position);
         if (currentAnimation.isPlaying == false)
         {
             if (Random.Range(0, 2) == 1)

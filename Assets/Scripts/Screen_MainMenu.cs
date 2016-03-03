@@ -70,8 +70,7 @@ public class Screen_MainMenu : MonoBehaviour
                 selectedChikos[i].sprite = TOTALKINDOFCHIKOS[PlayerInventory.SelectedChiko[i]];
                 if (PlayerInventory.SelectedTrap[i] != -1)
                 {
-                    Debug.Log(PlayerInventory.SelectedTrap[0]);
-                    selectedChikoTRAPS[0].sprite = TOTALTRAPICONS[PlayerInventory.SelectedTrap[0]];
+                    selectedChikoTRAPS[i].sprite = TOTALTRAPICONS[PlayerInventory.SelectedTrap[i]];
                     Color c_ = selectedChikoTRAPS[i].color;
                     c_.a = 0.28f;
                     selectedChikoTRAPS[i].color = c_;

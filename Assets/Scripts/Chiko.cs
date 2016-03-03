@@ -203,9 +203,10 @@ public class Chiko : MonoBehaviour {
        
 
         // Test values
-        maxHealth = 100;
+        int rankBouns = PlayerPrefs.GetInt("rank");
+        maxHealth = 100 + (100 / 100 ) * (5 * rankBouns);
         health = maxHealth;
-        damage = 1;
+        damage = 1 + (100 / 100) * (5 * rankBouns);
         state = STATE.IDLE;
         pos = transform.position;
         isMoving = false;

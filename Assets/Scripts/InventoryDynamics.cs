@@ -176,26 +176,26 @@ public class InventoryDynamics : MonoBehaviour
                 //{
                 //    if (PlayerInventory.SelectedChiko[i] == )
                 //    {
-                        if (this.gameObject.transform.parent.name == "InventoryBearTrap")
-                        {
-                            PlayerInventory.SelectedTrap[0] = 0;
-                        }
-                        else if (this.gameObject.transform.parent.name == "InventoryTripWireTrap")
-                        {
-                            PlayerInventory.SelectedTrap[0] = 1;
-                        }
-                        else if (this.gameObject.transform.parent.name == "InventoryDecoyTrap")
-                        {
-                            PlayerInventory.SelectedTrap[0] = 2;
-                        }
-                        else if (this.gameObject.transform.parent.name == "InventoryWallTrap")
-                        {
-                            PlayerInventory.SelectedTrap[0] = 3;
-                        }
-                        else if (this.gameObject.transform.parent.name == "InventorySpikeTrap")
-                        {
-                            PlayerInventory.SelectedTrap[0] = 4;
-                        }
+                if (this.gameObject.transform.parent.name == "InventoryBearTrap")
+                {
+                    PlayerInventory.SelectedTrap[0] = 0;
+                }
+                else if (this.gameObject.transform.parent.name == "InventoryTripWireTrap")
+                {
+                    PlayerInventory.SelectedTrap[0] = 1;
+                }
+                else if (this.gameObject.transform.parent.name == "InventoryDecoyTrap")
+                {
+                    PlayerInventory.SelectedTrap[0] = 2;
+                }
+                else if (this.gameObject.transform.parent.name == "InventoryWallTrap")
+                {
+                    PlayerInventory.SelectedTrap[0] = 3;
+                }
+                else if (this.gameObject.transform.parent.name == "InventorySpikeTrap")
+                {
+                    PlayerInventory.SelectedTrap[0] = 4;
+                }
                 //    }
                 //}
 
@@ -248,9 +248,9 @@ public class InventoryDynamics : MonoBehaviour
                         {
                             //Debug.Log("Empty space found & adding to selected list");
                             // Add chiko into the list
-                            PlayerInventory.SelectedChiko[j] = PlayerInventory.ChikoList[i];
+                            PlayerInventory.SelectedChiko[j] = PlayerInventory.ChikoList[i - 2];
                             // Remove chiko from list
-                            PlayerInventory.ChikoList.RemoveAt(i);
+                            PlayerInventory.ChikoList.RemoveAt(i - 1);
 
                             //Debug.Log("ChikoList Size: " + PlayerInventory.ChikoList.Count);
                             //Debug.Log("SChikoList Size: " + PlayerInventory.SelectedChiko.Length);

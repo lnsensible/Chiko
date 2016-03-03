@@ -319,6 +319,7 @@ public class Chiko : MonoBehaviour {
                                 if (hit.collider.tag == "Enemy" && !placingTrap)
                                 {
                                     state = STATE.ATTACK;
+                                    shouldPlayerMove = true;
                                     target = hit.collider.gameObject;
                                 }
                                 // if select self, unselect

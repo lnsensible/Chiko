@@ -197,7 +197,7 @@ public class Enemy : MonoBehaviour
 
     void UpdateFacingDir()
     {
-        if (path.vectorPath[currentWaypoint] != transform.position)
+        if (path != null && currentWaypoint < path.vectorPath.Count && path.vectorPath[currentWaypoint] != transform.position)
             transform.LookAt(path.vectorPath[currentWaypoint]);
     }
 

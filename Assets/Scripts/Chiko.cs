@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Pathfinding;
 using System;
+using System.Collections.Generic;
 
 public class Chiko : MonoBehaviour {
 
@@ -101,8 +102,18 @@ public class Chiko : MonoBehaviour {
     bool canAttack;
     bool startAttacking;
 
+    public AnimationClip[] atkanimations = new AnimationClip[6];
+    public AnimationClip[] tankanimations = new AnimationClip[6];
+
+    public GameObject thegroupgo;
+    public GameObject themainctrl;
+
+    public GameObject thegroupgoYOURS;
+    public GameObject themainctrlYOURS;
+
     public GameObject thematerialtochange;
 
+    public Mesh theTankMesh;
     //Let other scripts see if the object is moving
     public bool IsMoving
     {
@@ -126,6 +137,43 @@ public class Chiko : MonoBehaviour {
         Debug.Log("which selectedchiko: " + GetComponent<chikoMaterialHandler>().whichSelectedChiko);
         Debug.Log("the selected fchiko index: " + PlayerInventory.SelectedChiko[GetComponent<chikoMaterialHandler>().whichSelectedChiko]);
         thematerialtochange.GetComponent<SkinnedMeshRenderer>().material = GetComponent<chikoMaterialHandler>().materials[PlayerInventory.SelectedChiko[GetComponent<chikoMaterialHandler>().whichSelectedChiko]];
+
+        //List<string> animations = new List<string>();
+        //foreach(AnimationState state in GetComponent<Animation>())
+        //{
+        //    animations.Add(state.name);
+        //}
+
+        //Animation
+        ani = GetComponent<Animation>();
+        ani.Stop();
+
+        if (PlayerInventory.SelectedChiko[GetComponent<chikoMaterialHandler>().whichSelectedChiko] > 21 && PlayerInventory.SelectedChiko[GetComponent<chikoMaterialHandler>().whichSelectedChiko] != 34)
+        {
+            thematerialtochange.GetComponent<SkinnedMeshRenderer>().sharedMesh = theTankMesh;
+            thegroupgoYOURS = thegroupgo;
+            GameObject copy = themainctrl;
+            copy.transform.parent = transform;
+            Destroy(themainctrlYOURS);
+
+            ani.RemoveClip("Idle");
+            ani.AddClip(tankanimations[0], "Idle");
+            ani.AddClip(tankanimations[1], "Idle2");
+            ani.AddClip(tankanimations[2], "Move");
+            ani.AddClip(tankanimations[3], "Attack");
+            ani.AddClip(tankanimations[4], "Attack2");
+            ani.AddClip(tankanimations[5], "Attack3");
+        }
+        else
+        {
+            ani.RemoveClip("Idle");
+            ani.AddClip(atkanimations[0], "Idle");
+            ani.AddClip(atkanimations[1], "Idle2");
+            ani.AddClip(atkanimations[2], "Move");
+            ani.AddClip(atkanimations[3], "Attack");
+            ani.AddClip(atkanimations[4], "Attack2");
+            ani.AddClip(atkanimations[5], "Attack3");
+        }
         // Set ID based on Chiko's id
         //id = 
         // Set type based on ID
@@ -149,6 +197,8 @@ public class Chiko : MonoBehaviour {
         // Set pos based on player's position
         //pos = ;
         selected = false;
+
+       
 
         // Test values
         maxHealth = 100;
@@ -211,10 +261,7 @@ public class Chiko : MonoBehaviour {
         trapHUD.GetComponent<CooldownMeshHandler>().SetMaterial(trapHeld);
         trapHUD.GetComponent<MeshRenderer>().enabled = false;
 
-        //Animation
-        ani = GetComponent<Animation>();
-        ani.Stop();
-
+        
         healthbar = this.gameObject.transform.GetComponentInChildren<Slider>();
         transform.SetParent(GameObject.Find("Canvas").GetComponent<Transform>());
         camPos = GameObject.Find("Main Camera").GetComponent<Transform>();
@@ -319,6 +366,7 @@ public class Chiko : MonoBehaviour {
                                 if (hit.collider.tag == "Enemy" && !placingTrap)
                                 {
                                     state = STATE.ATTACK;
+                                    shouldPlayerMove = true;
                                     target = hit.collider.gameObject;
                                 }
                                 // if select self, unselect

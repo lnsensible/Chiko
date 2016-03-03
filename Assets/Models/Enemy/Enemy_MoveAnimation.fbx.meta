@@ -96,7 +96,7 @@ ModelImporter:
       name: 'Enemy_Move '
       takeName: Take 001
       firstFrame: 1
-      lastFrame: 62
+      lastFrame: 60
       wrapMode: 1
       orientationOffsetY: 0
       level: 0

@@ -1,0 +1,234 @@
+fileFormatVersion: 2
+guid: bcb6628cc2282cd48bb07b3b80d089f3
+timeCreated: 1456972378
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: Body
+    100002: CTRL_hindankle_R
+    100004: Ear_L
+    100006: Ear_R
+    100008: EarTip_L
+    100010: EarTip_R
+    100012: ForeBicep_L
+    100014: ForeBicep_R
+    100016: ForeElbow_L
+    100018: ForeElbow_R
+    100020: ForeHand_L
+    100022: ForeHand_R
+    100024: group
+    100026: Head
+    100028: HindFoot_L
+    100030: HindFoot_R
+    100032: HindKnee_L
+    100034: HindKnee_R
+    100036: HindPaw_L
+    100038: HindPaw_R
+    100040: HindShin_L
+    100042: HindShin_R
+    100044: HindThigh_L
+    100046: HindThigh_R
+    100048: Main_CTRL
+    100050: Neck
+    100052: Nose
+    100054: Paw_L
+    100056: Paw_R
+    100058: Pelvis
+    100060: Stomach
+    100062: //RootNode
+    100064: Tank_Tank
+    400000: Body
+    400002: CTRL_hindankle_R
+    400004: Ear_L
+    400006: Ear_R
+    400008: EarTip_L
+    400010: EarTip_R
+    400012: ForeBicep_L
+    400014: ForeBicep_R
+    400016: ForeElbow_L
+    400018: ForeElbow_R
+    400020: ForeHand_L
+    400022: ForeHand_R
+    400024: group
+    400026: Head
+    400028: HindFoot_L
+    400030: HindFoot_R
+    400032: HindKnee_L
+    400034: HindKnee_R
+    400036: HindPaw_L
+    400038: HindPaw_R
+    400040: HindShin_L
+    400042: HindShin_R
+    400044: HindThigh_L
+    400046: HindThigh_R
+    400048: Main_CTRL
+    400050: Neck
+    400052: Nose
+    400054: Paw_L
+    400056: Paw_R
+    400058: Pelvis
+    400060: Stomach
+    400062: //RootNode
+    400064: Tank_Tank
+    4300000: Tank_Tank
+    7400000: Idle
+    9500000: //RootNode
+    11100000: //RootNode
+    13700000: Tank_Tank
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Idle
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 393
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: CTRL_hindankle_R
+        weight: 1
+      - path: group
+        weight: 1
+      - path: Main_CTRL
+        weight: 1
+      - path: Main_CTRL/Body
+        weight: 1
+      - path: Main_CTRL/Body/ForeBicep_L
+        weight: 1
+      - path: Main_CTRL/Body/ForeBicep_L/ForeElbow_L
+        weight: 1
+      - path: Main_CTRL/Body/ForeBicep_L/ForeElbow_L/ForeHand_L
+        weight: 1
+      - path: Main_CTRL/Body/ForeBicep_L/ForeElbow_L/ForeHand_L/Paw_L
+        weight: 1
+      - path: Main_CTRL/Body/ForeBicep_R
+        weight: 1
+      - path: Main_CTRL/Body/ForeBicep_R/ForeElbow_R
+        weight: 1
+      - path: Main_CTRL/Body/ForeBicep_R/ForeElbow_R/ForeHand_R
+        weight: 1
+      - path: Main_CTRL/Body/ForeBicep_R/ForeElbow_R/ForeHand_R/Paw_R
+        weight: 1
+      - path: Main_CTRL/Body/Neck
+        weight: 1
+      - path: Main_CTRL/Body/Neck/Head
+        weight: 1
+      - path: Main_CTRL/Body/Neck/Head/Ear_L
+        weight: 1
+      - path: Main_CTRL/Body/Neck/Head/Ear_L/EarTip_L
+        weight: 1
+      - path: Main_CTRL/Body/Neck/Head/Ear_R
+        weight: 1
+      - path: Main_CTRL/Body/Neck/Head/Ear_R/EarTip_R
+        weight: 1
+      - path: Main_CTRL/Body/Neck/Head/Nose
+        weight: 1
+      - path: Main_CTRL/Body/Stomach
+        weight: 1
+      - path: Main_CTRL/Body/Stomach/Pelvis
+        weight: 1
+      - path: Main_CTRL/Body/Stomach/Pelvis/HindThigh_L
+        weight: 1
+      - path: Main_CTRL/Body/Stomach/Pelvis/HindThigh_L/HindKnee_L
+        weight: 1
+      - path: Main_CTRL/Body/Stomach/Pelvis/HindThigh_L/HindKnee_L/HindShin_L
+        weight: 1
+      - path: Main_CTRL/Body/Stomach/Pelvis/HindThigh_L/HindKnee_L/HindShin_L/HindFoot_L
+        weight: 1
+      - path: Main_CTRL/Body/Stomach/Pelvis/HindThigh_L/HindKnee_L/HindShin_L/HindFoot_L/HindPaw_L
+        weight: 1
+      - path: Main_CTRL/Body/Stomach/Pelvis/HindThigh_R
+        weight: 1
+      - path: Main_CTRL/Body/Stomach/Pelvis/HindThigh_R/HindKnee_R
+        weight: 1
+      - path: Main_CTRL/Body/Stomach/Pelvis/HindThigh_R/HindKnee_R/HindShin_R
+        weight: 1
+      - path: Main_CTRL/Body/Stomach/Pelvis/HindThigh_R/HindKnee_R/HindShin_R/HindFoot_R
+        weight: 1
+      - path: Main_CTRL/Body/Stomach/Pelvis/HindThigh_R/HindKnee_R/HindShin_R/HindFoot_R/HindPaw_R
+        weight: 1
+      - path: Tank_Tank
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 1
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

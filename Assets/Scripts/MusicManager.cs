@@ -32,6 +32,8 @@ public class MusicManager : MonoBehaviour {
         button_pressed = 10,
         exp_earned = 11,
         gold_ = 12,
+        MenuBGM_ = 13,
+        GameBGM_ = 14,
         soundlist_totalsounds
     };
 
@@ -68,12 +70,24 @@ public class MusicManager : MonoBehaviour {
         sfx[(int)SoundList.button_pressed] = (AudioClip)Resources.Load("Select");
         sfx[(int)SoundList.exp_earned] = (AudioClip)Resources.Load("XPGained");
         sfx[(int)SoundList.gold_] = (AudioClip)Resources.Load("CurrencyEarned");
+        sfx[(int)SoundList.MenuBGM_] = (AudioClip)Resources.Load("backgroundMusic");
+        sfx[(int)SoundList.GameBGM_] = (AudioClip)Resources.Load("bgm");
         //BGM_Player.clip = sfx[(int)SoundList.wall_active];
+    }
+
+    static public void PlayMainMenuBGM()
+    {
+        BGM_Player.loop = true;
+        BGM_Player.clip = MusicManager.sfx[(int)SoundList.MenuBGM_];
+        BGM_Player.Play();
+        
     }
 
     static public void PlayGameBGM()
     {
         BGM_Player.loop = true;
+        BGM_Player.clip = MusicManager.sfx[(int)SoundList.GameBGM_];
+        BGM_Player.volume = 0.05f;
         BGM_Player.Play();
     }
 

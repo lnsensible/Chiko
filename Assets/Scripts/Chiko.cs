@@ -113,6 +113,8 @@ public class Chiko : MonoBehaviour {
 
     public GameObject thematerialtochange;
 
+    private float stopDelay;
+
     public Mesh theTankMesh;
     //Let other scripts see if the object is moving
     public bool IsMoving
@@ -273,7 +275,7 @@ public class Chiko : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-
+        stopDelay -= Time.deltaTime;
         timeBetweenAttack -= Time.deltaTime;
         healthbar.transform.LookAt(camPos.position);
 
@@ -286,7 +288,6 @@ public class Chiko : MonoBehaviour {
         {
             Seeker seeker = GetComponent<Seeker>();
             seeker.StartPath(transform.position, PlayerMovement.playerPosition, OnPathComplete);
-            Debug.Log("wtf");
         }
 
         if (isMoving)
@@ -334,10 +335,14 @@ public class Chiko : MonoBehaviour {
                 break;
 
             case STATE.FOLLOW:
-                { 
-                    ani.Play("Move");
+                {
                     trapHUD.GetComponent<MeshRenderer>().enabled = false;
-                    Follow();
+
+                    if (stopDelay < 0)
+                    {
+                        ani.Play("Move");
+                        Follow();
+                    }
 
                     // Switch back to idle state
                     if ((Vector3.Distance(pos, PlayerMovement.playerPosition) <= stopDistance))
@@ -534,6 +539,19 @@ public class Chiko : MonoBehaviour {
             findingpath = false;
             path = p;
             currentWaypoint = 0;
+        }
+    }
+
+    void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "Chiko")
+        {
+            if (GetComponent<chikoMaterialHandler>().whichSelectedChiko < other.gameObject.GetComponent<chikoMaterialHandler>().whichSelectedChiko)
+            {
+                stopDelay = 0.5f;
+                ani.Play("Idle");
+                isMoving = false;
+            }
         }
     }
 

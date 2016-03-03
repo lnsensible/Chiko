@@ -241,6 +241,13 @@ public class Enemy : MonoBehaviour
                 ObjectiveTarget.MinusObjectiveHealth(damage);
             }
 
+            DecoyBombScript decoyTarget = target.GetComponent<DecoyBombScript>();
+            if(decoyTarget != null)
+            {
+                decoyTarget.theHealth -= damage;
+            }
+
+
             currentAnimation.Play();
 
             if(currentAnimation.isPlaying == true)

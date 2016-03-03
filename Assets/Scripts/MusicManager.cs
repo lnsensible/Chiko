@@ -87,6 +87,7 @@ public class MusicManager : MonoBehaviour {
     {
         BGM_Player.loop = true;
         BGM_Player.clip = MusicManager.sfx[(int)SoundList.GameBGM_];
+        BGM_Player.volume = 0.05f;
         BGM_Player.Play();
     }
 
